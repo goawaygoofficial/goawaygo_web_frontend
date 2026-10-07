@@ -1,0 +1,11 @@
+.overlay {
+  min-height: 100dvh;
+  animation: slide-in var(--duration-slide) var(--ease-standard);
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}

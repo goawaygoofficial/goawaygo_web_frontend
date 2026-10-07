@@ -1,0 +1,110 @@
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { usePrefersReducedMotion } from '@/hooks';
+import type { TripIdea } from '../types';
+import { TripIdeaCard } from './TripIdeaCard';
+import styles from './TripIdeaCarousel.module.css';
+
+/** How much a card shrinks/fades per card-width away from the centre (same as the app's 0.3). */
+const FALLOFF_PER_CARD = 0.3;
+
+const easeOut = (t: number) => 1 - (1 - t) * (1 - t);
+
+interface TripIdeaCarouselProps {
+  ideas: readonly TripIdea[];
+  label: string;
+}
+
+/**
+ * Horizontally scrolling, snap-to-centre carousel. The centred card is full size; neighbours
+ * scale and fade with distance, like the app's `StackedCardCarousel`.
+ */
+export function TripIdeaCarousel({ ideas, label }: TripIdeaCarouselProps) {
+  const trackRef = useRef<HTMLUListElement>(null);
+  const frameRef = useRef(0);
+  const reducedMotion = usePrefersReducedMotion();
+
+  const applyTransforms = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const centre = track.scrollLeft + track.clientWidth / 2;
+    for (const item of Array.from(track.children) as HTMLElement[]) {
+      const itemCentre = item.offsetLeft + item.offsetWidth / 2;
+      const distance = Math.abs(centre - itemCentre) / item.offsetWidth;
+      const amount = reducedMotion ? 1 : Math.min(1, Math.max(0, 1 - distance * FALLOFF_PER_CARD));
+      item.style.setProperty('--card-scale', String(easeOut(amount)));
+      item.style.setProperty('--card-opacity', String(amount));
+    }
+  }, [reducedMotion]);
+
+  const scheduleUpdate = useCallback(() => {
+    cancelAnimationFrame(frameRef.current);
+    frameRef.current = requestAnimationFrame(applyTransforms);
+  }, [applyTransforms]);
+
+  // Start on the middle card so there are neighbours on both sides, like the app.
+  useLayoutEffect(() => {
+    const track = trackRef.current;
+    const middle = track?.children[Math.floor(ideas.length / 2)] as HTMLElement | undefined;
+    if (!track || !middle) return;
+    track.scrollLeft = middle.offsetLeft + middle.offsetWidth / 2 - track.clientWidth / 2;
+    applyTransforms();
+  }, [ideas.length, applyTransforms]);
+
+  useEffect(() => {
+    window.addEventListener('resize', scheduleUpdate);
+    return () => {
+      window.removeEventListener('resize', scheduleUpdate);
+      cancelAnimationFrame(frameRef.current);
+    };
+  }, [scheduleUpdate]);
+
+  const step = (direction: 1 | -1) => {
+    const track = trackRef.current;
+    const first = track?.children[0] as HTMLElement | undefined;
+    if (!track || !first) return;
+    track.scrollBy({
+      left: direction * first.offsetWidth,
+      behavior: reducedMotion ? 'auto' : 'smooth',
+    });
+  };
+
+  return (
+    <section className={styles.carousel} aria-roledescription="carousel" aria-label={label}>
+      <ul ref={trackRef} className={styles.track} onScroll={scheduleUpdate}>
+        {ideas.map((idea, index) => (
+          <li
+            key={idea.id}
+            className={styles.slide}
+            aria-roledescription="slide"
+            aria-label={`${String(index + 1)} of ${String(ideas.length)}`}
+          >
+            <TripIdeaCard idea={idea} />
+          </li>
+        ))}
+      </ul>
+      <div className={styles.controls}>
+        <button
+          type="button"
+          className={styles.control}
+          aria-label="Previous idea"
+          onClick={() => {
+            step(-1);
+          }}
+        >
+          <ChevronLeft aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className={styles.control}
+          aria-label="Next idea"
+          onClick={() => {
+            step(1);
+          }}
+        >
+          <ChevronRight aria-hidden="true" />
+        </button>
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,54 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.close {
+  display: inline-flex;
+  align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-touch);
+  height: var(--size-touch);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: transparent;
+  color: var(--color-white);
+}
+
+.close:hover {
+  background: var(--color-white-faint);
+}
+
+.close svg {
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
+}
+
+.forgot {
+  align-self: flex-end;
+  color: var(--color-white);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.accentLink {
+  align-self: center;
+  color: var(--color-secondary);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.forgot:hover,
+.accentLink:hover {
+  text-decoration: underline;
+}
+
+.heading {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+}

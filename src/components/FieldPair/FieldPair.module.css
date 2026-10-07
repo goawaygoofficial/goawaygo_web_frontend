@@ -1,0 +1,20 @@
+.pair {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.horizontal {
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+}
+
+/* Very narrow screens: side-by-side dates don't fit, so stack them and turn the swap icon. */
+@media (max-width: 25rem) {
+  .horizontal {
+    grid-template-columns: 1fr;
+  }
+
+  .horizontal button svg {
+    transform: rotate(90deg);
+  }
+}

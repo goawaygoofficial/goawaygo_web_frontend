@@ -1,0 +1,46 @@
+.heading {
+  margin-block: var(--space-2) var(--space-4);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.layout {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.hero {
+  width: 100%;
+  height: var(--size-hero-height);
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+}
+
+.list {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Desktop: sticky image beside a two-column card list. */
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: start;
+  }
+
+  .hero {
+    position: sticky;
+    top: calc(var(--shell-top-offset) + var(--space-4));
+    height: auto;
+    aspect-ratio: 3 / 4;
+  }
+
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,48 @@
+/** User as the backend sends it (snake_case on the wire). */
+export interface UserDto {
+  id: number;
+  name: string;
+  email: string;
+  profile_picture?: string | null;
+  phone?: string | null;
+}
+
+/** User as the web app uses it. */
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  profilePicture: string | null;
+  phone: string | null;
+}
+
+export function userFromDto(dto: UserDto): User {
+  return {
+    id: dto.id,
+    name: dto.name,
+    email: dto.email,
+    profilePicture: dto.profile_picture ?? null,
+    phone: dto.phone ?? null,
+  };
+}
+
+export function userToDto(user: User): UserDto {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    profile_picture: user.profilePicture,
+    phone: user.phone,
+  };
+}
+
+/** Narrowing guard for untrusted JSON (localStorage, API responses). */
+export function isUserDto(value: unknown): value is UserDto {
+  if (typeof value !== 'object' || value === null) return false;
+  const candidate = value as Record<string, unknown>;
+  return (
+    typeof candidate.id === 'number' &&
+    typeof candidate.name === 'string' &&
+    typeof candidate.email === 'string'
+  );
+}

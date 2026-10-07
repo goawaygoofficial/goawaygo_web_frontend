@@ -1,0 +1,20 @@
+.logo {
+  height: auto;
+  object-fit: contain;
+}
+
+.sm {
+  width: var(--size-logo-sm);
+}
+
+.md {
+  width: var(--size-logo-md);
+}
+
+.lg {
+  width: var(--size-logo-lg);
+}
+
+.splash {
+  width: var(--size-logo-splash);
+}

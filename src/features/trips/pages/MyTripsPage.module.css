@@ -1,0 +1,55 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-12);
+  text-align: center;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-tile);
+  height: var(--size-tile);
+  border-radius: var(--radius-md);
+  background: var(--color-secondary-light);
+}
+
+.icon {
+  width: var(--size-tile-image);
+  height: var(--size-tile-image);
+  object-fit: contain;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+}
+
+.text {
+  max-width: 28ch;
+  color: var(--color-white-muted);
+}
+
+/* Same look as the primary Button, but a real link since it navigates. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--size-touch);
+  padding: var(--space-3) var(--space-10);
+  border-radius: var(--radius-pill);
+  background: var(--color-secondary);
+  box-shadow: var(--shadow-soft);
+  color: var(--color-white);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-decoration: none;
+}
+
+.cta:hover {
+  filter: brightness(1.06);
+}

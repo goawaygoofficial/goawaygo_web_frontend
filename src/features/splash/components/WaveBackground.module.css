@@ -1,0 +1,36 @@
+.wave {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  height: 33%;
+  overflow: hidden;
+  opacity: var(--opacity-wave);
+  pointer-events: none;
+}
+
+.svg {
+  width: 200%;
+  max-width: none;
+  height: var(--space-12);
+  fill: var(--color-white);
+  animation: wave var(--duration-wave) linear infinite;
+}
+
+.fill {
+  flex: 1;
+  margin-top: -1px;
+  background: var(--color-white);
+}
+
+@keyframes wave {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svg {
+    animation: none;
+  }
+}

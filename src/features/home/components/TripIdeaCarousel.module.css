@@ -1,0 +1,105 @@
+.carousel {
+  position: relative;
+}
+
+.track {
+  display: flex;
+  margin: 0;
+  /* Side padding lets the first and last cards reach the centre. */
+  padding: var(--space-2) calc(50% - var(--size-carousel-card) / 2);
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  flex: 0 0 var(--size-carousel-card);
+  padding-inline: var(--space-2);
+  scroll-snap-align: center;
+  opacity: var(--card-opacity, 1);
+  transform: scale(var(--card-scale, 1));
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  height: var(--size-carousel-height);
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.sunset {
+  background: var(--gradient-sunset);
+}
+
+.ember {
+  background: var(--gradient-ember);
+}
+
+.coral {
+  background: var(--gradient-coral);
+}
+
+.peach {
+  background: var(--gradient-peach);
+}
+
+.cardEyebrow {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.cardTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.cardTagline {
+  font-size: var(--font-size-sm);
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-touch);
+  height: var(--size-touch);
+  padding: 0;
+  border: 1px solid var(--color-white-subtle);
+  border-radius: var(--radius-round);
+  background: transparent;
+  color: var(--color-white);
+}
+
+.control:hover {
+  background: var(--color-white-faint);
+}
+
+.control svg {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+}

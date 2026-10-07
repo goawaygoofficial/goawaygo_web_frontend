@@ -1,0 +1,52 @@
+import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { AuthPage, ForgotPasswordPage, RegisterPage } from '@/features/auth';
+import { DestinationInfoPage } from '@/features/destination';
+import { FlightSearchPage } from '@/features/flights';
+import { HomePage } from '@/features/home';
+import { ProfilePage, UserProfilePage } from '@/features/profile';
+import { RentalSearchPage } from '@/features/rentals';
+import { SplashPage } from '@/features/splash';
+import { StaySearchPage } from '@/features/stays';
+import { MyTripsPage } from '@/features/trips';
+import { WanderbookPage } from '@/features/wanderbook';
+import { routes } from '@/lib/routes';
+import { OverlayLayout } from './layouts/OverlayLayout';
+import { ShellLayout } from './layouts/ShellLayout';
+import { ScrollToTop } from './ScrollToTop';
+
+export const router = createBrowserRouter([
+  {
+    element: <ScrollToTop />,
+    children: [
+      { path: routes.splash, element: <SplashPage /> },
+      {
+        path: routes.auth,
+        element: <AuthPage />,
+        children: [
+          { path: routes.register, element: <RegisterPage /> },
+          { path: routes.forgotPassword, element: <ForgotPasswordPage /> },
+        ],
+      },
+      {
+        element: <ShellLayout />,
+        children: [
+          { path: routes.home, element: <HomePage /> },
+          { path: routes.trips, element: <MyTripsPage /> },
+          { path: routes.wanderbook, element: <WanderbookPage /> },
+          { path: routes.profile, element: <ProfilePage /> },
+        ],
+      },
+      {
+        element: <OverlayLayout />,
+        children: [
+          { path: routes.flights, element: <FlightSearchPage /> },
+          { path: routes.stays, element: <StaySearchPage /> },
+          { path: routes.rentals, element: <RentalSearchPage /> },
+          { path: routes.destinationPattern, element: <DestinationInfoPage /> },
+          { path: routes.profileDetails, element: <UserProfilePage /> },
+        ],
+      },
+      { path: '*', element: <Navigate to={routes.home} replace /> },
+    ],
+  },
+]);

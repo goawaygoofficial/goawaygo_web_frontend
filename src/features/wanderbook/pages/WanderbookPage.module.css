@@ -1,0 +1,16 @@
+.page {
+  padding-top: 0;
+}
+
+/* Keep the profile header at a readable width on desktop. */
+.headerColumn {
+  max-width: var(--layout-content-max);
+  margin-inline: auto;
+}
+
+.sampleNote {
+  margin-top: var(--space-3);
+  color: var(--color-white-muted);
+  font-size: var(--font-size-xs);
+  text-align: center;
+}

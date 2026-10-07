@@ -1,0 +1,148 @@
+/*
+ * Goaway design tokens.
+ * Brand colours are copied 1:1 from app_frontend/lib/global_utils/colors.dart.
+ * Components must use these variables — never hardcode a colour or magic size.
+ */
+:root {
+  /* ---- Brand colours ---- */
+  --color-primary: #004aad;
+  --color-primary-light: #7aaeeb;
+  --color-secondary: #f26c32;
+  --color-secondary-light: #ff8f5e;
+  --color-secondary-lighter: rgb(255 160 119);
+  --color-secondary-dark: rgb(236 84 29);
+  --color-white: #ffffff;
+  --color-white-light: #f5f5f5;
+  --color-error: #f44336; /* Material red 500 */
+  --color-success: #4caf50; /* Material green 500 */
+
+  /* ---- Derived / translucent colours ---- */
+  --color-white-muted: rgb(255 255 255 / 0.75);
+  --color-white-subtle: rgb(255 255 255 / 0.3);
+  --color-white-faint: rgb(255 255 255 / 0.08);
+  --color-white-glass: rgb(255 255 255 / 0.9);
+  --color-backdrop: rgb(0 20 50 / 0.6);
+  --color-shadow: rgb(0 0 0 / 0.26);
+  --color-shadow-soft: rgb(0 0 0 / 0.14);
+  --color-focus-ring: var(--color-secondary-lighter);
+
+  /* ---- Gradients ---- */
+  --gradient-orange-white: linear-gradient(
+    to right,
+    var(--color-white),
+    var(--color-secondary-lighter)
+  );
+  --gradient-sunset: linear-gradient(
+    160deg,
+    var(--color-secondary-light),
+    var(--color-secondary-dark)
+  );
+  --gradient-ember: linear-gradient(160deg, var(--color-secondary), var(--color-secondary-dark));
+  --gradient-coral: linear-gradient(160deg, var(--color-secondary-lighter), var(--color-secondary));
+  --gradient-peach: linear-gradient(
+    160deg,
+    var(--color-secondary-light),
+    var(--color-primary-light)
+  );
+  --gradient-image-scrim: linear-gradient(to top, rgb(0 0 0 / 0.55), transparent 60%);
+
+  /* ---- Typography ---- */
+  --font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --letter-spacing-wide: 0.06em;
+  --line-height-tight: 1.2;
+  --line-height-body: 1.4;
+
+  /* ---- Spacing ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* ---- Shape ---- */
+  --radius-sm: 0.625rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 2rem;
+  --radius-pill: 30px;
+  --radius-round: 50%;
+
+  /* ---- Elevation ---- */
+  --shadow-card: 0 4px 10px var(--color-shadow);
+  --shadow-soft: 0 2px 8px var(--color-shadow-soft);
+
+  /* ---- Sizes ---- */
+  --size-icon-sm: 1.25rem;
+  --size-icon-md: 1.75rem;
+  --size-icon-lg: 2.25rem;
+  --size-touch: 2.75rem;
+  --size-logo-sm: 4.5rem;
+  --size-logo-md: 6.5rem;
+  --size-logo-lg: 9rem;
+  --size-logo-splash: 11rem;
+  --size-tile: 5.25rem;
+  --size-tile-image: 3rem;
+  --size-avatar: 6rem;
+  --size-feature-icon: 2.5rem;
+  --size-field-height: 3.5rem;
+  --size-hero-height: clamp(11rem, 30vw, 20rem);
+  --size-backdrop-height: clamp(10rem, 28vw, 16rem);
+  --size-carousel-card: clamp(12rem, 60vw, 18rem);
+  --size-carousel-height: clamp(11rem, 50vw, 15rem);
+  --size-dialog: 22rem;
+  --size-focus-ring: 3px;
+  --size-sticky-search: 4.5rem;
+  --size-camera-button: 2.25rem;
+  --size-edit-button: 2.5rem;
+
+  /* ---- Layout ---- */
+  --layout-content-max: 40rem;
+  --layout-wide-max: 72rem;
+  --layout-gutter: var(--space-4);
+  --nav-height: 4.25rem;
+  /* Distance sticky elements keep from the top of the viewport (desktop nav sits there). */
+  --shell-top-offset: 0px;
+  /* Space reserved at the bottom of scroll areas for the mobile tab bar. */
+  --shell-bottom-offset: var(--nav-height);
+
+  /* ---- Motion ---- */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-slide: 450ms;
+  --duration-splash-logo: 1200ms;
+  --duration-wave: 4s;
+  /* The splash wave is white at 8% opacity, as in the app. */
+  --opacity-wave: 0.08;
+  --collapse-distance: 60px;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* ---- Z-index ---- */
+  --z-sticky: 10;
+  --z-nav: 20;
+  --z-overlay: 30;
+  --z-dialog: 40;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --layout-gutter: var(--space-8);
+    --shell-top-offset: var(--nav-height);
+    --shell-bottom-offset: 0px;
+  }
+}

@@ -1,0 +1,12 @@
+# Always use LF line endings (Prettier expects LF), regardless of OS or core.autocrlf
+* text=auto eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary

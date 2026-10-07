@@ -1,0 +1,11 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.content {
+  flex: 1;
+  /* Keep content clear of the fixed mobile tab bar. */
+  padding-bottom: calc(var(--shell-bottom-offset) + env(safe-area-inset-bottom));
+}

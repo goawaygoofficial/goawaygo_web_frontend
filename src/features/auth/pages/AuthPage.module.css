@@ -1,0 +1,52 @@
+.page {
+  max-width: calc(var(--layout-content-max) * 0.75 + 2 * var(--layout-gutter));
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.skip {
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-white);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-decoration: none;
+}
+
+.skip:hover {
+  text-decoration: underline;
+}
+
+/* Both states share one grid cell so the container keeps a stable height while they cross-fade. */
+.crossFade {
+  display: grid;
+  margin-top: var(--space-2);
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--duration-slow) var(--ease-standard),
+    visibility var(--duration-slow);
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+}

@@ -1,0 +1,19 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+*.tsbuildinfo
+
+# Env (keep .env.example in sync)
+.env
+.env.*
+!.env.example
+
+# Logs / editor
+*.log
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
