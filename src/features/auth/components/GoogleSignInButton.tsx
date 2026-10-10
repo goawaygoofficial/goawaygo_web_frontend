@@ -14,17 +14,18 @@ const GOOGLE_BUTTON_MAX_WIDTH = 400;
 /**
  * "Continue with Google" via Google Identity Services. The ID token it returns is posted to
  * `/api/auth/google-signin`. Renders nothing when `VITE_GOOGLE_CLIENT_ID` is not configured.
+ * After signing in it opens `redirectTo` (Home by default).
  */
-export function GoogleSignInButton() {
+export function GoogleSignInButton({ redirectTo }: { redirectTo?: string }) {
   if (env.googleClientId.length === 0) return null;
-  return <GoogleButton clientId={env.googleClientId} />;
+  return <GoogleButton clientId={env.googleClientId} redirectTo={redirectTo} />;
 }
 
-function GoogleButton({ clientId }: { clientId: string }) {
+function GoogleButton({ clientId, redirectTo }: { clientId: string; redirectTo?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loadFailed, setLoadFailed] = useState(false);
   const { showError } = useDialog();
-  const completeSignIn = useCompleteSignIn();
+  const completeSignIn = useCompleteSignIn(redirectTo);
 
   const handleCredential = useCallback(
     async (idToken: string) => {

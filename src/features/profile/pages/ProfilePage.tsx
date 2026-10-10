@@ -6,6 +6,7 @@ import rewardsIcon from '@/assets/icons/rewards.png';
 import savedIcon from '@/assets/icons/saved.png';
 import userProfileIcon from '@/assets/icons/user_profile.png';
 import { Button, FeatureList, IconTile, Logo, PageHeader, PageShell } from '@/components';
+import { GoogleSignInButton, SignOutIconButton } from '@/features/auth';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import styles from './ProfilePage.module.css';
@@ -28,7 +29,7 @@ export function ProfilePage() {
 function SignedInProfile({ name }: { name: string }) {
   return (
     <PageShell>
-      <PageHeader showNotifications />
+      <PageHeader showNotifications actions={<SignOutIconButton />} />
       <h1 className={styles.greeting}>Hi, {name}</h1>
       <nav aria-label="Profile" className={styles.grid}>
         {PROFILE_TILES.map((tile) => (
@@ -46,13 +47,18 @@ function GuestProfile() {
       <Logo size="lg" />
       <h1 className="visually-hidden">Sign in to Goaway</h1>
       <FeatureList />
-      <Button
-        onClick={() => {
-          void navigate(routes.auth);
-        }}
-      >
-        SIGN IN
-      </Button>
+      {/* Same order as the sign-in page. Signing in here keeps the user on their profile. */}
+      <div className={styles.guestActions}>
+        <GoogleSignInButton redirectTo={routes.profile} />
+        <Button
+          fullWidth
+          onClick={() => {
+            void navigate(routes.auth);
+          }}
+        >
+          SIGN IN
+        </Button>
+      </div>
     </PageShell>
   );
 }
