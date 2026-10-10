@@ -4,18 +4,23 @@ import { routes } from '@/lib/routes';
 import { useDialog, useUser } from '@/providers';
 import type { AuthResult } from '../types';
 
-/** Stores the signed-in user, shows the welcome dialog, then enters the app — shared by email and Google sign-in. */
-export function useCompleteSignIn(): (result: AuthResult, greeting: string) => Promise<void> {
-  const { setUser } = useUser();
+/**
+ * Stores the signed-in user, shows the welcome dialog, then opens `redirectTo` (Home by default) — shared by
+ * email and Google sign-in.
+ */
+export function useCompleteSignIn(
+  redirectTo: string = routes.home,
+): (result: AuthResult, greeting: string) => Promise<void> {
+  const { signIn } = useUser();
   const { showSuccess } = useDialog();
   const navigate = useNavigate();
 
   return useCallback(
     async (result, greeting) => {
-      setUser(result.user);
+      signIn(result.user);
       await showSuccess(`${greeting}, ${result.user.name}!`);
-      void navigate(routes.home, { replace: true });
+      void navigate(redirectTo, { replace: true });
     },
-    [setUser, showSuccess, navigate],
+    [signIn, showSuccess, navigate, redirectTo],
   );
 }
