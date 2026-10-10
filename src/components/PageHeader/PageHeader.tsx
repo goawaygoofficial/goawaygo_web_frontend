@@ -12,6 +12,8 @@ interface PageHeaderProps {
   backLabel?: string;
   /** Shows the notification bell on the right. */
   showNotifications?: boolean;
+  /** Extra controls on the right, after the bell (e.g. sign out). */
+  actions?: ReactNode;
 }
 
 /** Logo row used at the top of nearly every screen. */
@@ -20,6 +22,7 @@ export function PageHeader({
   onBack,
   backLabel = 'Back',
   showNotifications = false,
+  actions,
 }: PageHeaderProps) {
   return (
     <header className={styles.header}>
@@ -27,6 +30,7 @@ export function PageHeader({
       <div className={styles.centre}>{children}</div>
       <div className={styles.actions}>
         {showNotifications && <NotificationButton />}
+        {actions}
         {onBack && (
           <button type="button" className={styles.back} aria-label={backLabel} onClick={onBack}>
             <ChevronLeft aria-hidden="true" />

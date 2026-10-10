@@ -42,25 +42,28 @@ All values are public build-time config (they end up in the JS bundle). Never pu
 | `VITE_API_BASE_URL`     | Origin of the Spring Boot backend, no trailing slash, e.g. `http://localhost:8080`. Empty means same origin.                    |
 | `VITE_GOOGLE_CLIENT_ID` | Google OAuth **web** client ID. If empty, the "Continue with Google" button is hidden. Unlike the app, the page does not crash. |
 
-The backend must allow CORS from the web origin, for example `http://localhost:5173` in development.
+`.env.example` is pre-filled with the local backend URL and the project's (public) Web client ID.
+
+The backend must allow CORS from the web origin, for example `http://localhost:5173` in development, and needs
+`GOOGLE_CLIENT_SECRET` in its own `.env` for Google sign-in (see the backend README).
 
 ## Routes
 
-| Route                   | Screen           | Notes                                                                                 |
-| ----------------------- | ---------------- | ------------------------------------------------------------------------------------- |
-| `/`                     | Splash           | Logo bounce + wave. After ~3s goes to `/home` if a stored user is valid, else `/auth` |
-| `/auth`                 | Auth             | Google button / SIGN IN → cross-fades to the email form. SKIP enters as a guest       |
-| `/auth/register`        | Register         | Slides in over Auth                                                                   |
-| `/auth/forgot-password` | Forgot password  | Slides in over Auth                                                                   |
-| `/home`                 | Home tab         | Categories, destination search, trip-idea carousel                                    |
-| `/trips`                | My Trips tab     | Empty state (the app's tab is a placeholder)                                          |
-| `/wanderbook`           | Wanderbook tab   | Sticky search, collapsing profile header, sticky tabs, post grid                      |
-| `/profile`              | Profile tab      | Signed out: features + SIGN IN. Signed in: tile grid                                  |
-| `/profile/details`      | User profile     | Account rows + Sign Out                                                               |
-| `/flights`              | Book flights     | Slides in; tab bar hidden                                                             |
-| `/stays`                | Book hotels      | Slides in; tab bar hidden                                                             |
-| `/rentals`              | Rent a car       | Slides in; tab bar hidden                                                             |
-| `/destination/:place`   | Destination info | Opened from Home search or a carousel card                                            |
+| Route                   | Screen           | Notes                                                                                   |
+| ----------------------- | ---------------- | --------------------------------------------------------------------------------------- |
+| `/`                     | Splash           | Logo bounce + wave. After ~3s goes to `/home` if the session was restored, else `/auth` |
+| `/auth`                 | Auth             | Google button / SIGN IN → cross-fades to the email form. SKIP enters as a guest         |
+| `/auth/register`        | Register         | Slides in over Auth                                                                     |
+| `/auth/forgot-password` | Forgot password  | Slides in over Auth                                                                     |
+| `/home`                 | Home tab         | Categories, destination search, trip-idea carousel                                      |
+| `/trips`                | My Trips tab     | Empty state (the app's tab is a placeholder)                                            |
+| `/wanderbook`           | Wanderbook tab   | Sticky search, collapsing profile header, sticky tabs, post grid                        |
+| `/profile`              | Profile tab      | Signed out: features + Google + SIGN IN. Signed in: tile grid, sign-out icon in header  |
+| `/profile/details`      | User profile     | Account rows + Sign Out (with confirmation)                                             |
+| `/flights`              | Book flights     | Slides in; tab bar hidden                                                               |
+| `/stays`                | Book hotels      | Slides in; tab bar hidden                                                               |
+| `/rentals`              | Rent a car       | Slides in; tab bar hidden                                                               |
+| `/destination/:place`   | Destination info | Opened from Home search or a carousel card                                              |
 
 The 4-tab bar is a bottom tab bar under 768px and a sticky top bar on wider screens.
 
@@ -77,10 +80,10 @@ src/
     auth/ home/ flights/ stays/ rentals/ destination/ wanderbook/ profile/ trips/ splash/
       components/ pages/ hooks/ services/ data/ types.ts   (only the folders a feature needs)
   hooks/        useAsyncAction, useBack, usePrefersReducedMotion
-  lib/          apiClient.ts, env.ts, routes.ts, validation.ts, date.ts, googleIdentity.ts
-  providers/    UserProvider (mirrors the Flutter UserProvider), DialogProvider
+  lib/          apiClient.ts, apiError.ts, session.ts, env.ts, routes.ts, validation.ts, date.ts, googleIdentity.ts
+  providers/    UserProvider (session restore + signed-in user), DialogProvider (success/error/confirm)
   styles/       tokens.css (design tokens), global.css
-  types/        User (+ wire DTO and mappers), shared search types, Google Identity typings
+  types/        User (+ wire DTO and mappers), shared search types, Google OAuth 2.0 code-client typings
 ```
 
 Conventions: kebab-case or lowercase feature folders, PascalCase component files with a sibling
@@ -90,22 +93,46 @@ hardcode a hex value or a magic size.
 
 ## Data and API layer
 
-`src/lib/apiClient.ts` is the only place that calls `fetch`. It reads error messages in one place
-(`message` → `error` → fallback) and turns network failures into
-`ApiError('Unable to connect to server.', 0)`. The endpoints are the same ones the app uses:
+`src/lib/apiClient.ts` is the only place that calls `fetch` for API requests. It reads error messages in one
+place (`message` → `error` → fallback, plus the machine-readable `error` code) and turns network failures into
+`ApiError('Unable to connect to server.', 0)`.
 
-| Call               | Endpoint                                               | Success                |
-| ------------------ | ------------------------------------------------------ | ---------------------- |
-| `signUp`           | `POST /api/auth/signup` `{name,email,password}`        | 201                    |
-| `signIn`           | `POST /api/auth/signin` `{email,password}`             | 200 `{user, token}`    |
-| `signInWithGoogle` | `POST /api/auth/google-signin` `{idToken}`             | 200 `{user, token}`    |
-| `resetPassword`    | `POST /api/auth/forgot-password` `{email,newPassword}` | 200                    |
-| `verifyUser`       | `GET /api/auth/users/{id}`                             | 200 with matching `id` |
+| Call                   | Endpoint                                        | Success                      |
+| ---------------------- | ----------------------------------------------- | ---------------------------- |
+| `signUp`               | `POST /api/auth/signup` `{name,email,password}` | 201                          |
+| `signIn`               | `POST /api/auth/signin` `{email,password}`      | 200 session + refresh cookie |
+| `signInWithGoogleCode` | `POST /api/auth/google-signin/code` `{code}`    | 200 session + refresh cookie |
+| `restoreSession`       | `POST /api/auth/refresh` (refresh cookie)       | 200 session, or 401          |
+| `signOut`              | `POST /api/auth/logout` (refresh cookie)        | 204                          |
+| `requestPasswordReset` | `POST /api/auth/forgot-password` `{email}`      | 2xx _(backend: next PR)_     |
 
-The user travels snake_case on the wire (`UserDto`) and camelCase in the app (`User`). It is
-converted with explicit mappers in `src/types/user.ts`. It is stored in `localStorage` under the
-key `user`, the same key as the app's SharedPreferences, in the same JSON shape. On boot the
-stored user is re-validated with `GET /api/auth/users/{id}`.
+The user travels snake_case on the wire (`UserDto`) and camelCase in the app (`User`), converted in
+`src/types/user.ts`.
+
+### Authentication (`src/lib/session.ts`)
+
+- **Access token** (20 min): kept **in memory only** and sent as `Authorization: Bearer`. Never in
+  `localStorage`, where an injected script could read it.
+- **Refresh token** (30 days): an **HttpOnly, Secure, SameSite=Strict cookie** set by the backend on
+  `/api/auth`. JavaScript can't read it; requests use `credentials: 'include'`.
+- **Page load:** the session is restored with one `POST /api/auth/refresh`. `SessionGate` holds rendering until
+  then, so every page knows from its first render whether someone is signed in. Nothing about the user is stored
+  in the browser (an old `user` key from earlier versions is removed).
+- **Expiry:** a 401 on an authenticated request triggers one refresh and a retry; if the refresh fails the user
+  is signed out.
+- **No overlapping refreshes.** The backend rotates refresh tokens and treats reuse of an old one as theft
+  (it revokes the session). Concurrent callers in a tab share one request, and the Web Locks API serialises
+  tabs, so a second tab refreshes with the cookie the first one just received.
+- **Sign out** asks for confirmation, then revokes the session on the server (`/api/auth/logout`).
+
+### Google sign-in
+
+The "CONTINUE WITH GOOGLE" button is **our own `Button`** (variant `google`: same type and shape as every other
+button, white with dark text and Google's four-colour G). Clicking it opens Google's popup through the
+**OAuth 2.0 code client** (Google Identity Services), which returns a one-time authorization code. The code is
+sent to the backend, which exchanges it with Google using the client secret, so no secret or ID token is
+handled in the browser. A random `state` is sent with each request and must come back unchanged. If the browser
+blocks the popup, the user is asked to allow pop-ups.
 
 ## Differences from the Flutter app (deliberate)
 
@@ -116,18 +143,17 @@ stored user is re-validated with `GET /api/auth/users/{id}`.
   `IconTile`, shared through `src/components`. The three booking screens share `SearchFormLayout`.
 - **Missing config doesn't crash.** The app throws on a missing `.env`. Here, a missing API URL
   falls back to same-origin, and a missing Google client ID hides the Google button.
-- **Restored-user validation is more forgiving.** The app signs the user out on _any_ failed check,
-  including no network. Here the stored user is cleared only when the backend answers 4xx or the
-  ids don't match. A network error or 5xx keeps the user signed in.
-- **Forgot password validates the new password** with the same rule as Register.
+- **Real sessions instead of a stored user.** The app stores the user and "verifies" it by id. Here the
+  session is restored from an HttpOnly refresh cookie and every request carries a short-lived token
+  (see _Authentication_).
+- **Forgot password only asks for the email.** A reset link will be emailed; the reply never reveals whether
+  an account exists. The app's form sets a new password directly, which would let anyone take over an account.
 - **User Profile shows real data or "Not set".** The app hardcodes demo values for every row.
   Email, Display Name and Phone come from the signed-in user. Country / Region and Currency show
   "Not set" because the backend has no such fields yet.
-- **Sign Out works.** In the app it is an empty handler. Here it clears the stored user and
-  returns to `/auth`.
-- **Google sign-in uses Google's own rendered button** (pill, outline theme), which Google
-  Identity Services requires. The app's custom orange-on-white button cannot be reproduced with
-  GIS.
+- **Sign Out works.** In the app it is an empty handler. Here it asks for confirmation, revokes the session on
+  the server and returns to `/auth`. A sign-out icon also sits in the Profile header.
+- **Google sign-in uses our own button** in the app's button style (authorization-code flow, see above).
 - Date fields use the browser's native date picker, with a dark colour scheme, limited to
   today → +365 days. Values are `YYYY-MM-DD`.
 
@@ -141,7 +167,7 @@ stored user is re-validated with `GET /api/auth/users/{id}`.
 | My Trips                                                | `features/trips`                             | Honest empty state. The app's tab is a placeholder text                                             |
 | Notifications bell, Wanderbook camera / edit buttons    | —                                            | Visibly disabled ("coming soon"). Empty handlers in the app                                         |
 | Profile tiles: Recently Viewed, Saved, Reviews, Rewards | `features/profile/pages/ProfilePage.tsx`     | Visibly disabled ("Coming soon"). My Trips and User Profile are wired                               |
-| Auth token                                              | `features/auth/services/authService.ts`      | Returned by the service but not stored. The app discards it too, and no endpoint needs it yet       |
+| Password reset email                                    | `features/auth/pages/ForgotPasswordPage.tsx` | The form is final; the backend endpoint arrives with the email-provider work                        |
 
 ## Accessibility and motion
 

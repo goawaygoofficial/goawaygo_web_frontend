@@ -1,6 +1,7 @@
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import userProfileIcon from '@/assets/icons/user_profile.png';
 import { Button, PageHeader, PageShell } from '@/components';
+import { useSignOut } from '@/features/auth';
 import { useBack } from '@/hooks';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
@@ -24,16 +25,12 @@ function toProfileDetails(user: User): ProfileDetail[] {
 }
 
 export function UserProfilePage() {
-  const { user, clearUser } = useUser();
-  const navigate = useNavigate();
+  const { user } = useUser();
   const goBack = useBack(routes.profile);
+  const { signOut, pending: signingOut, leaving } = useSignOut();
 
-  if (!user) return <Navigate to={routes.profile} replace />;
-
-  const signOut = () => {
-    clearUser();
-    void navigate(routes.auth, { replace: true });
-  };
+  // While signing out, render nothing instead of redirecting (see `useSignOut`'s `leaving`).
+  if (!user) return leaving ? null : <Navigate to={routes.profile} replace />;
 
   return (
     <PageShell>
@@ -49,7 +46,7 @@ export function UserProfilePage() {
         ))}
       </dl>
       <div className={styles.actions}>
-        <Button fullWidth onClick={signOut}>
+        <Button fullWidth loading={signingOut} onClick={signOut}>
           Sign Out
         </Button>
         <Button variant="link" onClick={goBack}>

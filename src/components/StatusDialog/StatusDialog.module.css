@@ -38,6 +38,10 @@
   color: var(--color-error);
 }
 
+.confirm {
+  color: var(--color-white);
+}
+
 .message {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
@@ -49,6 +53,24 @@
   border: 0;
   border-radius: var(--radius-pill);
   background: var(--color-secondary);
+  color: var(--color-white);
+  font-weight: var(--font-weight-bold);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+/* Cancel: outlined, so the destructive choice (filled) stands out without being the default. */
+.secondary {
+  min-width: calc(var(--size-touch) * 2);
+  min-height: var(--size-touch);
+  border: var(--size-focus-ring) solid var(--color-white);
+  border-radius: var(--radius-pill);
+  background: transparent;
   color: var(--color-white);
   font-weight: var(--font-weight-bold);
 }

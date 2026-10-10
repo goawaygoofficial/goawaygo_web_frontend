@@ -1,17 +1,10 @@
+import { ApiError } from './apiError';
 import { env } from './env';
+import { endSession, getAccessToken, refreshSession } from './session';
+
+export { ApiError } from './apiError';
 
 const NETWORK_ERROR_MESSAGE = 'Unable to connect to server.';
-
-/** Error thrown for any failed API call. `status` is 0 when the server could not be reached. */
-export class ApiError extends Error {
-  readonly status: number;
-
-  constructor(message: string, status: number) {
-    super(message);
-    this.name = 'ApiError';
-    this.status = status;
-  }
-}
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -39,6 +32,10 @@ function extractErrorMessage(body: unknown, fallback: string): string {
   return fallback;
 }
 
+function extractErrorCode(body: unknown): string | null {
+  return isRecord(body) && typeof body.error === 'string' ? body.error : null;
+}
+
 async function parseBody(response: Response): Promise<unknown> {
   const text = await response.text();
   if (text.length === 0) return null;
@@ -49,30 +46,58 @@ async function parseBody(response: Response): Promise<unknown> {
   }
 }
 
-/**
- * Performs a JSON request against the Goaway backend and returns the parsed body.
- * The caller supplies the expected response type; validate/map it at the service boundary.
- */
-export async function apiRequest<T>(path: string, options: RequestOptions): Promise<T> {
-  const { method = 'GET', body, expectedStatus, fallbackError, signal } = options;
-
-  let response: Response;
+async function send(
+  path: string,
+  options: RequestOptions,
+  token: string | null,
+): Promise<Response> {
+  const { method = 'GET', body, signal } = options;
+  const headers: Record<string, string> = {};
+  if (body !== undefined) headers['Content-Type'] = 'application/json';
+  if (token) headers.Authorization = `Bearer ${token}`;
   try {
-    response = await fetch(`${env.apiBaseUrl}${path}`, {
+    return await fetch(`${env.apiBaseUrl}${path}`, {
       method,
-      headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
+      headers,
       body: body === undefined ? undefined : JSON.stringify(body),
+      // Sends the HttpOnly refresh cookie to /api/auth/*; the browser never exposes it to this code.
+      credentials: 'include',
       signal,
     });
   } catch (cause) {
     if (cause instanceof DOMException && cause.name === 'AbortError') throw cause;
     throw new ApiError(NETWORK_ERROR_MESSAGE, 0);
   }
+}
+
+/**
+ * Performs a JSON request against the Goaway backend and returns the parsed body.
+ * Sends the access token when signed in. If the server answers 401 to an authenticated request (the 20-minute
+ * token expired), it refreshes the session once and retries; if that fails the user is signed out.
+ * The caller supplies the expected response type; validate/map it at the service boundary.
+ */
+export async function apiRequest<T>(path: string, options: RequestOptions): Promise<T> {
+  const token = getAccessToken();
+  let response = await send(path, options, token);
+
+  if (response.status === 401 && token !== null) {
+    const refreshed = await refreshSession().catch(() => null);
+    if (refreshed) {
+      response = await send(path, options, refreshed.accessToken);
+    } else {
+      endSession();
+    }
+  }
 
   const data = await parseBody(response);
-  const ok = expectedStatus === undefined ? response.ok : response.status === expectedStatus;
+  const ok =
+    options.expectedStatus === undefined ? response.ok : response.status === options.expectedStatus;
   if (!ok) {
-    throw new ApiError(extractErrorMessage(data, fallbackError), response.status);
+    throw new ApiError(
+      extractErrorMessage(data, options.fallbackError),
+      response.status,
+      extractErrorCode(data),
+    );
   }
   return data as T;
 }

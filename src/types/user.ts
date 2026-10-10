@@ -5,6 +5,7 @@ export interface UserDto {
   email: string;
   profile_picture?: string | null;
   phone?: string | null;
+  email_verified?: boolean;
 }
 
 /** User as the web app uses it. */
@@ -14,6 +15,7 @@ export interface User {
   email: string;
   profilePicture: string | null;
   phone: string | null;
+  emailVerified: boolean;
 }
 
 export function userFromDto(dto: UserDto): User {
@@ -23,20 +25,11 @@ export function userFromDto(dto: UserDto): User {
     email: dto.email,
     profilePicture: dto.profile_picture ?? null,
     phone: dto.phone ?? null,
+    emailVerified: dto.email_verified ?? false,
   };
 }
 
-export function userToDto(user: User): UserDto {
-  return {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    profile_picture: user.profilePicture,
-    phone: user.phone,
-  };
-}
-
-/** Narrowing guard for untrusted JSON (localStorage, API responses). */
+/** Narrowing guard for untrusted JSON (API responses). */
 export function isUserDto(value: unknown): value is UserDto {
   if (typeof value !== 'object' || value === null) return false;
   const candidate = value as Record<string, unknown>;

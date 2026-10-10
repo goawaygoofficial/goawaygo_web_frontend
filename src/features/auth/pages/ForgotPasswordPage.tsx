@@ -6,37 +6,39 @@ import { Button, TextField } from '@/components';
 import { useAsyncAction } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
 import { routes } from '@/lib/routes';
-import { PASSWORD_RULE_MESSAGE, REQUIRED_FIELDS_MESSAGE, isStrongPassword } from '@/lib/validation';
+import { REQUIRED_FIELDS_MESSAGE } from '@/lib/validation';
 import { useDialog } from '@/providers';
 import { AuthOverlay } from '../components/AuthOverlay';
-import { resetPassword } from '../services/authService';
+import { requestPasswordReset } from '../services/authService';
 import styles from '../components/AuthForms.module.css';
 
+/** Same wording whether or not the account exists, so this page can't be used to find out who is registered. */
+const RESET_REQUESTED_MESSAGE =
+  'If an account exists for that email, we have sent a link to reset your password. Please check your inbox.';
+
+/**
+ * Requests a password-reset link. Only the email is collected here; the new password is chosen on the page the
+ * emailed link opens, which proves the person owns the email.
+ */
 export function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
   const { showError, showSuccess } = useDialog();
   const navigate = useNavigate();
 
   const submit = useCallback(async () => {
     const trimmedEmail = email.trim();
-    const trimmedPassword = newPassword.trim();
-    if (trimmedEmail.length === 0 || trimmedPassword.length === 0) {
+    if (trimmedEmail.length === 0) {
       await showError(REQUIRED_FIELDS_MESSAGE);
       return;
     }
-    if (!isStrongPassword(trimmedPassword)) {
-      await showError(PASSWORD_RULE_MESSAGE);
-      return;
-    }
     try {
-      await resetPassword({ email: trimmedEmail, newPassword: trimmedPassword });
-      await showSuccess('Verification email sent! Please check your inbox.');
+      await requestPasswordReset({ email: trimmedEmail });
+      await showSuccess(RESET_REQUESTED_MESSAGE);
       void navigate(routes.auth, { replace: true });
     } catch (error) {
       await showError(toErrorMessage(error, 'Failed to request password reset'));
     }
-  }, [email, newPassword, showError, showSuccess, navigate]);
+  }, [email, showError, showSuccess, navigate]);
   const [pending, run] = useAsyncAction(submit);
 
   const onSubmit = (event: SubmitEvent<HTMLFormElement>) => {
@@ -58,18 +60,8 @@ export function ForgotPasswordPage() {
             setEmail(event.target.value);
           }}
         />
-        <TextField
-          label="New password"
-          type="password"
-          autoComplete="new-password"
-          placeholder="New Password..."
-          value={newPassword}
-          onChange={(event) => {
-            setNewPassword(event.target.value);
-          }}
-        />
         <Button type="submit" fullWidth loading={pending} icon={<img src={lockIcon} alt="" />}>
-          RESET PASSWORD
+          SEND RESET LINK
         </Button>
         <Link to={routes.auth} className={styles.accentLink}>
           Back to Sign In
