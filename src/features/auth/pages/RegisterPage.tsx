@@ -31,7 +31,7 @@ export function RegisterPage() {
     }
     try {
       await signUp({ name: trimmedName, email: trimmedEmail, password });
-      await showSuccess('Verification email sent! Please check your inbox.');
+      await showSuccess('Account created! You can now sign in.');
       void navigate(routes.auth, { replace: true });
     } catch (error) {
       await showError(toErrorMessage(error, 'Signup failed'));
