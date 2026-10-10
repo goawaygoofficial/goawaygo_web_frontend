@@ -11,8 +11,9 @@ export interface SignInRequest {
   password: string;
 }
 
-export interface GoogleSignInRequest {
-  idToken: string;
+/** One-time authorization code from Google's code client (popup). */
+export interface GoogleCodeSignInRequest {
+  code: string;
 }
 
 /** Only the email: the reset link is sent there. The new password is chosen on the page the link opens. */

@@ -1,19 +1,19 @@
-import type { GoogleAccountsId } from '@/types/google-identity';
+import type { GoogleAccountsOAuth2 } from '@/types/google-identity';
 
 const SCRIPT_SRC = 'https://accounts.google.com/gsi/client';
 
-let loading: Promise<GoogleAccountsId> | null = null;
+let loading: Promise<GoogleAccountsOAuth2> | null = null;
 
-/** Loads the Google Identity Services script once and resolves with `google.accounts.id`. */
-export function loadGoogleIdentity(): Promise<GoogleAccountsId> {
-  if (window.google) return Promise.resolve(window.google.accounts.id);
-  loading ??= new Promise<GoogleAccountsId>((resolve, reject) => {
+/** Loads the Google Identity Services script once and resolves with `google.accounts.oauth2`. */
+export function loadGoogleOAuth2(): Promise<GoogleAccountsOAuth2> {
+  if (window.google) return Promise.resolve(window.google.accounts.oauth2);
+  loading ??= new Promise<GoogleAccountsOAuth2>((resolve, reject) => {
     const script = document.createElement('script');
     script.src = SCRIPT_SRC;
     script.async = true;
     script.defer = true;
     script.onload = () => {
-      if (window.google) resolve(window.google.accounts.id);
+      if (window.google) resolve(window.google.accounts.oauth2);
       else reject(new Error('Google Sign-In failed to initialise.'));
     };
     script.onerror = () => {

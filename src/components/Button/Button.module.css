@@ -24,7 +24,8 @@
 }
 
 .primary,
-.light {
+.light,
+.google {
   padding: var(--space-3) var(--space-10);
   box-shadow: var(--shadow-soft);
 }
@@ -39,8 +40,15 @@
   color: var(--color-secondary);
 }
 
+/* "Continue with Google": same type and shape as every other button, white with dark text and the G logo. */
+.google {
+  background: var(--color-white);
+  color: var(--color-google-text);
+}
+
 .primary:not(:disabled):hover,
-.light:not(:disabled):hover {
+.light:not(:disabled):hover,
+.google:not(:disabled):hover {
   filter: brightness(1.06);
 }
 

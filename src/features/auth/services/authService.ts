@@ -6,7 +6,7 @@ import type { User } from '@/types';
 import type {
   AuthResult,
   ForgotPasswordRequest,
-  GoogleSignInRequest,
+  GoogleCodeSignInRequest,
   SignInRequest,
   SignUpRequest,
 } from '../types';
@@ -36,8 +36,12 @@ export async function signIn(request: SignInRequest): Promise<AuthResult> {
   return toAuthResult(startSession(data));
 }
 
-export async function signInWithGoogle(request: GoogleSignInRequest): Promise<AuthResult> {
-  const data = await apiRequest<unknown>('/api/auth/google-signin', {
+/**
+ * Google sign-in with the one-time authorization code from Google's popup. The backend exchanges it with Google
+ * (using the client secret, which never reaches the browser) and verifies the resulting ID token.
+ */
+export async function signInWithGoogleCode(request: GoogleCodeSignInRequest): Promise<AuthResult> {
+  const data = await apiRequest<unknown>('/api/auth/google-signin/code', {
     method: 'POST',
     body: request,
     expectedStatus: 200,

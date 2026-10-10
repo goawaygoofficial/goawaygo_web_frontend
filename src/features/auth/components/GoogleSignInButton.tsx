@@ -1,19 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Button } from '@/components';
 import { useAsyncAction } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
 import { env } from '@/lib/env';
-import { loadGoogleIdentity } from '@/lib/googleIdentity';
+import { loadGoogleOAuth2 } from '@/lib/googleIdentity';
 import { useDialog } from '@/providers';
+import type { GoogleAccountsOAuth2, GoogleCodeResponse } from '@/types/google-identity';
 import { useCompleteSignIn } from '../hooks/useCompleteSignIn';
-import { signInWithGoogle } from '../services/authService';
+import { signInWithGoogleCode } from '../services/authService';
+import { GoogleLogo } from './GoogleLogo';
 import styles from './GoogleSignInButton.module.css';
 
-/** Widest button Google Identity Services will render. */
-const GOOGLE_BUTTON_MAX_WIDTH = 400;
+const GOOGLE_SCOPES = 'openid email profile';
+const GENERIC_FAILURE = 'Google sign-in failed. Please try again.';
 
 /**
- * "Continue with Google" via Google Identity Services. The ID token it returns is posted to
- * `/api/auth/google-signin`. Renders nothing when `VITE_GOOGLE_CLIENT_ID` is not configured.
+ * "Continue with Google" in the app's own button style. Opens Google's popup with the OAuth 2.0 code client and
+ * sends the one-time code to the backend, which exchanges it with Google (the client secret never reaches the
+ * browser). Renders nothing when `VITE_GOOGLE_CLIENT_ID` is not configured.
  * After signing in it opens `redirectTo` (Home by default).
  */
 export function GoogleSignInButton({ redirectTo }: { redirectTo?: string }) {
@@ -22,52 +26,19 @@ export function GoogleSignInButton({ redirectTo }: { redirectTo?: string }) {
 }
 
 function GoogleButton({ clientId, redirectTo }: { clientId: string; redirectTo?: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [oauth2, setOauth2] = useState<GoogleAccountsOAuth2 | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
+  /** The `state` sent with the current request; Google must echo it back unchanged. */
+  const expectedState = useRef<string | null>(null);
   const { showError } = useDialog();
   const completeSignIn = useCompleteSignIn(redirectTo);
 
-  const handleCredential = useCallback(
-    async (idToken: string) => {
-      try {
-        const result = await signInWithGoogle({ idToken });
-        await completeSignIn(result, 'Welcome');
-      } catch (error) {
-        await showError(toErrorMessage(error, 'Google Signin failed'));
-      }
-    },
-    [completeSignIn, showError],
-  );
-  const [pending, run] = useAsyncAction(handleCredential);
-
-  // GIS keeps the callback from `initialize`, so route it through a ref to always use the latest one.
-  const runRef = useRef(run);
-  useEffect(() => {
-    runRef.current = run;
-  }, [run]);
-
+  // Load Google's script ahead of time: the popup must open synchronously inside the click.
   useEffect(() => {
     let cancelled = false;
-    loadGoogleIdentity()
-      .then((googleId) => {
-        const container = containerRef.current;
-        if (cancelled || !container) return;
-        googleId.initialize({
-          client_id: clientId,
-          ux_mode: 'popup',
-          callback: (response) => {
-            runRef.current(response.credential);
-          },
-        });
-        googleId.renderButton(container, {
-          type: 'standard',
-          theme: 'outline',
-          size: 'large',
-          text: 'continue_with',
-          shape: 'pill',
-          logo_alignment: 'left',
-          width: Math.min(container.clientWidth, GOOGLE_BUTTON_MAX_WIDTH),
-        });
+    loadGoogleOAuth2()
+      .then((loaded) => {
+        if (!cancelled) setOauth2(loaded);
       })
       .catch(() => {
         if (!cancelled) setLoadFailed(true);
@@ -75,7 +46,56 @@ function GoogleButton({ clientId, redirectTo }: { clientId: string; redirectTo?:
     return () => {
       cancelled = true;
     };
-  }, [clientId]);
+  }, []);
+
+  const exchangeCode = useCallback(
+    async (code: string) => {
+      try {
+        const result = await signInWithGoogleCode({ code });
+        await completeSignIn(result, 'Welcome');
+      } catch (error) {
+        await showError(toErrorMessage(error, GENERIC_FAILURE));
+      }
+    },
+    [completeSignIn, showError],
+  );
+  const [pending, runExchange] = useAsyncAction(exchangeCode);
+
+  const handleResponse = (response: GoogleCodeResponse) => {
+    const expected = expectedState.current;
+    expectedState.current = null;
+    if (response.error === 'access_denied') return; // The user cancelled on Google's consent screen.
+    if (!response.code || response.error || response.state !== expected) {
+      void showError(GENERIC_FAILURE);
+      return;
+    }
+    runExchange(response.code);
+  };
+
+  const openGoogle = () => {
+    if (!oauth2) return;
+    const state = crypto.randomUUID();
+    expectedState.current = state;
+    oauth2
+      .initCodeClient({
+        client_id: clientId,
+        scope: GOOGLE_SCOPES,
+        ux_mode: 'popup',
+        select_account: true,
+        state,
+        callback: handleResponse,
+        error_callback: (error) => {
+          expectedState.current = null;
+          if (error.type === 'popup_failed_to_open') {
+            void showError(
+              'Your browser blocked the Google sign-in window. Please allow pop-ups for this site and try again.',
+            );
+          }
+          // popup_closed: the user closed it on purpose; nothing to report.
+        },
+      })
+      .requestCode();
+  };
 
   if (loadFailed) {
     return (
@@ -86,13 +106,15 @@ function GoogleButton({ clientId, redirectTo }: { clientId: string; redirectTo?:
   }
 
   return (
-    <div className={styles.wrapper} aria-busy={pending || undefined}>
-      <div ref={containerRef} className={styles.button} />
-      {pending && (
-        <p className={styles.status} role="status">
-          Signing you in…
-        </p>
-      )}
-    </div>
+    <Button
+      variant="google"
+      fullWidth
+      icon={<GoogleLogo />}
+      loading={pending}
+      disabled={oauth2 === null}
+      onClick={openGoogle}
+    >
+      CONTINUE WITH GOOGLE
+    </Button>
   );
 }
