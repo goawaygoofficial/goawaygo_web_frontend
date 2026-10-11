@@ -6,7 +6,7 @@ import rewardsIcon from '@/assets/icons/rewards.png';
 import savedIcon from '@/assets/icons/saved.png';
 import userProfileIcon from '@/assets/icons/user_profile.png';
 import { Button, FeatureList, IconTile, Logo, PageHeader, PageShell } from '@/components';
-import { GoogleSignInButton, SignOutIconButton } from '@/features/auth';
+import { GoogleSignInButton, SignOutIconButton, VerifyEmailBanner } from '@/features/auth';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import styles from './ProfilePage.module.css';
@@ -30,6 +30,7 @@ function SignedInProfile({ name }: { name: string }) {
   return (
     <PageShell>
       <PageHeader showNotifications actions={<SignOutIconButton />} />
+      <VerifyEmailBanner />
       <h1 className={styles.greeting}>Hi, {name}</h1>
       <nav aria-label="Profile" className={styles.grid}>
         {PROFILE_TILES.map((tile) => (

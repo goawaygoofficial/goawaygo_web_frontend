@@ -52,3 +52,33 @@
   font-weight: var(--font-weight-bold);
   text-align: center;
 }
+
+.hint,
+.message {
+  color: var(--color-white-muted);
+  text-align: center;
+}
+
+.hint {
+  font-size: var(--font-size-sm);
+}
+
+.message {
+  max-width: 28rem;
+  color: var(--color-white);
+}
+
+.spinner {
+  width: var(--size-icon-lg);
+  height: var(--size-icon-lg);
+  border: 3px solid var(--color-white-subtle);
+  border-top-color: var(--color-white);
+  border-radius: var(--radius-round);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

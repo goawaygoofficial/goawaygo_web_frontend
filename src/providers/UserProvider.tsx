@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { restoreSession, signOut as endServerSession } from '@/features/auth/services/authService';
-import { onSessionChange } from '@/lib/session';
+import {
+  fetchCurrentUser,
+  restoreSession,
+  signOut as endServerSession,
+} from '@/features/auth/services/authService';
+import { getAccessToken, onSessionChange } from '@/lib/session';
 import { userFromDto } from '@/types';
 import type { User } from '@/types';
 import { UserContext } from './UserContext';
@@ -62,9 +66,16 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setUser(null);
   }, []);
 
+  const reloadUser = useCallback(async () => {
+    if (getAccessToken() === null) return;
+    const fresh = await fetchCurrentUser();
+    // Ignore the answer if the user signed out while it was loading.
+    if (getAccessToken() !== null) setUser(fresh);
+  }, []);
+
   const value = useMemo<UserContextValue>(
-    () => ({ user, status, signIn, signOut }),
-    [user, status, signIn, signOut],
+    () => ({ user, status, signIn, signOut, reloadUser }),
+    [user, status, signIn, signOut, reloadUser],
   );
 
   return <UserContext value={value}>{children}</UserContext>;
