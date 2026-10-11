@@ -25,7 +25,7 @@ export function HomePage() {
         <div className={styles.planner}>
           <nav aria-label="Book travel" className={styles.categories}>
             {CATEGORIES.map((category) => (
-              <IconTile key={category.title} {...category} />
+              <IconTile key={category.title} {...category} size="lg" />
             ))}
           </nav>
           <DestinationSearch />

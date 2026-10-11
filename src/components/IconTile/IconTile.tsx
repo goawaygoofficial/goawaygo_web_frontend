@@ -6,6 +6,8 @@ interface IconTileProps {
   imageSrc: string;
   /** Route to open. Omit to render the tile visibly disabled ("Coming soon"). */
   to?: string;
+  /** `lg` for Home's categories, whose labels are a size up in the app (18 vs Profile's 16). */
+  size?: 'md' | 'lg';
 }
 
 /**
@@ -13,13 +15,17 @@ interface IconTileProps {
  * Used for Home's category buttons and Profile's tiles (the app's identical
  * `CategoryButton` and `ProfileButton`).
  */
-export function IconTile({ title, imageSrc, to }: IconTileProps) {
+export function IconTile({ title, imageSrc, to, size = 'md' }: IconTileProps) {
   const content = (
     <>
       <span className={styles.square}>
         <img src={imageSrc} alt="" className={styles.image} />
       </span>
-      <span className={styles.title}>{title}</span>
+      <span
+        className={[styles.title, size === 'lg' && styles.titleLarge].filter(Boolean).join(' ')}
+      >
+        {title}
+      </span>
     </>
   );
 
