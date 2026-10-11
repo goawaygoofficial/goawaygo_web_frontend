@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import googleIcon from '@/assets/icons/google_icon.png';
 import { Button } from '@/components';
 import { useAsyncAction } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
@@ -8,7 +9,6 @@ import { useDialog } from '@/providers';
 import type { GoogleAccountsOAuth2, GoogleCodeResponse } from '@/types/google-identity';
 import { useCompleteSignIn } from '../hooks/useCompleteSignIn';
 import { signInWithGoogleCode } from '../services/authService';
-import { GoogleLogo } from './GoogleLogo';
 import styles from './GoogleSignInButton.module.css';
 
 const GOOGLE_SCOPES = 'openid email profile';
@@ -109,12 +109,12 @@ function GoogleButton({ clientId, redirectTo }: { clientId: string; redirectTo?:
     <Button
       variant="google"
       fullWidth
-      icon={<GoogleLogo />}
+      icon={<img src={googleIcon} alt="" />}
       loading={pending}
       disabled={oauth2 === null}
       onClick={openGoogle}
     >
-      CONTINUE WITH GOOGLE
+      Continue with Google
     </Button>
   );
 }

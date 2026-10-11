@@ -11,7 +11,7 @@ import styles from './MyTripsPage.module.css';
 export function MyTripsPage() {
   return (
     <PageShell>
-      <PageHeader showNotifications />
+      <PageHeader />
       <section className={styles.empty} aria-labelledby="trips-heading">
         <span className={styles.badge}>
           <img src={myTripsIcon} alt="" className={styles.icon} />

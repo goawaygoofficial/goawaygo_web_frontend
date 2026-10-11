@@ -10,9 +10,9 @@ interface PageHeaderProps {
   /** Shows a back arrow on the right that calls this. */
   onBack?: () => void;
   backLabel?: string;
-  /** Shows the notification bell on the right. */
+  /** Shows the notification bell on the right. Only Home has notifications. */
   showNotifications?: boolean;
-  /** Extra controls on the right, after the bell (e.g. sign out). */
+  /** Extra controls on the right, after the bell. */
   actions?: ReactNode;
 }
 

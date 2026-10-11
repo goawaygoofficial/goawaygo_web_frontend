@@ -40,10 +40,11 @@
   color: var(--color-secondary);
 }
 
-/* "Continue with Google": same type and shape as every other button, white with dark text and the G logo. */
+/* "Continue with Google": as in the app, white with orange text and the G logo, in normal case. */
 .google {
   background: var(--color-white);
-  color: var(--color-google-text);
+  color: var(--color-secondary);
+  letter-spacing: normal;
 }
 
 .primary:not(:disabled):hover,

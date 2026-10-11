@@ -1,5 +1,7 @@
+export { authFlows } from './authFlow';
+export type { AuthFlow } from './authFlow';
 export { GoogleSignInButton } from './components/GoogleSignInButton';
-export { SignOutIconButton } from './components/SignOutIconButton';
+export { SignInPanel } from './components/SignInPanel';
 export { VerifyEmailBanner } from './components/VerifyEmailBanner';
 export { useSignOut } from './hooks/useSignOut';
 export { AuthPage } from './pages/AuthPage';

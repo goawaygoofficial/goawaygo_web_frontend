@@ -5,9 +5,9 @@ import lockIcon from '@/assets/icons/lock.png';
 import { Button, TextField } from '@/components';
 import { useAsyncAction } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
-import { routes } from '@/lib/routes';
 import { REQUIRED_FIELDS_MESSAGE } from '@/lib/validation';
 import { useDialog } from '@/providers';
+import { useAuthFlow } from '../authFlow';
 import { AuthOverlay } from '../components/AuthOverlay';
 import { requestPasswordReset } from '../services/authService';
 import styles from '../components/AuthForms.module.css';
@@ -24,6 +24,7 @@ export function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const { showError, showSuccess } = useDialog();
   const navigate = useNavigate();
+  const flow = useAuthFlow();
 
   const submit = useCallback(async () => {
     const trimmedEmail = email.trim();
@@ -34,11 +35,11 @@ export function ForgotPasswordPage() {
     try {
       await requestPasswordReset({ email: trimmedEmail });
       await showSuccess(RESET_REQUESTED_MESSAGE);
-      void navigate(routes.auth, { replace: true });
+      void navigate(flow.signInPath, { replace: true });
     } catch (error) {
       await showError(toErrorMessage(error, 'Failed to request password reset'));
     }
-  }, [email, showError, showSuccess, navigate]);
+  }, [email, showError, showSuccess, navigate, flow]);
   const [pending, run] = useAsyncAction(submit);
 
   const onSubmit = (event: SubmitEvent<HTMLFormElement>) => {
@@ -63,7 +64,7 @@ export function ForgotPasswordPage() {
         <Button type="submit" fullWidth loading={pending} icon={<img src={lockIcon} alt="" />}>
           SEND RESET LINK
         </Button>
-        <Link to={routes.auth} className={styles.accentLink}>
+        <Link to={flow.signInPath} className={styles.accentLink}>
           Back to Sign In
         </Link>
       </form>

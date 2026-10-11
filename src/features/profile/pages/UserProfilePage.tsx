@@ -34,7 +34,7 @@ export function UserProfilePage() {
 
   return (
     <PageShell>
-      <PageHeader showNotifications>
+      <PageHeader>
         <h1 className={styles.title}>
           <img src={userProfileIcon} alt="" className={styles.titleIcon} />
           User Profile
