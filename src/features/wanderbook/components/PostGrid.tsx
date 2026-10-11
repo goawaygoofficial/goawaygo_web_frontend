@@ -1,4 +1,4 @@
-import { MapPin } from 'lucide-react';
+import { Icon } from '@/components';
 import type { WanderPost } from '../types';
 import styles from './PostGrid.module.css';
 
@@ -11,7 +11,7 @@ export function PostGrid({ posts }: { posts: readonly WanderPost[] }) {
       {posts.map((post) => (
         <li key={post.id} className={styles.card}>
           <span className={styles.location}>
-            <MapPin aria-hidden="true" />
+            <Icon name="place" />
             {post.location}
           </span>
           <p className={styles.caption}>{post.caption}</p>

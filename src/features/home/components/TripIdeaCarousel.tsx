@@ -1,5 +1,5 @@
+import { Icon } from '@/components';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { usePrefersReducedMotion } from '@/hooks';
 import type { TripIdea } from '../types';
 import { TripIdeaCard } from './TripIdeaCard';
@@ -92,7 +92,7 @@ export function TripIdeaCarousel({ ideas, label }: TripIdeaCarouselProps) {
             step(-1);
           }}
         >
-          <ChevronLeft aria-hidden="true" />
+          <Icon name="arrow_back_ios_rounded" />
         </button>
         <button
           type="button"
@@ -102,7 +102,7 @@ export function TripIdeaCarousel({ ideas, label }: TripIdeaCarouselProps) {
             step(1);
           }}
         >
-          <ChevronRight aria-hidden="true" />
+          <Icon name="arrow_forward_ios_rounded" />
         </button>
       </div>
     </section>

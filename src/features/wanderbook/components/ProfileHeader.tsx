@@ -1,5 +1,5 @@
+import { Icon } from '@/components';
 import { useRef } from 'react';
-import { Camera, Pencil, User } from 'lucide-react';
 import backdropImage from '@/assets/images/home_image_01.png';
 import { useCollapseOnScroll } from '../hooks/useCollapseOnScroll';
 import type { WanderbookProfile } from '../types';
@@ -27,10 +27,10 @@ export function ProfileHeader({ profile }: { profile: WanderbookProfile }) {
           aria-label="Change cover photo (coming soon)"
           title="Coming soon"
         >
-          <Camera aria-hidden="true" />
+          <Icon name="camera_alt" />
         </button>
         <span className={styles.avatar} aria-hidden="true">
-          <User />
+          <Icon name="person" />
         </span>
       </div>
 
@@ -59,7 +59,7 @@ export function ProfileHeader({ profile }: { profile: WanderbookProfile }) {
             aria-label="Edit bio (coming soon)"
             title="Coming soon"
           >
-            <Pencil aria-hidden="true" />
+            <Icon name="edit" />
           </button>
         </div>
       </div>

@@ -1,5 +1,5 @@
+import { Icon } from '@/components';
 import { useId } from 'react';
-import { Search } from 'lucide-react';
 import styles from './WanderbookSearchBar.module.css';
 
 interface WanderbookSearchBarProps {
@@ -13,7 +13,7 @@ export function WanderbookSearchBar({ value, onChange }: WanderbookSearchBarProp
   return (
     <div className={styles.bar}>
       <div role="search" className={styles.pill}>
-        <Search aria-hidden="true" className={styles.icon} />
+        <Icon name="search" className={styles.icon} />
         <label htmlFor={id} className="visually-hidden">
           Search posts by destination
         </label>

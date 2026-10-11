@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { BedDouble, Globe, User } from 'lucide-react';
 import staysImage from '@/assets/images/stays.png';
 import {
   CounterField,
   DateField,
   FieldPair,
   FormRow,
+  Icon,
   SearchFormLayout,
   TextField,
 } from '@/components';
@@ -38,7 +38,7 @@ export function StaySearchPage() {
         label="Where?"
         placeholder="Where?"
         tone="tinted"
-        icon={<Globe />}
+        icon={<Icon name="public" />}
         value={form.destination}
         onChange={(event) => {
           update({ destination: event.target.value });
@@ -78,7 +78,7 @@ export function StaySearchPage() {
       <FormRow>
         <CounterField
           label="Rooms"
-          icon={<BedDouble />}
+          icon={<Icon name="hotel_rounded" />}
           value={form.rooms}
           onChange={(rooms) => {
             update({ rooms });
@@ -86,7 +86,7 @@ export function StaySearchPage() {
         />
         <CounterField
           label="Adults"
-          icon={<User />}
+          icon={<Icon name="person" />}
           value={form.adults}
           onChange={(adults) => {
             update({ adults });

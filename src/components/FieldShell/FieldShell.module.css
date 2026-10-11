@@ -42,8 +42,8 @@
 }
 
 .icon svg {
-  width: var(--size-icon-md);
-  height: var(--size-icon-md);
+  width: var(--size-icon-lg);
+  height: var(--size-icon-lg);
 }
 
 .body {

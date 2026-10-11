@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import { Icon } from '../Icon/Icon';
 import styles from './ChoiceChips.module.css';
 
 interface ChoiceOption<T extends string> {
@@ -14,7 +15,10 @@ interface ChoiceChipsProps<T extends string> {
   onChange: (value: T) => void;
 }
 
-/** Single-choice chips backed by native radio inputs (keyboard and screen-reader friendly). */
+/**
+ * Single-choice chips backed by native radio inputs (keyboard and screen-reader friendly). Styled like the app's
+ * Material 3 `ChoiceChip`: rounded rectangle, outlined when off, filled with a check mark when selected.
+ */
 export function ChoiceChips<T extends string>({
   legend,
   options,
@@ -36,7 +40,10 @@ export function ChoiceChips<T extends string>({
               onChange(option.value);
             }}
           />
-          <span>{option.label}</span>
+          <span>
+            {option.value === value && <Icon name="check" className={styles.check} />}
+            {option.label}
+          </span>
         </label>
       ))}
     </fieldset>
