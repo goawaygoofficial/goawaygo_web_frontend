@@ -1,6 +1,5 @@
 import { useId } from 'react';
 import { Search } from 'lucide-react';
-import { NotificationButton } from '@/components';
 import styles from './WanderbookSearchBar.module.css';
 
 interface WanderbookSearchBarProps {
@@ -30,7 +29,6 @@ export function WanderbookSearchBar({ value, onChange }: WanderbookSearchBarProp
           }}
         />
       </div>
-      <NotificationButton />
     </div>
   );
 }

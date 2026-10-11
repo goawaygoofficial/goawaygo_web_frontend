@@ -12,6 +12,9 @@ export const routes = {
   wanderbook: '/wanderbook',
   profile: '/profile',
   profileDetails: '/profile/details',
+  /** Register / Forgot Password opened from the Profile tab's sign-in panel. */
+  profileRegister: '/profile/register',
+  profileForgotPassword: '/profile/forgot-password',
   flights: '/flights',
   stays: '/stays',
   rentals: '/rentals',

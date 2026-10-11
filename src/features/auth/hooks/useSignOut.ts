@@ -17,7 +17,7 @@ export interface SignOutControl {
   leaving: boolean;
 }
 
-/** The one sign-out flow, shared by the header icon and the profile details page. */
+/** The one sign-out flow (User Profile page's Sign Out button). */
 export function useSignOut(): SignOutControl {
   const { signOut: endSession } = useUser();
   const { showConfirm } = useDialog();

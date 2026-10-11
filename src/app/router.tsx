@@ -42,7 +42,15 @@ export const router = createBrowserRouter([
           { path: routes.home, element: <HomePage /> },
           { path: routes.trips, element: <MyTripsPage /> },
           { path: routes.wanderbook, element: <WanderbookPage /> },
-          { path: routes.profile, element: <ProfilePage /> },
+          {
+            path: routes.profile,
+            element: <ProfilePage />,
+            // Register / Forgot Password from the Profile tab's sign-in panel (signed out only).
+            children: [
+              { path: routes.profileRegister, element: <RegisterPage /> },
+              { path: routes.profileForgotPassword, element: <ForgotPasswordPage /> },
+            ],
+          },
         ],
       },
       {

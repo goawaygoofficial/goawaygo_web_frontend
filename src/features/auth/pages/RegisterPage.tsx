@@ -4,9 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, FeatureList, TextField } from '@/components';
 import { useAsyncAction } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
-import { routes } from '@/lib/routes';
 import { PASSWORD_RULE_MESSAGE, REQUIRED_FIELDS_MESSAGE, isStrongPassword } from '@/lib/validation';
 import { useDialog } from '@/providers';
+import { useAuthFlow } from '../authFlow';
 import { AuthOverlay } from '../components/AuthOverlay';
 import { signUp } from '../services/authService';
 import styles from '../components/AuthForms.module.css';
@@ -17,6 +17,7 @@ export function RegisterPage() {
   const [password, setPassword] = useState('');
   const { showError, showSuccess } = useDialog();
   const navigate = useNavigate();
+  const flow = useAuthFlow();
 
   const submit = useCallback(async () => {
     const trimmedName = name.trim();
@@ -32,11 +33,11 @@ export function RegisterPage() {
     try {
       await signUp({ name: trimmedName, email: trimmedEmail, password });
       await showSuccess('Account created! You can now sign in.');
-      void navigate(routes.auth, { replace: true });
+      void navigate(flow.signInPath, { replace: true });
     } catch (error) {
       await showError(toErrorMessage(error, 'Signup failed'));
     }
-  }, [name, email, password, showError, showSuccess, navigate]);
+  }, [name, email, password, showError, showSuccess, navigate, flow]);
   const [pending, run] = useAsyncAction(submit);
 
   const onSubmit = (event: SubmitEvent<HTMLFormElement>) => {
@@ -81,7 +82,7 @@ export function RegisterPage() {
         <Button type="submit" fullWidth loading={pending}>
           REGISTER
         </Button>
-        <Link to={routes.auth} className={styles.accentLink}>
+        <Link to={flow.signInPath} className={styles.accentLink}>
           Already have an account? Sign In
         </Link>
       </form>

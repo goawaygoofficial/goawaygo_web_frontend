@@ -6,22 +6,23 @@ import emailIcon from '@/assets/icons/email.png';
 import { Button, TextField } from '@/components';
 import { useAsyncAction } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
-import { routes } from '@/lib/routes';
 import { useDialog } from '@/providers';
+import type { AuthFlow } from '../authFlow';
 import { useCompleteSignIn } from '../hooks/useCompleteSignIn';
 import { signIn } from '../services/authService';
 import styles from './AuthForms.module.css';
 
 interface SignInFormProps {
+  flow: AuthFlow;
   onClose: () => void;
 }
 
-/** Email + password sign-in (state B of the auth screen). */
-export function SignInForm({ onClose }: SignInFormProps) {
+/** Email + password sign-in (state B of the sign-in panel). */
+export function SignInForm({ flow, onClose }: SignInFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { showError } = useDialog();
-  const completeSignIn = useCompleteSignIn();
+  const completeSignIn = useCompleteSignIn(flow.redirectTo);
 
   const submit = useCallback(async () => {
     const trimmedEmail = email.trim();
@@ -75,13 +76,13 @@ export function SignInForm({ onClose }: SignInFormProps) {
           setPassword(event.target.value);
         }}
       />
-      <Link to={routes.forgotPassword} className={styles.forgot}>
+      <Link to={flow.forgotPasswordPath} className={styles.forgot}>
         Forgot Password?
       </Link>
       <Button type="submit" fullWidth loading={pending} icon={<img src={emailIcon} alt="" />}>
         SIGN IN
       </Button>
-      <Link to={routes.register} className={styles.accentLink}>
+      <Link to={flow.registerPath} className={styles.accentLink}>
         Not Registered? Register
       </Link>
     </form>

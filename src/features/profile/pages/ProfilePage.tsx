@@ -1,12 +1,12 @@
-import { useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import myTripsIcon from '@/assets/icons/mytrips_white.png';
 import recentlyViewedIcon from '@/assets/icons/recently_viewed.png';
 import reviewIcon from '@/assets/icons/review.png';
 import rewardsIcon from '@/assets/icons/rewards.png';
 import savedIcon from '@/assets/icons/saved.png';
 import userProfileIcon from '@/assets/icons/user_profile.png';
-import { Button, FeatureList, IconTile, Logo, PageHeader, PageShell } from '@/components';
-import { GoogleSignInButton, SignOutIconButton, VerifyEmailBanner } from '@/features/auth';
+import { FeatureList, IconTile, Logo, PageHeader, PageShell } from '@/components';
+import { SignInPanel, VerifyEmailBanner, authFlows } from '@/features/auth';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import styles from './ProfilePage.module.css';
@@ -23,13 +23,17 @@ const PROFILE_TILES = [
 
 export function ProfilePage() {
   const { user } = useUser();
-  return user ? <SignedInProfile name={user.name} /> : <GuestProfile />;
+  const { pathname } = useLocation();
+  if (!user) return <GuestProfile overlayOpen={pathname !== routes.profile} />;
+  // Register / Forgot Password are for signed-out users only.
+  if (pathname !== routes.profile) return <Navigate to={routes.profile} replace />;
+  return <SignedInProfile name={user.name} />;
 }
 
 function SignedInProfile({ name }: { name: string }) {
   return (
     <PageShell>
-      <PageHeader showNotifications actions={<SignOutIconButton />} />
+      <PageHeader />
       <VerifyEmailBanner />
       <h1 className={styles.greeting}>Hi, {name}</h1>
       <nav aria-label="Profile" className={styles.grid}>
@@ -41,25 +45,21 @@ function SignedInProfile({ name }: { name: string }) {
   );
 }
 
-function GuestProfile() {
-  const navigate = useNavigate();
+/** Signs in right here, like the sign-in page: Google, or the email form that opens in place. */
+function GuestProfile({ overlayOpen }: { overlayOpen: boolean }) {
   return (
-    <PageShell className={styles.guest}>
-      <Logo size="lg" />
-      <h1 className="visually-hidden">Sign in to Goaway</h1>
-      <FeatureList />
-      {/* Same order as the sign-in page. Signing in here keeps the user on their profile. */}
-      <div className={styles.guestActions}>
-        <GoogleSignInButton redirectTo={routes.profile} />
-        <Button
-          fullWidth
-          onClick={() => {
-            void navigate(routes.auth);
-          }}
-        >
-          SIGN IN
-        </Button>
-      </div>
-    </PageShell>
+    <>
+      <PageShell className={styles.guest}>
+        <div inert={overlayOpen} className={styles.guestContent}>
+          <Logo size="lg" />
+          <h1 className="visually-hidden">Sign in to Goaway</h1>
+          <FeatureList />
+          <div className={styles.guestActions}>
+            <SignInPanel flow={authFlows.profile} />
+          </div>
+        </div>
+      </PageShell>
+      <Outlet context={authFlows.profile} />
+    </>
   );
 }
