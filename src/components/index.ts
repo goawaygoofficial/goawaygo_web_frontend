@@ -5,6 +5,8 @@ export { DateField } from './DateField/DateField';
 export { FeatureList } from './FeatureList/FeatureList';
 export { FieldPair } from './FieldPair/FieldPair';
 export { FormRow } from './FormRow/FormRow';
+export { Icon } from './Icon/Icon';
+export type { IconName } from './Icon/Icon';
 export { IconTile } from './IconTile/IconTile';
 export { Logo } from './Logo/Logo';
 export { MaskIcon } from './MaskIcon/MaskIcon';

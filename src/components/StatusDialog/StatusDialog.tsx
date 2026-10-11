@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef } from 'react';
-import { CircleAlert, CircleCheck, CircleHelp } from 'lucide-react';
+import { Icon } from '../Icon/Icon';
 import { Logo } from '../Logo/Logo';
 import styles from './StatusDialog.module.css';
 
@@ -17,7 +17,11 @@ interface StatusDialogProps {
   onConfirm?: () => void;
 }
 
-const ICONS = { success: CircleCheck, error: CircleAlert, confirm: CircleHelp } as const;
+const ICONS = {
+  success: 'check_circle_outline_rounded',
+  error: 'error_outline_rounded',
+  confirm: 'help_outline_rounded',
+} as const;
 
 /**
  * The app's custom dialog: primary-blue rounded box, logo, an icon and a bold message.
@@ -41,8 +45,6 @@ export function StatusDialog({
     if (!open && dialog.open) dialog.close();
   }, [open]);
 
-  const Icon = ICONS[kind];
-
   return (
     <dialog
       ref={ref}
@@ -60,7 +62,7 @@ export function StatusDialog({
     >
       <div className={styles.content}>
         <Logo size="sm" />
-        <Icon className={[styles.icon, styles[kind]].join(' ')} aria-hidden="true" />
+        <Icon name={ICONS[kind]} className={[styles.icon, styles[kind]].join(' ')} />
         <p id={messageId} className={styles.message}>
           {message}
         </p>

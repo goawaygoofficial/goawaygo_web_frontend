@@ -1,4 +1,4 @@
-import { Bell } from 'lucide-react';
+import { Icon } from '../Icon/Icon';
 import styles from './NotificationButton.module.css';
 
 /**
@@ -14,7 +14,7 @@ export function NotificationButton() {
       aria-label="Notifications (coming soon)"
       title="Notifications — coming soon"
     >
-      <Bell aria-hidden="true" fill="currentColor" />
+      <Icon name="notifications" />
     </button>
   );
 }

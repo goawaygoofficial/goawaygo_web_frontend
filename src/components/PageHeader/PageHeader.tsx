@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ChevronLeft } from 'lucide-react';
+import { Icon } from '../Icon/Icon';
 import { Logo } from '../Logo/Logo';
 import { NotificationButton } from '../NotificationButton/NotificationButton';
 import styles from './PageHeader.module.css';
@@ -33,7 +33,7 @@ export function PageHeader({
         {actions}
         {onBack && (
           <button type="button" className={styles.back} aria-label={backLabel} onClick={onBack}>
-            <ChevronLeft aria-hidden="true" />
+            <Icon name="arrow_back_ios_rounded" />
           </button>
         )}
       </div>

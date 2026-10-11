@@ -37,6 +37,10 @@ a.tile:hover .square {
   line-height: var(--line-height-tight);
 }
 
+.titleLarge {
+  font-size: var(--font-size-lg);
+}
+
 .disabled {
   opacity: 0.55;
   cursor: not-allowed;

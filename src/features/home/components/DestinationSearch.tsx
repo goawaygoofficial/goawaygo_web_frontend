@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Globe } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Button, TextField } from '@/components';
+import { Button, Icon, TextField } from '@/components';
 import { routes } from '@/lib/routes';
 import styles from './DestinationSearch.module.css';
 
@@ -24,7 +23,7 @@ export function DestinationSearch() {
         label="Destination"
         placeholder="Where do you want to be?"
         tone="accent"
-        icon={<Globe />}
+        icon={<Icon name="public" />}
         value={place}
         autoComplete="off"
         onChange={(event) => {

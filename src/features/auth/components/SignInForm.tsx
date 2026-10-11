@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import type { SubmitEvent } from 'react';
-import { X } from 'lucide-react';
+
 import { Link } from 'react-router-dom';
 import emailIcon from '@/assets/icons/email.png';
-import { Button, TextField } from '@/components';
+import { Button, Icon, TextField } from '@/components';
 import { useAsyncAction } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
 import { useDialog } from '@/providers';
@@ -54,7 +54,7 @@ export function SignInForm({ flow, onClose }: SignInFormProps) {
         aria-label="Close sign-in form"
         onClick={onClose}
       >
-        <X aria-hidden="true" />
+        <Icon name="close_rounded" />
       </button>
       <TextField
         label="Email address"

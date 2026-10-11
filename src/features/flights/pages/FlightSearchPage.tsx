@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Baby, Globe, MapPin, User } from 'lucide-react';
 import flightsImage from '@/assets/images/flights.png';
 import {
   ChoiceChips,
@@ -7,6 +6,7 @@ import {
   DateField,
   FieldPair,
   FormRow,
+  Icon,
   SearchFormLayout,
   TextField,
 } from '@/components';
@@ -51,7 +51,7 @@ export function FlightSearchPage() {
             label="From"
             placeholder="From"
             tone="tinted"
-            icon={<MapPin />}
+            icon={<Icon name="location_on_outlined" />}
             value={form.from}
             onChange={(event) => {
               update({ from: event.target.value });
@@ -63,7 +63,7 @@ export function FlightSearchPage() {
             label="To"
             placeholder="To"
             tone="tinted"
-            icon={<Globe />}
+            icon={<Icon name="public" />}
             value={form.to}
             onChange={(event) => {
               update({ to: event.target.value });
@@ -116,7 +116,7 @@ export function FlightSearchPage() {
       <FormRow>
         <CounterField
           label="Adults"
-          icon={<User />}
+          icon={<Icon name="person" />}
           value={form.adults}
           onChange={(adults) => {
             update({ adults });
@@ -124,7 +124,7 @@ export function FlightSearchPage() {
         />
         <CounterField
           label="Children"
-          icon={<Baby />}
+          icon={<Icon name="child_care_sharp" />}
           value={form.children}
           onChange={(children) => {
             update({ children });

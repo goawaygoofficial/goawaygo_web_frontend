@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { CarFront, LocateFixed, MapPin } from 'lucide-react';
 import rentalsImage from '@/assets/images/rentals.png';
 import {
   ChoiceChips,
   DateField,
   FieldPair,
+  Icon,
   SearchFormLayout,
   SelectField,
   TextField,
@@ -50,7 +50,7 @@ export function RentalSearchPage() {
             label="Pickup"
             placeholder="Pickup"
             tone="tinted"
-            icon={<LocateFixed />}
+            icon={<Icon name="my_location_sharp" />}
             value={form.pickup}
             onChange={(event) => {
               update({ pickup: event.target.value });
@@ -62,7 +62,7 @@ export function RentalSearchPage() {
             label="Drop-off"
             placeholder="Drop-off"
             tone="tinted"
-            icon={<MapPin />}
+            icon={<Icon name="location_on_sharp" />}
             value={form.dropOff}
             onChange={(event) => {
               update({ dropOff: event.target.value });
@@ -115,7 +115,7 @@ export function RentalSearchPage() {
       <SelectField
         label="Car type"
         placeholder="Select a car type"
-        icon={<CarFront />}
+        icon={<Icon name="directions_car" />}
         options={CAR_TYPES}
         value={form.carType}
         onChange={(carType) => {

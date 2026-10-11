@@ -1,6 +1,6 @@
 import { useId } from 'react';
 import type { ReactNode } from 'react';
-import { Minus, Plus } from 'lucide-react';
+import { Icon } from '../Icon/Icon';
 import { FieldShell } from '../FieldShell/FieldShell';
 import styles from './CounterField.module.css';
 
@@ -34,7 +34,7 @@ export function CounterField({ label, icon, value, onChange }: CounterFieldProps
           set(value - 1);
         }}
       >
-        <Minus aria-hidden="true" />
+        <Icon name="remove" />
       </button>
       <input
         id={id}
@@ -55,7 +55,7 @@ export function CounterField({ label, icon, value, onChange }: CounterFieldProps
           set(value + 1);
         }}
       >
-        <Plus aria-hidden="true" />
+        <Icon name="add" />
       </button>
     </FieldShell>
   );
