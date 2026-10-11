@@ -11,6 +11,8 @@ export interface UserContextValue {
   signIn: (user: User) => void;
   /** Revokes the session on the server and signs out locally. */
   signOut: () => Promise<void>;
+  /** Re-reads the signed-in user from the server (e.g. after the email was verified). No-op when signed out. */
+  reloadUser: () => Promise<void>;
 }
 
 export const UserContext = createContext<UserContextValue | null>(null);

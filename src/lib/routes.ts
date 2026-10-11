@@ -4,6 +4,9 @@ export const routes = {
   auth: '/auth',
   register: '/auth/register',
   forgotPassword: '/auth/forgot-password',
+  /** Opened from emailed links (`?token=…`); the backend builds these URLs, so keep the paths in sync. */
+  resetPassword: '/reset-password',
+  verifyEmail: '/verify-email',
   home: '/home',
   trips: '/trips',
   wanderbook: '/wanderbook',

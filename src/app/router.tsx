@@ -1,5 +1,11 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
-import { AuthPage, ForgotPasswordPage, RegisterPage } from '@/features/auth';
+import {
+  AuthPage,
+  ForgotPasswordPage,
+  RegisterPage,
+  ResetPasswordPage,
+  VerifyEmailPage,
+} from '@/features/auth';
 import { DestinationInfoPage } from '@/features/destination';
 import { FlightSearchPage } from '@/features/flights';
 import { HomePage } from '@/features/home';
@@ -27,6 +33,9 @@ export const router = createBrowserRouter([
           { path: routes.forgotPassword, element: <ForgotPasswordPage /> },
         ],
       },
+      // Opened from emailed links, signed in or not.
+      { path: routes.resetPassword, element: <ResetPasswordPage /> },
+      { path: routes.verifyEmail, element: <VerifyEmailPage /> },
       {
         element: <ShellLayout />,
         children: [
