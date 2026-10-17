@@ -1,0 +1,14 @@
+# Response headers for Cloudflare Pages (docs/deployment.md). Copied into dist/ by the build.
+
+/*
+  # The site must not be framed by other sites (clickjacking).
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  # Emailed reset/verify tokens are removed from the URL on load; never send full URLs to other sites.
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Features the site doesn't use stay off.
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+
+# Vite puts a content hash in every asset file name, so these can be cached forever.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
