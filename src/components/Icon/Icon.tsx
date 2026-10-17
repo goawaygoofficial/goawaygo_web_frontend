@@ -1,4 +1,5 @@
 import addSvg from '@material-design-icons/svg/filled/add.svg?raw';
+import androidSvg from '@material-design-icons/svg/filled/android.svg?raw';
 import arrowDropDownSvg from '@material-design-icons/svg/filled/arrow_drop_down.svg?raw';
 import attachMoneySvg from '@material-design-icons/svg/filled/attach_money.svg?raw';
 import calendarMonthSvg from '@material-design-icons/svg/filled/calendar_month.svg?raw';
@@ -6,12 +7,14 @@ import calendarTodaySvg from '@material-design-icons/svg/filled/calendar_today.s
 import cameraAltSvg from '@material-design-icons/svg/filled/camera_alt.svg?raw';
 import checkSvg from '@material-design-icons/svg/filled/check.svg?raw';
 import directionsBusSvg from '@material-design-icons/svg/filled/directions_bus.svg?raw';
+import downloadSvg from '@material-design-icons/svg/filled/download.svg?raw';
 import directionsCarSvg from '@material-design-icons/svg/filled/directions_car.svg?raw';
 import editSvg from '@material-design-icons/svg/filled/edit.svg?raw';
 import gavelSvg from '@material-design-icons/svg/filled/gavel.svg?raw';
 import healthAndSafetySvg from '@material-design-icons/svg/filled/health_and_safety.svg?raw';
 import hotelSvg from '@material-design-icons/svg/filled/hotel.svg?raw';
 import languageSvg from '@material-design-icons/svg/filled/language.svg?raw';
+import openInNewSvg from '@material-design-icons/svg/filled/open_in_new.svg?raw';
 import notificationsSvg from '@material-design-icons/svg/filled/notifications.svg?raw';
 import personSvg from '@material-design-icons/svg/filled/person.svg?raw';
 import placeSvg from '@material-design-icons/svg/filled/place.svg?raw';
@@ -39,6 +42,7 @@ import myLocationSvg from '@material-design-icons/svg/sharp/my_location.svg?raw'
  */
 const SOURCES = {
   add: addSvg,
+  android: androidSvg,
   arrow_back_ios_rounded: arrowBackIosSvg,
   arrow_drop_down: arrowDropDownSvg,
   arrow_forward_ios_rounded: arrowForwardIosSvg,
@@ -52,6 +56,7 @@ const SOURCES = {
   close_rounded: closeSvg,
   directions_bus: directionsBusSvg,
   directions_car: directionsCarSvg,
+  download: downloadSvg,
   edit: editSvg,
   error_outline_rounded: errorOutlineSvg,
   gavel: gavelSvg,
@@ -64,6 +69,7 @@ const SOURCES = {
   location_on_sharp: locationOnSvg,
   my_location_sharp: myLocationSvg,
   notifications: notificationsSvg,
+  open_in_new: openInNewSvg,
   person: personSvg,
   place: placeSvg,
   public: publicSvg,

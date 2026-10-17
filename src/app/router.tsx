@@ -8,6 +8,7 @@ import {
 } from '@/features/auth';
 import { DestinationInfoPage } from '@/features/destination';
 import { FlightSearchPage } from '@/features/flights';
+import { DownloadPage } from '@/features/getApp';
 import { HomePage } from '@/features/home';
 import { ProfilePage, UserProfilePage } from '@/features/profile';
 import { RentalSearchPage } from '@/features/rentals';
@@ -61,6 +62,7 @@ export const router = createBrowserRouter([
           { path: routes.rentals, element: <RentalSearchPage /> },
           { path: routes.destinationPattern, element: <DestinationInfoPage /> },
           { path: routes.profileDetails, element: <UserProfilePage /> },
+          { path: routes.download, element: <DownloadPage /> },
         ],
       },
       { path: '*', element: <Navigate to={routes.home} replace /> },

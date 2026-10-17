@@ -1,0 +1,119 @@
+.heading {
+  margin-block: var(--space-4) var(--space-2);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.lead {
+  margin-bottom: var(--space-6);
+  color: var(--color-white-muted);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-white-faint);
+}
+
+.cardTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.meta {
+  color: var(--color-white-muted);
+  font-size: var(--font-size-sm);
+}
+
+.text {
+  line-height: var(--line-height-body);
+}
+
+.small {
+  color: var(--color-white-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+}
+
+/* Link styled like the app's buttons (it downloads or leaves the site, so it is a real link). */
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--size-touch);
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-soft);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.primary {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.secondary {
+  background: var(--color-white);
+  color: var(--color-secondary);
+}
+
+.primary svg,
+.secondary svg {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+}
+
+.primary:hover,
+.secondary:hover {
+  filter: brightness(1.06);
+}
+
+.link {
+  color: var(--color-secondary-light);
+  font-weight: var(--font-weight-bold);
+}
+
+.stepsTitle {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding-left: var(--space-5);
+  line-height: var(--line-height-body);
+}
+
+.details summary {
+  cursor: pointer;
+  color: var(--color-white-muted);
+  font-size: var(--font-size-sm);
+}
+
+.details[open] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.hash {
+  display: block;
+  max-width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-white-faint);
+  font-size: var(--font-size-xs);
+  overflow-wrap: anywhere;
+}

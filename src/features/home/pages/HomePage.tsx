@@ -3,6 +3,7 @@ import heroImage from '@/assets/images/home_image_01.png';
 import rentalsImage from '@/assets/images/rentals.png';
 import staysImage from '@/assets/images/stays.png';
 import { IconTile, PageHeader, PageShell } from '@/components';
+import { GetAppLink } from '@/features/getApp';
 import { routes } from '@/lib/routes';
 import { DestinationSearch } from '../components/DestinationSearch';
 import { TripIdeaCarousel } from '../components/TripIdeaCarousel';
@@ -35,6 +36,9 @@ export function HomePage() {
 
       <h2 className={styles.ideasHeading}>IDEAS FOR YOUR NEXT TRIP ...</h2>
       <TripIdeaCarousel ideas={PLACEHOLDER_TRIP_IDEAS} label="Ideas for your next trip" />
+      <div className={styles.getApp}>
+        <GetAppLink />
+      </div>
     </PageShell>
   );
 }
