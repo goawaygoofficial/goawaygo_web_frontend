@@ -7,6 +7,8 @@ export const routes = {
   /** Opened from emailed links (`?token=…`); the backend builds these URLs, so keep the paths in sync. */
   resetPassword: '/reset-password',
   verifyEmail: '/verify-email',
+  /** Get the Android app: APK download, beta sign-up, later the Play Store. */
+  download: '/download',
   home: '/home',
   trips: '/trips',
   wanderbook: '/wanderbook',

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { FeatureList, Logo, PageShell } from '@/components';
 import { routes } from '@/lib/routes';
+import { GetAppLink } from '@/features/getApp';
 import { useUser } from '@/providers';
 import { authFlows } from '../authFlow';
 import { SignInPanel } from '../components/SignInPanel';
@@ -32,6 +33,7 @@ export function AuthPage() {
           <FeatureList />
 
           <SignInPanel flow={authFlows.signInPage} />
+          <GetAppLink className={styles.getApp} />
         </div>
       </PageShell>
       <Outlet context={authFlows.signInPage} />

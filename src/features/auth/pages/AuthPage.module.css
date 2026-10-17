@@ -26,3 +26,8 @@
 .skip:hover {
   text-decoration: underline;
 }
+
+.getApp {
+  align-self: center;
+  margin-top: var(--space-4);
+}
