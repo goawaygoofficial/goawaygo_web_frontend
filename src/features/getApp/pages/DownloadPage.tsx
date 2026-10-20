@@ -37,7 +37,8 @@ export function DownloadPage() {
       ) : (
         <>
           <p className={styles.lead}>
-            Goaway is in beta. It's free; the iPhone version comes later.
+            Goaway is in beta. It's free and needs Android 8.0 or newer; the iPhone version comes
+            later.
           </p>
           <DirectDownload />
           {appLinks.androidBetaUrl && <BetaSignUp />}
@@ -81,7 +82,7 @@ function ReleaseDetails({ release }: { release: AndroidRelease }) {
       </a>
       {release.universal && (
         <p className={styles.small}>
-          Doesn't install on an older phone?{' '}
+          Doesn't install on your phone (older 32-bit models)?{' '}
           <a className={styles.link} href={release.universal.url} download>
             Download the version for all phones ({megabytes(release.universal.size)})
           </a>
