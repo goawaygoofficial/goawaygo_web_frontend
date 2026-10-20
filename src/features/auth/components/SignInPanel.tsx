@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import emailIcon from '@/assets/icons/email.png';
 import { Button } from '@/components';
+import { SignUpNotice } from '@/features/legal';
 import type { AuthFlow } from '../authFlow';
 import { GoogleSignInButton } from './GoogleSignInButton';
 import { SignInForm } from './SignInForm';
@@ -29,6 +30,7 @@ export function SignInPanel({ flow }: { flow: AuthFlow }) {
         >
           SIGN IN
         </Button>
+        <SignUpNotice />
       </div>
       <div
         className={[styles.state, showForm && styles.visible].filter(Boolean).join(' ')}

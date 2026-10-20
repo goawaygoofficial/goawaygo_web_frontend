@@ -10,6 +10,7 @@ import { DestinationInfoPage } from '@/features/destination';
 import { FlightSearchPage } from '@/features/flights';
 import { DownloadPage } from '@/features/getApp';
 import { HomePage } from '@/features/home';
+import { DeleteDataPage, PrivacyPage, TermsPage } from '@/features/legal';
 import { ProfilePage, UserProfilePage } from '@/features/profile';
 import { RentalSearchPage } from '@/features/rentals';
 import { SplashPage } from '@/features/splash';
@@ -63,6 +64,9 @@ export const router = createBrowserRouter([
           { path: routes.destinationPattern, element: <DestinationInfoPage /> },
           { path: routes.profileDetails, element: <UserProfilePage /> },
           { path: routes.download, element: <DownloadPage /> },
+          { path: routes.privacy, element: <PrivacyPage /> },
+          { path: routes.terms, element: <TermsPage /> },
+          { path: routes.deleteMyData, element: <DeleteDataPage /> },
         ],
       },
       { path: '*', element: <Navigate to={routes.home} replace /> },

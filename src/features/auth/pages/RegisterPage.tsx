@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import type { SubmitEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, FeatureList, TextField } from '@/components';
+import { SignUpNotice } from '@/features/legal';
 import { useAsyncAction } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
 import { PASSWORD_RULE_MESSAGE, REQUIRED_FIELDS_MESSAGE, isStrongPassword } from '@/lib/validation';
@@ -79,6 +80,7 @@ export function RegisterPage() {
             setPassword(event.target.value);
           }}
         />
+        <SignUpNotice />
         <Button type="submit" fullWidth loading={pending}>
           REGISTER
         </Button>

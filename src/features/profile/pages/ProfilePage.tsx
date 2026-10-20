@@ -7,6 +7,7 @@ import savedIcon from '@/assets/icons/saved.png';
 import userProfileIcon from '@/assets/icons/user_profile.png';
 import { FeatureList, IconTile, Logo, PageHeader, PageShell } from '@/components';
 import { SignInPanel, VerifyEmailBanner, authFlows } from '@/features/auth';
+import { LegalLinks } from '@/features/legal';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import styles from './ProfilePage.module.css';
@@ -41,6 +42,7 @@ function SignedInProfile({ name }: { name: string }) {
           <IconTile key={tile.title} {...tile} />
         ))}
       </nav>
+      <LegalLinks />
     </PageShell>
   );
 }
@@ -57,6 +59,7 @@ function GuestProfile({ overlayOpen }: { overlayOpen: boolean }) {
           <div className={styles.guestActions}>
             <SignInPanel flow={authFlows.profile} />
           </div>
+          <LegalLinks />
         </div>
       </PageShell>
       <Outlet context={authFlows.profile} />

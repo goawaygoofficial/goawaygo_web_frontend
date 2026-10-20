@@ -1,4 +1,5 @@
 import { Icon, PageHeader, PageShell } from '@/components';
+import { LegalLinks } from '@/features/legal';
 import { useBack } from '@/hooks';
 import { appLinks } from '@/lib/appLinks';
 import { routes } from '@/lib/routes';
@@ -43,6 +44,7 @@ export function DownloadPage() {
           {appLinks.androidBetaUrl && <BetaSignUp />}
         </>
       )}
+      <LegalLinks />
     </PageShell>
   );
 }
