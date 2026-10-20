@@ -4,8 +4,9 @@ import { routes } from '@/lib/routes';
 import { LegalPage, LegalSection, MailLink } from '../components/LegalPage';
 
 /**
- * Terms of Use for the beta. Plain-language; to be reviewed by a lawyer before the public launch (in particular
- * the operator's legal name once the company is registered, and the courts in "Law and disputes").
+ * Terms of Use for the beta, for users in every country. Plain-language; to be reviewed by a lawyer before the
+ * public launch (in particular the operator's legal name once the company is registered, the liability clause and
+ * "Law and disputes").
  */
 export function TermsPage() {
   return (
@@ -115,8 +116,8 @@ export function TermsPage() {
           complete. As far as the law allows, we are not responsible for indirect losses (such as
           missed trips or lost bookings with partners), and our total responsibility to you is
           limited to what you have paid us for Goaway in the 12 months before the claim (Goaway is
-          currently free). Nothing in these terms limits rights you have under Indian consumer law
-          that can't be limited.
+          currently free). Nothing in these terms limits rights you have under the consumer
+          protection laws of the country where you live that can't be limited by contract.
         </p>
       </LegalSection>
 
@@ -130,10 +131,15 @@ export function TermsPage() {
 
       <LegalSection id="law" title="11. Law and disputes">
         <p>
-          These terms are governed by the laws of India. Please contact us first at{' '}
-          <MailLink address={legal.supportEmail} /> so we can try to solve any problem; we reply
-          within {legal.responseDays} days. Disputes that can't be solved this way go to the courts
-          of India.
+          Please contact us first at <MailLink address={legal.supportEmail} /> so we can try to
+          solve any problem; we reply within {legal.responseDays} days.
+        </p>
+        <p>
+          These terms are governed by the laws of India, where Goaway is run. If you use Goaway as a
+          consumer, you also keep the protection of the mandatory laws of the country where you
+          live, and you can bring a claim in the courts there if that law gives you the right to.
+          Otherwise, disputes go to the courts of India. If you live in the EU, you can also use
+          your national consumer dispute-resolution bodies.
         </p>
       </LegalSection>
 

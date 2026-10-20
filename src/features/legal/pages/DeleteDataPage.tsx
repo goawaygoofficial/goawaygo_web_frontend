@@ -13,8 +13,10 @@ export function DeleteDataPage() {
       title="Delete my data"
       summary={
         <>
-          You can delete your Goaway account and personal data at any time, free of charge. Email us
-          from your account's address and we delete everything within {legal.responseDays} days.
+          Wherever you live, you can delete your Goaway account and personal data at any time, free
+          of charge: your “right to erasure” or “right to delete” under privacy laws such as the
+          GDPR, US state laws and India's DPDP Act. Email us from your account's address and we
+          delete everything within {legal.responseDays} days.
         </>
       }
     >
@@ -47,8 +49,8 @@ export function DeleteDataPage() {
         </ul>
         <p>
           Server logs and crash reports are deleted automatically after 30 days, and database
-          backups are overwritten within 7 days. We keep only what Indian law requires us to keep,
-          and only for as long as it requires.
+          backups are overwritten within 7 days. We keep only what the law requires us to keep (for
+          example, a record that you asked for deletion), and only for as long as it requires.
         </p>
       </LegalSection>
 

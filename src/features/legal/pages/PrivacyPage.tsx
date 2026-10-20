@@ -5,10 +5,11 @@ import { LegalPage, LegalSection, MailLink } from '../components/LegalPage';
 import styles from '../components/LegalPage.module.css';
 
 /**
- * Privacy notice under India's Digital Personal Data Protection Act 2023 and Rules 2025: what we collect, why, who
- * processes it, how long we keep it, the user's rights and how to complain. Keep it true to what the backend and
- * apps actually do; change `legal.lastUpdated` with every change in meaning. To be reviewed by a lawyer before
- * the public launch.
+ * One privacy policy for every country, written to the strictest common standard: the EU and UK GDPR, US state
+ * privacy laws (California CCPA/CPRA and similar), India's DPDP Act 2023, Brazil's LGPD and comparable laws.
+ * Country-specific extras are in "Extra information for your region". Keep it true to what the backend and apps
+ * actually do; change `legal.lastUpdated` with every change in meaning. To be reviewed by a lawyer before the
+ * public launch.
  */
 export function PrivacyPage() {
   return (
@@ -17,36 +18,45 @@ export function PrivacyPage() {
       summary={
         <>
           We collect only what Goaway needs to run your account, keep it safe and fix problems. We
-          don't sell your data or show you ads. You can see, correct or delete your data at any
-          time: write to <MailLink address={legal.privacyEmail} />.
+          don't sell your data, share it for advertising, or show you ads. Wherever you live, you
+          can see, correct, download or delete your data at any time: write to{' '}
+          <MailLink address={legal.privacyEmail} />.
         </>
       }
     >
       <LegalSection id="who-we-are" title="1. Who we are">
         <p>
-          Goaway (the website at goawaygo.com and the Goaway app) is run by the Goaway team in
-          India. We are the “Data Fiduciary” for your personal data under India's Digital Personal
-          Data Protection Act, 2023 (the “DPDP Act”). Goaway is in beta and the company is being
-          registered; this policy will name it once that is done.
+          Goaway (the website at goawaygo.com and the Goaway app) is run by the Goaway team, based
+          in India. We decide how and why your personal data is used, so we are responsible for it:
+          the “controller” under the EU and UK GDPR, the “business” under US state privacy laws, and
+          the “Data Fiduciary” under India's Digital Personal Data Protection Act. Goaway is in beta
+          and the company is being registered; this policy will name it once that is done.
         </p>
         <p>
-          Contact for anything about your data: <MailLink address={legal.privacyEmail} />.
+          Contact for anything about your data, including our privacy team:{' '}
+          <MailLink address={legal.privacyEmail} />.
         </p>
       </LegalSection>
 
-      <LegalSection id="what-we-collect" title="2. What we collect and why">
+      <LegalSection id="what-we-collect" title="2. What we collect, why, and on what legal basis">
+        <p>
+          Some laws (such as the GDPR) require a “legal basis” for each use of personal data. Ours
+          are shown in the last column.
+        </p>
         <div className={styles.tableWrap}>
           <table>
             <thead>
               <tr>
                 <th scope="col">Data</th>
                 <th scope="col">Why we use it</th>
+                <th scope="col">Legal basis</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>Name and email address</td>
                 <td>To create and run your account, and to greet you in the app.</td>
+                <td>Contract: needed to give you the account you asked for</td>
               </tr>
               <tr>
                 <td>Password</td>
@@ -54,6 +64,7 @@ export function PrivacyPage() {
                   To sign you in. We store only a one-way scrambled form (a hash); nobody, including
                   us, can read your password.
                 </td>
+                <td>Contract</td>
               </tr>
               <tr>
                 <td>
@@ -63,17 +74,20 @@ export function PrivacyPage() {
                 <td>
                   To sign you in with Google. We don't receive your Google password or contacts.
                 </td>
+                <td>Contract (you choose this way of signing in)</td>
               </tr>
               <tr>
                 <td>
                   Sign-in sessions: a protected token, your browser or device type, and when you
                   signed in
                 </td>
-                <td>To keep you signed in and to let us end sessions if something looks wrong.</td>
+                <td>To keep you signed in and to end sessions if something looks wrong.</td>
+                <td>Contract; legitimate interest in keeping accounts secure</td>
               </tr>
               <tr>
                 <td>Single-use links we email you (verify email, reset password)</td>
                 <td>To confirm your email address and let you reset a forgotten password.</td>
+                <td>Contract</td>
               </tr>
               <tr>
                 <td>Technical data: IP address, time, page or feature used</td>
@@ -81,6 +95,7 @@ export function PrivacyPage() {
                   To protect the service (e.g. limiting repeated sign-in attempts) and to fix
                   errors.
                 </td>
+                <td>Legitimate interest in security and a working service</td>
               </tr>
               <tr>
                 <td>
@@ -90,29 +105,33 @@ export function PrivacyPage() {
                 <td>
                   To find and fix bugs. These reports don't contain your name, email or IP address.
                 </td>
+                <td>Legitimate interest in a working service</td>
               </tr>
             </tbody>
           </table>
         </div>
         <p>
-          We use your data only for these purposes. Giving us your name, email and a password (or
-          using Google) is needed to have an account; you can use the rest of the website and app
-          without one.
+          We use your data only for these purposes. Where we rely on legitimate interest, we have
+          checked that it doesn't override your rights, and you can object (see section 8). Giving
+          us your name, email and a password (or using Google) is needed to have an account; you can
+          use the rest of the website and app without one. We don't collect sensitive data (such as
+          health, religion or precise location), and we don't make decisions about you by automated
+          means alone.
         </p>
       </LegalSection>
 
       <LegalSection id="cookies" title="3. Cookies and website analytics">
         <ul>
           <li>
-            <strong>One essential cookie</strong> keeps you signed in on the website. It can't be
-            read by JavaScript or by other websites, and it isn't used for tracking. The app keeps
-            the same sign-in in your phone's secure storage instead.
+            <strong>One strictly necessary cookie</strong> keeps you signed in on the website. It
+            can't be read by JavaScript or by other websites, isn't used for tracking, and doesn't
+            need consent. The app keeps the same sign-in in your phone's secure storage instead.
           </li>
           <li>
             <strong>Visitor statistics</strong> on the website come from Cloudflare Web Analytics,
             which uses no cookies and doesn't identify you; we see only totals such as page views.
           </li>
-          <li>We don't use advertising or social-media trackers.</li>
+          <li>We don't use advertising, cross-site tracking or social-media cookies.</li>
         </ul>
         <p>
           If we later add optional product analytics, we will ask for your consent first, and you
@@ -122,8 +141,8 @@ export function PrivacyPage() {
 
       <LegalSection id="who-processes" title="4. Who processes your data for us">
         <p>
-          We use these trusted service providers (“Data Processors”). They may only use your data to
-          provide their service to us, under contract.
+          We use these trusted service providers (“processors”). They may only use your data to
+          provide their service to us, under a data protection agreement.
         </p>
         <div className={styles.tableWrap}>
           <table>
@@ -172,13 +191,37 @@ export function PrivacyPage() {
           </table>
         </div>
         <p>
-          So your data may be processed outside India. The DPDP Act allows this, except to countries
-          the Government of India restricts; none of these are. We don't sell or rent your data to
-          anyone, and we share it with authorities only when Indian law requires it.
+          We don't sell your personal data, and we don't share it for targeted advertising. We
+          disclose it to authorities only when the law requires it, and we would tell you unless the
+          law forbids that.
         </p>
       </LegalSection>
 
-      <LegalSection id="how-long" title="5. How long we keep it">
+      <LegalSection id="transfers" title="5. International transfers">
+        <p>
+          Our team is in India and our providers work in the countries listed above, so your data
+          may be processed outside the country where you live. Wherever it goes, it gets the
+          protection described in this policy:
+        </p>
+        <ul>
+          <li>
+            From the EU, EEA, UK or Switzerland, transfers are covered by the European Commission's
+            Standard Contractual Clauses (and the UK addendum) in our providers' data protection
+            agreements, or go to countries recognised as giving adequate protection.
+          </li>
+          <li>
+            Under India's DPDP Act, we don't transfer data to any country the Government of India
+            restricts.
+          </li>
+          <li>Elsewhere, we rely on equivalent safeguards that your local law recognises.</li>
+        </ul>
+        <p>
+          You can ask us for more information about these safeguards at{' '}
+          <MailLink address={legal.privacyEmail} />.
+        </p>
+      </LegalSection>
+
+      <LegalSection id="how-long" title="6. How long we keep it">
         <ul>
           <li>
             <strong>Your account</strong> (name, email, password hash, Google ID, sign-in sessions):
@@ -203,7 +246,7 @@ export function PrivacyPage() {
         </ul>
       </LegalSection>
 
-      <LegalSection id="security" title="6. How we protect it">
+      <LegalSection id="security" title="7. How we protect it">
         <ul>
           <li>
             All connections are encrypted (HTTPS); the database only accepts encrypted connections.
@@ -218,62 +261,101 @@ export function PrivacyPage() {
           </li>
         </ul>
         <p>
-          If a personal data breach happens, we will tell the affected users and the Data Protection
-          Board of India as the DPDP Rules require, with what happened, what it means for you and
-          what we are doing about it.
+          If a personal data breach affects you, we will tell you without undue delay, with what
+          happened, what it means for you and what we are doing about it, and we will notify the
+          data protection authorities within the time the law sets (for example, within 72 hours
+          under the GDPR).
         </p>
       </LegalSection>
 
-      <LegalSection id="your-rights" title="7. Your rights">
-        <p>Under the DPDP Act you can ask us to:</p>
+      <LegalSection id="your-rights" title="8. Your rights">
+        <p>We give these rights to everyone, wherever you live. You can ask us to:</p>
         <ul>
           <li>
-            <strong>See</strong> a summary of the personal data we hold about you and how we use it.
+            <strong>Access</strong>: tell you what personal data we hold about you and how we use
+            it, and give you a copy.
           </li>
           <li>
-            <strong>Correct, complete or update</strong> it.
+            <strong>Correct</strong> data that is wrong or incomplete.
           </li>
           <li>
-            <strong>Delete</strong> it. See <Link to={routes.deleteMyData}>Delete my data</Link>.
+            <strong>Delete</strong> your data. See{' '}
+            <Link to={routes.deleteMyData}>Delete my data</Link>.
+          </li>
+          <li>
+            <strong>Portability</strong>: give you your data in a common, machine-readable format
+            (such as JSON), or send it to another service.
+          </li>
+          <li>
+            <strong>Object</strong> to uses based on legitimate interest, or{' '}
+            <strong>restrict</strong> how we use your data while a question is being sorted out.
           </li>
           <li>
             <strong>Withdraw consent</strong> you have given, as easily as you gave it. This doesn't
             affect what we did before.
           </li>
           <li>
-            <strong>Nominate</strong> someone to use these rights for you if you die or can't act
-            yourself.
-          </li>
-          <li>
-            <strong>Complain</strong> to us (see below).
+            <strong>Appeal</strong> if we turn down your request: reply to our answer and someone
+            who wasn't involved will review it.
           </li>
         </ul>
         <p>
           Write to <MailLink address={legal.privacyEmail} /> from the email address of your account,
-          so we know it's you. We answer within {legal.responseDays} days.
+          so we know it's you. Someone you authorise can also ask for you, with your written
+          permission. We answer within {legal.responseDays} days (we may extend this where the law
+          allows, and will tell you why). Using your rights is free, and we will never treat you
+          differently for using them.
+        </p>
+        <p>
+          You also have the right to complain to a data protection authority; see section 9. We'd
+          appreciate the chance to sort it out first.
         </p>
       </LegalSection>
 
-      <LegalSection id="grievances" title="8. Questions and complaints">
+      <LegalSection id="your-region" title="9. Extra information for your region">
         <p>
-          Our grievance contact is the Goaway privacy team at{' '}
-          <MailLink address={legal.privacyEmail} />. We acknowledge every complaint and resolve it
-          within {legal.responseDays} days. If you're not satisfied with our answer, you can
-          complain to the Data Protection Board of India.
+          <strong>European Union, EEA, United Kingdom and Switzerland.</strong> The GDPR (or UK GDPR
+          / Swiss FADP) applies. Our legal bases are listed in section 2. You can complain to the
+          data protection authority where you live or work, such as the UK Information
+          Commissioner's Office (ICO).
+        </p>
+        <p>
+          <strong>United States (California and other states with privacy laws).</strong> In the
+          last 12 months we have collected these categories of personal information: identifiers
+          (name, email, account and device identifiers, IP address), internet or app activity (pages
+          and features used, error reports) and account login details. We collect them from you,
+          your device and, if you choose, Google. We use them only for the purposes in section 2 and
+          disclose them only to the providers in section 4. We have not sold or shared personal
+          information for cross-context behavioural advertising, and we don't knowingly do so for
+          anyone under 16, so there is nothing to opt out of; a Global Privacy Control signal from
+          your browser is respected by default. You have the rights in section 8 (to know, delete,
+          correct and appeal) without discrimination. If we deny an appeal, you can contact your
+          state's Attorney General.
+        </p>
+        <p>
+          <strong>India.</strong> Under the DPDP Act, our grievance contact is the Goaway privacy
+          team at <MailLink address={legal.privacyEmail} />; we acknowledge every complaint and
+          resolve it within {legal.responseDays} days. If you're not satisfied, you can complain to
+          the Data Protection Board of India. You can also nominate someone to use your rights if
+          you die or can't act yourself, and ask for this notice in any language of the Eighth
+          Schedule to the Constitution of India.
+        </p>
+        <p>
+          <strong>Brazil.</strong> Under the LGPD you have the rights in section 8, including
+          confirmation that we process your data and information about who we share it with, and you
+          can complain to the ANPD.
+        </p>
+        <p>
+          <strong>Everywhere else.</strong> If your country has a privacy law (for example Canada,
+          Australia, Singapore, Japan, South Africa or the UAE), you have the rights it gives you,
+          and at least those in section 8. You can complain to your national privacy authority.
         </p>
       </LegalSection>
 
-      <LegalSection id="children" title="9. Children">
+      <LegalSection id="children" title="10. Children">
         <p>
-          Goaway is for people aged 18 or over. We don't knowingly create accounts for children; if
-          you believe a child has an account, write to us and we will delete it.
-        </p>
-      </LegalSection>
-
-      <LegalSection id="language" title="10. Language">
-        <p>
-          You can ask for this notice in any of the languages in the Eighth Schedule to the
-          Constitution of India by writing to <MailLink address={legal.privacyEmail} />.
+          Goaway is for people aged 18 or over, everywhere. We don't knowingly collect data from
+          children; if you believe a child has an account, write to us and we will delete it.
         </p>
       </LegalSection>
 
@@ -282,6 +364,13 @@ export function PrivacyPage() {
           When this policy changes, we update the date at the top. If a change affects how we use
           your data, we tell you by email or in the app before it applies and, where needed, ask for
           your consent again.
+        </p>
+      </LegalSection>
+
+      <LegalSection id="contact" title="12. Contact">
+        <p>
+          Privacy questions and requests: <MailLink address={legal.privacyEmail} />. Anything else:{' '}
+          <MailLink address={legal.supportEmail} />.
         </p>
       </LegalSection>
     </LegalPage>
