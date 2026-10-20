@@ -4,6 +4,7 @@ import rentalsImage from '@/assets/images/rentals.png';
 import staysImage from '@/assets/images/stays.png';
 import { IconTile, PageHeader, PageShell } from '@/components';
 import { GetAppLink } from '@/features/getApp';
+import { LegalLinks } from '@/features/legal';
 import { routes } from '@/lib/routes';
 import { DestinationSearch } from '../components/DestinationSearch';
 import { TripIdeaCarousel } from '../components/TripIdeaCarousel';
@@ -39,6 +40,7 @@ export function HomePage() {
       <div className={styles.getApp}>
         <GetAppLink />
       </div>
+      <LegalLinks />
     </PageShell>
   );
 }

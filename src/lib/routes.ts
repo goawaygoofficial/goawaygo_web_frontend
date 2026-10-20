@@ -9,6 +9,10 @@ export const routes = {
   verifyEmail: '/verify-email',
   /** Get the Android app: APK download, beta sign-up, later the Play Store. */
   download: '/download',
+  /** Legal pages, also opened from the Android app (keep the paths in sync with app_frontend). */
+  privacy: '/privacy',
+  terms: '/terms',
+  deleteMyData: '/delete-my-data',
   home: '/home',
   trips: '/trips',
   wanderbook: '/wanderbook',
