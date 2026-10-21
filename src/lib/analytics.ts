@@ -17,7 +17,7 @@ interface PostHogSettings {
 
 // Typed as plain strings so the key can be filled in later without touching the code that checks it.
 const POSTHOG: PostHogSettings = {
-  key: '',
+  key: 'phc_rvyFybyXHyGNrDa5yaWLkPEwSDn8JoPYU9CBnUZDrRL3',
   host: 'https://eu.i.posthog.com',
 };
 
