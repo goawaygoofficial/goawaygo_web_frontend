@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import flightsImage from '@/assets/images/flights.png';
 import {
   ChoiceChips,
@@ -14,6 +14,7 @@ import { TRIP_TYPE_OPTIONS } from '@/types/search';
 import type { TripType } from '@/types/search';
 import { searchFlights } from '../services/flightService';
 import type { FlightSearchRequest } from '../types';
+import { track } from '@/lib/analytics';
 
 const INITIAL_FORM: FlightSearchRequest = {
   from: '',
@@ -26,6 +27,9 @@ const INITIAL_FORM: FlightSearchRequest = {
 };
 
 export function FlightSearchPage() {
+  useEffect(() => {
+    track({ name: 'travel_category_opened', props: { category: 'flights' } });
+  }, []);
   const [form, setForm] = useState(INITIAL_FORM);
   const update = (patch: Partial<FlightSearchRequest>) => {
     setForm((current) => ({ ...current, ...patch }));

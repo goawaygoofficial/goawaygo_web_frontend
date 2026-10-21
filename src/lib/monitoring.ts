@@ -5,8 +5,8 @@ import type { Breadcrumb, ErrorEvent } from '@sentry/react';
 const SENTRY_DSN =
   'https://9b000b46dca318a534af1809fad6f4d4@o4512273190813696.ingest.de.sentry.io/4512273682923600';
 
-/** Which deployment this is, by address. Local development and PR previews send nothing. */
-function environment(hostname: string): string | null {
+/** Which deployment this is, by address. Local development and PR previews send nothing (Sentry, analytics). */
+export function environment(hostname: string): string | null {
   if (hostname === 'staging.goawaygo.com') return 'staging';
   if (hostname === 'goawaygo.com' || hostname === 'www.goawaygo.com') return 'production';
   return null;

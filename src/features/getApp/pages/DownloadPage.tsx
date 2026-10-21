@@ -1,6 +1,7 @@
 import { Icon, PageHeader, PageShell } from '@/components';
 import { LegalLinks } from '@/features/legal';
 import { useBack } from '@/hooks';
+import { track } from '@/lib/analytics';
 import { appLinks } from '@/lib/appLinks';
 import { routes } from '@/lib/routes';
 import { useLatestAndroidRelease } from '../hooks/useLatestAndroidRelease';
@@ -78,14 +79,28 @@ function ReleaseDetails({ release }: { release: AndroidRelease }) {
         {megabytes(release.arm64.size)}
       </p>
       {release.notes && <p className={styles.text}>{release.notes}</p>}
-      <a className={styles.primary} href={release.arm64.url} download>
+      <a
+        className={styles.primary}
+        href={release.arm64.url}
+        download
+        onClick={() => {
+          track({ name: 'app_download_clicked', props: { variant: 'arm64' } });
+        }}
+      >
         <Icon name="download" />
         Download for Android
       </a>
       {release.universal && (
         <p className={styles.small}>
           Doesn't install on your phone (older 32-bit models)?{' '}
-          <a className={styles.link} href={release.universal.url} download>
+          <a
+            className={styles.link}
+            href={release.universal.url}
+            download
+            onClick={() => {
+              track({ name: 'app_download_clicked', props: { variant: 'universal' } });
+            }}
+          >
             Download the version for all phones ({megabytes(release.universal.size)})
           </a>
         </p>
@@ -135,6 +150,9 @@ function BetaSignUp() {
         href={appLinks.androidBetaUrl}
         target="_blank"
         rel="noreferrer"
+        onClick={() => {
+          track({ name: 'beta_join_clicked' });
+        }}
       >
         <Icon name="open_in_new" />
         Join the beta

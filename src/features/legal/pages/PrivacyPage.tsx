@@ -107,6 +107,17 @@ export function PrivacyPage() {
                 </td>
                 <td>Legitimate interest in a working service</td>
               </tr>
+              <tr>
+                <td>
+                  Usage statistics, <strong>only if you allow them</strong>: pages and features
+                  used, a random ID for your browser or app, device and browser type
+                </td>
+                <td>
+                  To understand which features are useful and improve Goaway. Never linked to your
+                  name or email, and no IP address is kept.
+                </td>
+                <td>Consent, which you can withdraw at any time</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -120,7 +131,7 @@ export function PrivacyPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="cookies" title="3. Cookies and website analytics">
+      <LegalSection id="cookies" title="3. Cookies, device storage and analytics">
         <ul>
           <li>
             <strong>One strictly necessary cookie</strong> keeps you signed in on the website. It
@@ -134,8 +145,18 @@ export function PrivacyPage() {
           <li>We don't use advertising, cross-site tracking or social-media cookies.</li>
         </ul>
         <p>
-          If we later add optional product analytics, we will ask for your consent first, and you
-          will be able to change your choice at any time.
+          <strong>Optional usage statistics (PostHog).</strong> The website and the app ask once
+          whether you allow anonymous usage statistics; “No thanks” is as easy as “Allow”, and
+          nothing is collected or stored until you allow it. If you do, PostHog keeps a random ID in
+          your browser's storage (or in the app) so visits can be counted, and we record which pages
+          and features are used. We don't record what you type, take recordings of your screen, or
+          link the statistics to your account. You can change your choice at any time under{' '}
+          <strong>Privacy choices</strong> (at the bottom of the website, and in the app's Profile);
+          saying no removes the ID from your device.
+        </p>
+        <p>
+          Your choice itself is remembered on your device so we don't ask again; that is strictly
+          necessary and contains nothing about you.
         </p>
       </LegalSection>
 
@@ -177,6 +198,11 @@ export function PrivacyPage() {
               <tr>
                 <td>Sentry</td>
                 <td>Collects crash and error reports</td>
+                <td>Germany (EU)</td>
+              </tr>
+              <tr>
+                <td>PostHog</td>
+                <td>Usage statistics, only if you allow them</td>
                 <td>Germany (EU)</td>
               </tr>
               <tr>
@@ -240,6 +266,10 @@ export function PrivacyPage() {
             <strong>Crash and error reports</strong>: deleted automatically after 30 days.
           </li>
           <li>
+            <strong>Usage statistics</strong> (only if you allowed them): deleted automatically
+            after 12 months; they aren't linked to your account, so they can't identify you.
+          </li>
+          <li>
             <strong>Database backups</strong>: overwritten within 7 days, so deleted data disappears
             from them too.
           </li>
@@ -291,8 +321,8 @@ export function PrivacyPage() {
             <strong>restrict</strong> how we use your data while a question is being sorted out.
           </li>
           <li>
-            <strong>Withdraw consent</strong> you have given, as easily as you gave it. This doesn't
-            affect what we did before.
+            <strong>Withdraw consent</strong> you have given, as easily as you gave it (for usage
+            statistics: “Privacy choices”). This doesn't affect what we did before.
           </li>
           <li>
             <strong>Appeal</strong> if we turn down your request: reply to our answer and someone

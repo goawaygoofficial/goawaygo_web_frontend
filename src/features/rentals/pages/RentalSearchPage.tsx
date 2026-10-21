@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import rentalsImage from '@/assets/images/rentals.png';
 import {
   ChoiceChips,
@@ -14,6 +14,7 @@ import type { TripType } from '@/types/search';
 import { searchRentals } from '../services/rentalService';
 import { CAR_TYPES } from '../types';
 import type { RentalSearchRequest } from '../types';
+import { track } from '@/lib/analytics';
 
 const INITIAL_FORM: RentalSearchRequest = {
   pickup: '',
@@ -25,6 +26,9 @@ const INITIAL_FORM: RentalSearchRequest = {
 };
 
 export function RentalSearchPage() {
+  useEffect(() => {
+    track({ name: 'travel_category_opened', props: { category: 'rentals' } });
+  }, []);
   const [form, setForm] = useState(INITIAL_FORM);
   const update = (patch: Partial<RentalSearchRequest>) => {
     setForm((current) => ({ ...current, ...patch }));

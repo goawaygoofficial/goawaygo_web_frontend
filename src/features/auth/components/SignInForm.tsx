@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import emailIcon from '@/assets/icons/email.png';
 import { Button, Icon, TextField } from '@/components';
 import { useAsyncAction } from '@/hooks';
+import { track } from '@/lib/analytics';
 import { toErrorMessage } from '@/lib/apiClient';
 import { useDialog } from '@/providers';
 import type { AuthFlow } from '../authFlow';
@@ -32,6 +33,7 @@ export function SignInForm({ flow, onClose }: SignInFormProps) {
     }
     try {
       const result = await signIn({ email: trimmedEmail, password });
+      track({ name: 'sign_in_completed', props: { method: 'email' } });
       await completeSignIn(result, 'Welcome back');
     } catch (error) {
       await showError(toErrorMessage(error, 'Signin failed'));

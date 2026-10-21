@@ -10,6 +10,7 @@ import type { GoogleAccountsOAuth2, GoogleCodeResponse } from '@/types/google-id
 import { useCompleteSignIn } from '../hooks/useCompleteSignIn';
 import { signInWithGoogleCode } from '../services/authService';
 import styles from './GoogleSignInButton.module.css';
+import { track } from '@/lib/analytics';
 
 const GOOGLE_SCOPES = 'openid email profile';
 const GENERIC_FAILURE = 'Google sign-in failed. Please try again.';
@@ -52,6 +53,7 @@ function GoogleButton({ clientId, redirectTo }: { clientId: string; redirectTo?:
     async (code: string) => {
       try {
         const result = await signInWithGoogleCode({ code });
+        track({ name: 'sign_in_completed', props: { method: 'google' } });
         await completeSignIn(result, 'Welcome');
       } catch (error) {
         await showError(toErrorMessage(error, GENERIC_FAILURE));
