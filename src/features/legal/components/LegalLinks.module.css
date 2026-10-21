@@ -7,12 +7,22 @@
   font-size: var(--font-size-sm);
 }
 
-.links a {
+.links a,
+.choices {
   color: var(--color-white-muted);
   text-decoration: none;
 }
 
-.links a:hover {
+.choices {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.links a:hover,
+.choices:hover {
   color: var(--color-white);
   text-decoration: underline;
 }

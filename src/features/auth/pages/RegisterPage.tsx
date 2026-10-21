@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, FeatureList, TextField } from '@/components';
 import { SignUpNotice } from '@/features/legal';
 import { useAsyncAction } from '@/hooks';
+import { track } from '@/lib/analytics';
 import { toErrorMessage } from '@/lib/apiClient';
 import { PASSWORD_RULE_MESSAGE, REQUIRED_FIELDS_MESSAGE, isStrongPassword } from '@/lib/validation';
 import { useDialog } from '@/providers';
@@ -33,6 +34,7 @@ export function RegisterPage() {
     }
     try {
       await signUp({ name: trimmedName, email: trimmedEmail, password });
+      track({ name: 'sign_up_completed', props: { method: 'email' } });
       await showSuccess('Account created! You can now sign in.');
       void navigate(flow.signInPath, { replace: true });
     } catch (error) {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import staysImage from '@/assets/images/stays.png';
 import {
   CounterField,
@@ -9,6 +9,7 @@ import {
   SearchFormLayout,
   TextField,
 } from '@/components';
+import { track } from '@/lib/analytics';
 import { searchStays } from '../services/stayService';
 import type { StaySearchRequest } from '../types';
 
@@ -21,6 +22,9 @@ const INITIAL_FORM: StaySearchRequest = {
 };
 
 export function StaySearchPage() {
+  useEffect(() => {
+    track({ name: 'travel_category_opened', props: { category: 'stays' } });
+  }, []);
   const [form, setForm] = useState(INITIAL_FORM);
   const update = (patch: Partial<StaySearchRequest>) => {
     setForm((current) => ({ ...current, ...patch }));

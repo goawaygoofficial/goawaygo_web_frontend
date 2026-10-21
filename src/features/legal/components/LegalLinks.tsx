@@ -1,14 +1,23 @@
 import { Link } from 'react-router-dom';
+import { analyticsAvailable, reviewConsent } from '@/lib/analytics';
 import { routes } from '@/lib/routes';
 import styles from './LegalLinks.module.css';
 
-/** "Privacy · Terms · Delete my data": the footer of Home, the sign-in page, Profile and Download. */
+/**
+ * "Privacy · Terms · Delete my data · Privacy choices": the footer of Home, the sign-in page, Profile and Download.
+ * "Privacy choices" reopens the analytics consent banner.
+ */
 export function LegalLinks({ className }: { className?: string }) {
   return (
     <nav aria-label="Legal" className={[styles.links, className].filter(Boolean).join(' ')}>
       <Link to={routes.privacy}>Privacy Policy</Link>
       <Link to={routes.terms}>Terms of Use</Link>
       <Link to={routes.deleteMyData}>Delete my data</Link>
+      {analyticsAvailable && (
+        <button type="button" className={styles.choices} onClick={reviewConsent}>
+          Privacy choices
+        </button>
+      )}
     </nav>
   );
 }
