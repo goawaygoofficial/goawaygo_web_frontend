@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import staysImage from '@/assets/images/stays.png';
 import {
   CounterField,
@@ -9,9 +9,9 @@ import {
   SearchFormLayout,
   TextField,
 } from '@/components';
+import { track } from '@/lib/analytics';
 import { searchStays } from '../services/stayService';
 import type { StaySearchRequest } from '../types';
-import { track } from '@/lib/analytics';
 
 const INITIAL_FORM: StaySearchRequest = {
   destination: '',

@@ -7,10 +7,10 @@ import { env } from '@/lib/env';
 import { loadGoogleOAuth2 } from '@/lib/googleIdentity';
 import { useDialog } from '@/providers';
 import type { GoogleAccountsOAuth2, GoogleCodeResponse } from '@/types/google-identity';
+import { track } from '@/lib/analytics';
 import { useCompleteSignIn } from '../hooks/useCompleteSignIn';
 import { signInWithGoogleCode } from '../services/authService';
 import styles from './GoogleSignInButton.module.css';
-import { track } from '@/lib/analytics';
 
 const GOOGLE_SCOPES = 'openid email profile';
 const GENERIC_FAILURE = 'Google sign-in failed. Please try again.';

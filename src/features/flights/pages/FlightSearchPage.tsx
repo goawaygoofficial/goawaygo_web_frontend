@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import flightsImage from '@/assets/images/flights.png';
 import {
   ChoiceChips,
@@ -12,9 +12,9 @@ import {
 } from '@/components';
 import { TRIP_TYPE_OPTIONS } from '@/types/search';
 import type { TripType } from '@/types/search';
+import { track } from '@/lib/analytics';
 import { searchFlights } from '../services/flightService';
 import type { FlightSearchRequest } from '../types';
-import { track } from '@/lib/analytics';
 
 const INITIAL_FORM: FlightSearchRequest = {
   from: '',

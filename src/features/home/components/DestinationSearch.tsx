@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Icon, TextField } from '@/components';
 import { routes } from '@/lib/routes';
-import styles from './DestinationSearch.module.css';
 import { track } from '@/lib/analytics';
+import styles from './DestinationSearch.module.css';
 
 /** "Where do you want to be?" — opens the destination info page for the typed place. */
 export function DestinationSearch() {
