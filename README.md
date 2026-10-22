@@ -1,6 +1,6 @@
-# Goaway — Web Frontend
+# GoAwayGo — Web Frontend
 
-The web version of the Goaway travel app. It is a React + TypeScript single-page app that mirrors
+The web version of the GoAwayGo travel app. It is a React + TypeScript single-page app that mirrors
 the Flutter app in `../app_frontend` screen by screen. Brand colours, copy, routes and API calls
 match the app. The layout is responsive, from 360px phones up to desktop.
 

@@ -22,10 +22,10 @@ export function DownloadPage() {
   return (
     <PageShell>
       <PageHeader onBack={goBack} />
-      <h1 className={styles.heading}>Get Goaway for Android</h1>
+      <h1 className={styles.heading}>Get GoAwayGo for Android</h1>
       {appLinks.playStoreUrl ? (
         <section className={styles.card}>
-          <p className={styles.text}>Install Goaway from Google Play.</p>
+          <p className={styles.text}>Install GoAwayGo from Google Play.</p>
           <a
             className={styles.primary}
             href={appLinks.playStoreUrl}
@@ -39,7 +39,7 @@ export function DownloadPage() {
       ) : (
         <>
           <p className={styles.lead}>
-            Goaway is in beta. It's free and needs Android 8.0 or newer; the iPhone version comes
+            GoAwayGo is in beta. It's free and needs Android 8.0 or newer; the iPhone version comes
             later.
           </p>
           <DirectDownload />
@@ -121,7 +121,7 @@ function ReleaseDetails({ release }: { release: AndroidRelease }) {
         <summary>Check the file (SHA-256)</summary>
         <p className={styles.small}>
           The file you downloaded should have this fingerprint. Android also checks that every
-          update is signed by Goaway.
+          update is signed by GoAwayGo.
         </p>
         <code className={styles.hash}>{release.arm64.sha256}</code>
         {release.universal && (

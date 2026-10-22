@@ -17,7 +17,7 @@ export function PrivacyPage() {
       title="Privacy Policy"
       summary={
         <>
-          We collect only what Goaway needs to run your account, keep it safe and fix problems. We
+          We collect only what GoAwayGo needs to run your account, keep it safe and fix problems. We
           don't sell your data, share it for advertising, or show you ads. Wherever you live, you
           can see, correct, download or delete your data at any time: write to{' '}
           <MailLink address={legal.privacyEmail} />.
@@ -26,11 +26,12 @@ export function PrivacyPage() {
     >
       <LegalSection id="who-we-are" title="1. Who we are">
         <p>
-          Goaway (the website at goawaygo.com and the Goaway app) is run by the Goaway team, based
-          in India. We decide how and why your personal data is used, so we are responsible for it:
-          the “controller” under the EU and UK GDPR, the “business” under US state privacy laws, and
-          the “Data Fiduciary” under India's Digital Personal Data Protection Act. Goaway is in beta
-          and the company is being registered; this policy will name it once that is done.
+          GoAwayGo (the website at goawaygo.com and the GoAwayGo app) is run by the GoAwayGo team,
+          based in India. We decide how and why your personal data is used, so we are responsible
+          for it: the “controller” under the EU and UK GDPR, the “business” under US state privacy
+          laws, and the “Data Fiduciary” under India's Digital Personal Data Protection Act.
+          GoAwayGo is in beta and the company is being registered; this policy will name it once
+          that is done.
         </p>
         <p>
           Contact for anything about your data, including our privacy team:{' '}
@@ -113,7 +114,7 @@ export function PrivacyPage() {
                   used, a random ID for your browser or app, device and browser type
                 </td>
                 <td>
-                  To understand which features are useful and improve Goaway. Never linked to your
+                  To understand which features are useful and improve GoAwayGo. Never linked to your
                   name or email, and no IP address is kept.
                 </td>
                 <td>Consent, which you can withdraw at any time</td>
@@ -285,7 +286,7 @@ export function PrivacyPage() {
             Passwords are stored as hashes; sign-in sessions and emailed links are stored as hashes
             too.
           </li>
-          <li>Only the people who run Goaway can access our systems and data.</li>
+          <li>Only the people who run GoAwayGo can access our systems and data.</li>
           <li>
             Repeated sign-in attempts are limited, and crash reports have personal data removed.
           </li>
@@ -363,7 +364,7 @@ export function PrivacyPage() {
           state's Attorney General.
         </p>
         <p>
-          <strong>India.</strong> Under the DPDP Act, our grievance contact is the Goaway privacy
+          <strong>India.</strong> Under the DPDP Act, our grievance contact is the GoAwayGo privacy
           team at <MailLink address={legal.privacyEmail} />; we acknowledge every complaint and
           resolve it within {legal.responseDays} days. If you're not satisfied, you can complain to
           the Data Protection Board of India. You can also nominate someone to use your rights if
@@ -384,7 +385,7 @@ export function PrivacyPage() {
 
       <LegalSection id="children" title="10. Children">
         <p>
-          Goaway is for people aged 18 or over, everywhere. We don't knowingly collect data from
+          GoAwayGo is for people aged 18 or over, everywhere. We don't knowingly collect data from
           children; if you believe a child has an account, write to us and we will delete it.
         </p>
       </LegalSection>

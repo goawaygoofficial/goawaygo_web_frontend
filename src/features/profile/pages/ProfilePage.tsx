@@ -54,7 +54,7 @@ function GuestProfile({ overlayOpen }: { overlayOpen: boolean }) {
       <PageShell className={styles.guest}>
         <div inert={overlayOpen} className={styles.guestContent}>
           <Logo size="lg" />
-          <h1 className="visually-hidden">Sign in to Goaway</h1>
+          <h1 className="visually-hidden">Sign in to GoAwayGo</h1>
           <FeatureList />
           <div className={styles.guestActions}>
             <SignInPanel flow={authFlows.profile} />

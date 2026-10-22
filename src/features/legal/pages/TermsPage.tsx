@@ -14,7 +14,7 @@ export function TermsPage() {
       title="Terms of Use"
       summary={
         <>
-          Goaway is a free travel-planning service in beta. Use it fairly, keep your account safe,
+          GoAwayGo is a free travel-planning service in beta. Use it fairly, keep your account safe,
           and remember that bookings you make on partner sites are between you and that partner.
           Questions: <MailLink address={legal.supportEmail} />.
         </>
@@ -22,19 +22,19 @@ export function TermsPage() {
     >
       <LegalSection id="agreement" title="1. These terms">
         <p>
-          These terms apply when you use the Goaway website (goawaygo.com) or the Goaway app
-          (together, “Goaway”), run by the Goaway team in India (“we”, “us”). By creating an account
-          or using Goaway, you agree to them. Our <Link to={routes.privacy}>Privacy Policy</Link>{' '}
-          explains how we handle your personal data.
+          These terms apply when you use the GoAwayGo website (goawaygo.com) or the GoAwayGo app
+          (together, “GoAwayGo”), run by the GoAwayGo team in India (“we”, “us”). By creating an
+          account or using GoAwayGo, you agree to them. Our{' '}
+          <Link to={routes.privacy}>Privacy Policy</Link> explains how we handle your personal data.
         </p>
       </LegalSection>
 
-      <LegalSection id="beta" title="2. Goaway is in beta">
+      <LegalSection id="beta" title="2. GoAwayGo is in beta">
         <p>
-          Goaway is still being built. Features may change, be missing, or stop working for a while,
-          and some information (such as destinations, prices or availability) may be sample data or
-          incomplete. Please check important details with the official source before you rely on
-          them. Goaway is free during the beta.
+          GoAwayGo is still being built. Features may change, be missing, or stop working for a
+          while, and some information (such as destinations, prices or availability) may be sample
+          data or incomplete. Please check important details with the official source before you
+          rely on them. GoAwayGo is free during the beta.
         </p>
       </LegalSection>
 
@@ -51,10 +51,10 @@ export function TermsPage() {
         </ul>
       </LegalSection>
 
-      <LegalSection id="acceptable-use" title="4. Using Goaway fairly">
+      <LegalSection id="acceptable-use" title="4. Using GoAwayGo fairly">
         <p>You agree not to:</p>
         <ul>
-          <li>break any law, or use Goaway to harm, harass, impersonate or deceive anyone;</li>
+          <li>break any law, or use GoAwayGo to harm, harass, impersonate or deceive anyone;</li>
           <li>
             post or share content that is unlawful, hateful, obscene, violent, misleading, or that
             infringes someone else's rights (for example, photos you don't own);
@@ -64,9 +64,9 @@ export function TermsPage() {
             interfere with the service (for example, with viruses or by overloading it);
           </li>
           <li>
-            copy Goaway's content in bulk, scrape it, or use bots without our written permission;
+            copy GoAwayGo's content in bulk, scrape it, or use bots without our written permission;
           </li>
-          <li>resell or commercially exploit Goaway without our written permission.</li>
+          <li>resell or commercially exploit GoAwayGo without our written permission.</li>
         </ul>
         <p>
           If you find a security problem, please tell us privately at{' '}
@@ -77,7 +77,7 @@ export function TermsPage() {
       <LegalSection id="your-content" title="5. Content you share">
         <p>
           You own what you post (such as trip stories and photos, when these features arrive). You
-          give us permission to store, show and share it inside Goaway, as you choose, so the
+          give us permission to store, show and share it inside GoAwayGo, as you choose, so the
           service works. You can delete it at any time. Only post what you have the right to share.
           We may remove content that breaks these terms or the law, and we act on valid complaints.
         </p>
@@ -85,24 +85,24 @@ export function TermsPage() {
 
       <LegalSection id="partners" title="6. Travel partners and links">
         <p>
-          Goaway may show flights, stays, rentals and other offers from partner websites and link to
-          them. Goaway is not a travel agent and does not sell those services: any booking, payment,
-          cancellation or refund is between you and the partner, under their terms. We may earn a
-          commission when you book through a link; this never changes the price you pay. We aren't
-          responsible for partner websites or their content.
+          GoAwayGo may show flights, stays, rentals and other offers from partner websites and link
+          to them. GoAwayGo is not a travel agent and does not sell those services: any booking,
+          payment, cancellation or refund is between you and the partner, under their terms. We may
+          earn a commission when you book through a link; this never changes the price you pay. We
+          aren't responsible for partner websites or their content.
         </p>
       </LegalSection>
 
       <LegalSection id="our-rights" title="7. Our content">
         <p>
-          The Goaway name, logo, design, app and text belong to us or our licensors. You may use
-          them only to use Goaway as intended.
+          The GoAwayGo name, logo, design, app and text belong to us or our licensors. You may use
+          them only to use GoAwayGo as intended.
         </p>
       </LegalSection>
 
       <LegalSection id="ending" title="8. Closing your account">
         <p>
-          You can stop using Goaway and ask us to delete your account at any time; see{' '}
+          You can stop using GoAwayGo and ask us to delete your account at any time; see{' '}
           <Link to={routes.deleteMyData}>Delete my data</Link>. We may suspend or close an account
           that seriously or repeatedly breaks these terms, or if the law requires it; where we
           reasonably can, we tell you why first.
@@ -111,21 +111,21 @@ export function TermsPage() {
 
       <LegalSection id="liability" title="9. Our responsibility">
         <p>
-          We work hard to keep Goaway available and correct, but during the beta we provide it “as
+          We work hard to keep GoAwayGo available and correct, but during the beta we provide it “as
           is”, without promises that it will always work, be error-free, or that its information is
           complete. As far as the law allows, we are not responsible for indirect losses (such as
           missed trips or lost bookings with partners), and our total responsibility to you is
-          limited to what you have paid us for Goaway in the 12 months before the claim (Goaway is
-          currently free). Nothing in these terms limits rights you have under the consumer
+          limited to what you have paid us for GoAwayGo in the 12 months before the claim (GoAwayGo
+          is currently free). Nothing in these terms limits rights you have under the consumer
           protection laws of the country where you live that can't be limited by contract.
         </p>
       </LegalSection>
 
       <LegalSection id="changes" title="10. Changes to these terms">
         <p>
-          We may update these terms as Goaway grows. We change the date at the top, and for
+          We may update these terms as GoAwayGo grows. We change the date at the top, and for
           important changes we tell you by email or in the app before they apply. If you keep using
-          Goaway after that, the new terms apply; if you don't agree, you can close your account.
+          GoAwayGo after that, the new terms apply; if you don't agree, you can close your account.
         </p>
       </LegalSection>
 
@@ -135,8 +135,8 @@ export function TermsPage() {
           solve any problem; we reply within {legal.responseDays} days.
         </p>
         <p>
-          These terms are governed by the laws of India, where Goaway is run. If you use Goaway as a
-          consumer, you also keep the protection of the mandatory laws of the country where you
+          These terms are governed by the laws of India, where GoAwayGo is run. If you use GoAwayGo
+          as a consumer, you also keep the protection of the mandatory laws of the country where you
           live, and you can bring a claim in the courts there if that law gives you the right to.
           Otherwise, disputes go to the courts of India. If you live in the EU, you can also use
           your national consumer dispute-resolution bodies.

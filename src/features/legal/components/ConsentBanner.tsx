@@ -23,7 +23,7 @@ export function ConsentBanner() {
   return (
     <section className={styles.banner} aria-labelledby="consent-title" aria-live="polite">
       <h2 id="consent-title" className={styles.title}>
-        Help us improve Goaway?
+        Help us improve GoAwayGo?
       </h2>
       <p className={styles.text}>
         With your permission we collect anonymous usage statistics (which pages and features are

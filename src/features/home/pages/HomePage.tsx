@@ -21,7 +21,7 @@ export function HomePage() {
   return (
     <PageShell width="wide">
       <PageHeader showNotifications />
-      <h1 className="visually-hidden">Goaway home</h1>
+      <h1 className="visually-hidden">GoAwayGo home</h1>
 
       <div className={styles.top}>
         <div className={styles.planner}>
