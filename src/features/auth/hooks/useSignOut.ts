@@ -26,7 +26,7 @@ export function useSignOut(): SignOutControl {
 
   const [pending, run] = useAsyncAction(
     useCallback(async () => {
-      const confirmed = await showConfirm('Sign out of Goaway?', 'Sign out');
+      const confirmed = await showConfirm('Sign out of GoAwayGo?', 'Sign out');
       if (!confirmed) return;
       setLeaving(true);
       await endSession();

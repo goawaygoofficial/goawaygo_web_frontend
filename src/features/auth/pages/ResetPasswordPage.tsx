@@ -16,7 +16,7 @@ import styles from '../components/AuthForms.module.css';
 const PASSWORD_CHANGED_MESSAGE =
   'Your password has been changed. Please sign in with your new password.';
 
-/** Opened from the "Reset your Goaway password" email: `/reset-password?token=…`. */
+/** Opened from the "Reset your GoAwayGo password" email: `/reset-password?token=…`. */
 export function ResetPasswordPage() {
   const token = useLinkToken();
   return token ? <ResetPasswordForm token={token} /> : <MissingTokenNotice />;

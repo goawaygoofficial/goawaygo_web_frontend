@@ -12,7 +12,7 @@ export function Logo({ size = 'md', className }: LogoProps) {
   return (
     <img
       src={logoUrl}
-      alt="Goaway"
+      alt="GoAwayGo"
       className={[styles.logo, styles[size], className].filter(Boolean).join(' ')}
     />
   );

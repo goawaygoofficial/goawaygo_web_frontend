@@ -30,7 +30,7 @@ export function SplashPage() {
 
   return (
     <main className={styles.splash} aria-busy="true">
-      <h1 className="visually-hidden">Goaway</h1>
+      <h1 className="visually-hidden">GoAwayGo</h1>
       <Logo size="splash" className={styles.logo} />
       <WaveBackground />
     </main>

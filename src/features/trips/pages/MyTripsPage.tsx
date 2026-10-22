@@ -20,7 +20,8 @@ export function MyTripsPage() {
           No trips yet
         </h1>
         <p className={styles.text}>
-          Trips you book with Goaway will show up here. Start by finding a flight, a stay or a car.
+          Trips you book with GoAwayGo will show up here. Start by finding a flight, a stay or a
+          car.
         </p>
         <Link to={routes.home} className={styles.cta}>
           Plan a trip

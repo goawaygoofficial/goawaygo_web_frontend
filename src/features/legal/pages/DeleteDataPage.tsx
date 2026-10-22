@@ -4,7 +4,7 @@ import { routes } from '@/lib/routes';
 import { LegalPage, LegalSection, MailLink } from '../components/LegalPage';
 
 /**
- * How to delete a Goaway account and its data. Also the account-deletion URL that Google Play requires for the
+ * How to delete a GoAwayGo account and its data. Also the account-deletion URL that Google Play requires for the
  * app's listing. Until the in-app "Delete account" button exists (Phase 4.3), deletion is by email request.
  */
 export function DeleteDataPage() {
@@ -13,9 +13,9 @@ export function DeleteDataPage() {
       title="Delete my data"
       summary={
         <>
-          Wherever you live, you can delete your Goaway account and personal data at any time, free
-          of charge: your “right to erasure” or “right to delete” under privacy laws such as the
-          GDPR, US state laws and India's DPDP Act. Email us from your account's address and we
+          Wherever you live, you can delete your GoAwayGo account and personal data at any time,
+          free of charge: your “right to erasure” or “right to delete” under privacy laws such as
+          the GDPR, US state laws and India's DPDP Act. Email us from your account's address and we
           delete everything within {legal.responseDays} days.
         </>
       }
@@ -24,9 +24,9 @@ export function DeleteDataPage() {
         <ol>
           <li>
             Send an email to{' '}
-            <MailLink address={legal.privacyEmail} subject="Delete my Goaway account" /> from the
-            email address you use for Goaway, with the subject “Delete my Goaway account”. Signed up
-            with Google? Use that Google account's email address.
+            <MailLink address={legal.privacyEmail} subject="Delete my GoAwayGo account" /> from the
+            email address you use for GoAwayGo, with the subject “Delete my GoAwayGo account”.
+            Signed up with Google? Use that Google account's email address.
           </li>
           <li>
             We reply to confirm the request came from you. If you write from another address, we
@@ -45,7 +45,7 @@ export function DeleteDataPage() {
           <li>Your account: name, email address, password hash and Google sign-in link.</li>
           <li>All your sign-in sessions, on every device (you are signed out everywhere).</li>
           <li>Any unused verification or password-reset links.</li>
-          <li>Any content you have added to Goaway.</li>
+          <li>Any content you have added to GoAwayGo.</li>
         </ul>
         <p>
           Server logs and crash reports are deleted automatically after 30 days, and database
@@ -61,11 +61,12 @@ export function DeleteDataPage() {
             <MailLink address={legal.privacyEmail} /> and tell us what to change.
           </li>
           <li>
-            Signed in with Google? You can also remove Goaway's access in your Google Account under{' '}
+            Signed in with Google? You can also remove GoAwayGo's access in your Google Account
+            under{' '}
             <a href="https://myaccount.google.com/connections" target="_blank" rel="noreferrer">
               Third-party apps &amp; services
             </a>
-            . This doesn't delete your Goaway account; email us for that.
+            . This doesn't delete your GoAwayGo account; email us for that.
           </li>
           <li>
             Uninstalling the app removes the data it keeps on your phone, but not your account.

@@ -30,7 +30,7 @@ export function AuthPage() {
               SKIP
             </Link>
           </header>
-          <h1 className="visually-hidden">Sign in to Goaway</h1>
+          <h1 className="visually-hidden">Sign in to GoAwayGo</h1>
           <FeatureList />
 
           <SignInPanel flow={authFlows.signInPage} />

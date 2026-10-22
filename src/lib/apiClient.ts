@@ -71,7 +71,7 @@ async function send(
 }
 
 /**
- * Performs a JSON request against the Goaway backend and returns the parsed body.
+ * Performs a JSON request against the GoAwayGo backend and returns the parsed body.
  * Sends the access token when signed in. If the server answers 401 to an authenticated request (the 20-minute
  * token expired), it refreshes the session once and retries; if that fails the user is signed out.
  * The caller supplies the expected response type; validate/map it at the service boundary.

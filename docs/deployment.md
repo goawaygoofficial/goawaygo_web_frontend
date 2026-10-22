@@ -1,7 +1,7 @@
 # Deployment
 
 The website is a static build (`npm run build` → `dist/`) hosted on **Cloudflare Pages**, which builds and deploys
-it from GitHub on every push. The backend's setup is in `goaway_backend/docs/deployment.md`.
+it from GitHub on every push. The backend's setup is in `goawaygo_backend/docs/deployment.md`.
 
 | Environment | Branch    | Pages project         | Address                | API                        |
 | ----------- | --------- | --------------------- | ---------------------- | -------------------------- |
@@ -25,7 +25,7 @@ The website and API must stay on the same registrable domain (`goawaygo.com`): t
 ## One-time setup (staging)
 
 1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**. Authorise the Cloudflare GitHub
-   app for the `goawayofficial` account, **only for the `goaway_web_frontend` repository**.
+   app for the `goawaygoofficial` account, **only for the `goawaygo_web_frontend` repository**.
 2. Project name `goaway-web-frontend` (staging), production branch **`develop`**.
 3. Build settings: framework preset **None**, build command `npm run build`, output directory `dist`.
 4. Environment variables (Production):
@@ -33,7 +33,7 @@ The website and API must stay on the same registrable domain (`goawaygo.com`): t
    - `VITE_GOOGLE_CLIENT_ID` = the Web client ID (same value as in `.env.example`)
 5. **Save and Deploy**. Then **Custom domains → Set up a custom domain** → `staging.goawaygo.com` (Cloudflare adds
    the DNS record itself).
-6. Google sign-in: Google Cloud project `goaway-483709` → Google Auth Platform → Clients → **Goaway Web** → add
+6. Google sign-in: Google Cloud project `goaway-483709` → Google Auth Platform → Clients → **GoAwayGo Web** → add
    `https://staging.goawaygo.com` to **Authorised JavaScript origins**.
 7. Preview deployments (PRs) can't sign in with Google or reach the API (different origin); test those flows on
    staging after merge.
