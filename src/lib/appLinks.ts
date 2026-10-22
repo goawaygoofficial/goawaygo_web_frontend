@@ -14,7 +14,7 @@ export const appLinks: AppLinks = {
   /** Release manifest written next to the APKs (version, size, SHA-256 and URL of each file). */
   androidManifestUrl: 'https://downloads.goawaygo.com/android/latest.json',
   /** Firebase App Distribution invite link. Empty hides "Join the beta". */
-  androidBetaUrl: 'https://appdistribution.firebase.dev/i/11e069c8b2ebcd3d',
+  androidBetaUrl: 'https://appdistribution.firebase.dev/i/2d125c5f843e31fa',
   /** Google Play listing. Empty until launch. */
   playStoreUrl: '',
 };
