@@ -21,7 +21,9 @@ const POSTHOG: PostHogSettings = {
   host: 'https://eu.i.posthog.com',
 };
 
-const CONSENT_KEY = 'goaway.analyticsConsent';
+const CONSENT_KEY = 'goawaygo.analyticsConsent';
+/** Where the choice was kept before the GoAwayGo rename; moved to CONSENT_KEY on first read. */
+const LEGACY_CONSENT_KEY = 'goaway.analyticsConsent';
 
 export type AnalyticsConsent = 'granted' | 'denied' | null;
 
@@ -48,7 +50,13 @@ let reviewing = false;
 
 function readConsent(): AnalyticsConsent {
   try {
-    const value = window.localStorage.getItem(CONSENT_KEY);
+    let value = window.localStorage.getItem(CONSENT_KEY);
+    const legacy = window.localStorage.getItem(LEGACY_CONSENT_KEY);
+    if (legacy !== null) {
+      value ??= legacy;
+      window.localStorage.setItem(CONSENT_KEY, value);
+      window.localStorage.removeItem(LEGACY_CONSENT_KEY);
+    }
     return value === 'granted' || value === 'denied' ? value : null;
   } catch {
     return null;
