@@ -3,10 +3,10 @@
 The website is a static build (`npm run build` → `dist/`) hosted on **Cloudflare Pages**, which builds and deploys
 it from GitHub on every push. The backend's setup is in `goawaygo_backend/docs/deployment.md`.
 
-| Environment | Branch    | Pages project         | Address                | API                        |
-| ----------- | --------- | --------------------- | ---------------------- | -------------------------- |
-| Staging     | `develop` | `goaway-web-frontend` | `staging.goawaygo.com` | `https://api.goawaygo.com` |
-| Production  | `main`    | `goawaygo` (later)    | `goawaygo.com`         | decided at launch          |
+| Environment | Branch    | Pages project           | Address                | API                        |
+| ----------- | --------- | ----------------------- | ---------------------- | -------------------------- |
+| Staging     | `develop` | `goawaygo-web-frontend` | `staging.goawaygo.com` | `https://api.goawaygo.com` |
+| Production  | `main`    | `goawaygo` (later)      | `goawaygo.com`         | decided at launch          |
 
 The website and API must stay on the same registrable domain (`goawaygo.com`): the login refresh cookie is
 `SameSite=Strict`.
@@ -14,7 +14,7 @@ The website and API must stay on the same registrable domain (`goawaygo.com`): t
 ## How it works
 
 - Cloudflare's GitHub app watches this repository. A push to `develop` builds and deploys staging; every PR also
-  gets its own preview address (`<hash>.goaway-web-frontend.pages.dev`).
+  gets its own preview address (`<hash>.goawaygo-web-frontend.pages.dev`).
 - Pages serves `index.html` for any unknown path (there is no `404.html`), so React Router handles deep links such
   as `/reset-password?token=…`.
 - [`public/_headers`](../public/_headers) adds security headers and long-term caching for hashed assets.
@@ -26,7 +26,7 @@ The website and API must stay on the same registrable domain (`goawaygo.com`): t
 
 1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**. Authorise the Cloudflare GitHub
    app for the `goawaygoofficial` account, **only for the `goawaygo_web_frontend` repository**.
-2. Project name `goaway-web-frontend` (staging), production branch **`develop`**.
+2. Project name `goawaygo-web-frontend` (staging), production branch **`develop`**.
 3. Build settings: framework preset **None**, build command `npm run build`, output directory `dist`.
 4. Environment variables (Production):
    - `VITE_API_BASE_URL` = `https://api.goawaygo.com`
@@ -40,4 +40,4 @@ The website and API must stay on the same registrable domain (`goawaygo.com`): t
 
 ## Rollback
 
-Workers & Pages → `goaway-web-frontend` → Deployments → pick an earlier deployment → **Rollback to this deployment**.
+Workers & Pages → `goawaygo-web-frontend` → Deployments → pick an earlier deployment → **Rollback to this deployment**.
