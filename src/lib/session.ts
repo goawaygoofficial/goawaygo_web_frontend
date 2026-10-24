@@ -25,7 +25,7 @@ export interface SessionDto {
 
 type SessionListener = (user: UserDto | null) => void;
 
-const REFRESH_LOCK = 'goaway-auth-refresh';
+const REFRESH_LOCK = 'goawaygo-auth-refresh';
 
 let accessToken: string | null = null;
 let inFlightRefresh: Promise<SessionDto | null> | null = null;

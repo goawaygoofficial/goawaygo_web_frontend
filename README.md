@@ -4,12 +4,29 @@ The web version of the GoAwayGo travel app. It is a React + TypeScript single-pa
 the Flutter app in `../app_frontend` screen by screen. Brand colours, copy, routes and API calls
 match the app. The layout is responsive, from 360px phones up to desktop.
 
-|         |                                                                          |
-| ------- | ------------------------------------------------------------------------ |
-| Stack   | React 19, TypeScript (strict), Vite 8, react-router-dom 7                |
-| Styling | CSS Modules + CSS custom properties (`src/styles/tokens.css`), no UI kit |
-| Icons   | Brand PNGs from the app + `lucide-react` for UI glyphs                   |
-| Quality | ESLint (typescript-eslint `strictTypeChecked`, react-hooks) + Prettier   |
+|         |                                                                                |
+| ------- | ------------------------------------------------------------------------------ |
+| Stack   | React 19, TypeScript (strict), Vite 8, react-router-dom 7                      |
+| Styling | CSS Modules + CSS custom properties (`src/styles/tokens.css`), no UI kit       |
+| Icons   | Brand PNGs from the app + Material Design icons (`@material-design-icons/svg`) |
+| Quality | ESLint (typescript-eslint `strictTypeChecked`, react-hooks) + Prettier         |
+
+## Documentation
+
+New here? Read these in order:
+
+| File                    | What it's for                                                                           |
+| ----------------------- | --------------------------------------------------------------------------------------- |
+| `README.md` (this file) | What this part does and how to run it locally                                           |
+| `CONTRIBUTING.md`       | Branches, commits, PRs and checks                                                       |
+| `FOUNDATIONS.md`        | Every service and tool GoAwayGo uses, what it's for, free limits, where it's configured |
+| `LINKS.md`              | Every dashboard and console, a weekly checklist, and how to give a new developer access |
+| `CLAUDE.md`             | Project facts and conventions (also read by Claude Code)                                |
+| `RELEASING.md`          | What happens after a merge, how to release, version numbers, rollbacks                  |
+| `ROADMAP.md`            | What's done and what's next                                                             |
+| `docs/`                 | Details for this repo (deployment)                                                      |
+
+`CLAUDE.md`, `FOUNDATIONS.md`, `LINKS.md`, `RELEASING.md` and `ROADMAP.md` are the same in all three repos.
 
 ## Getting started
 

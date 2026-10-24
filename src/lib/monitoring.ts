@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react';
 import type { Breadcrumb, ErrorEvent } from '@sentry/react';
 
-/** Sentry project goaway-web (EU region). A DSN is a public identifier, not a secret. */
+/** Sentry project goawaygo-web (EU region). A DSN is a public identifier, not a secret. */
 const SENTRY_DSN =
   'https://9b000b46dca318a534af1809fad6f4d4@o4512273190813696.ingest.de.sentry.io/4512273682923600';
 
@@ -46,7 +46,7 @@ export function initMonitoring(): void {
   Sentry.init({
     dsn: SENTRY_DSN,
     environment: env,
-    release: `goaway-web@${__APP_RELEASE__}`,
+    release: `goawaygo-web@${__APP_RELEASE__}`,
     // Collect no personal data: no user details, cookies, headers, request/response bodies or query strings.
     dataCollection: {
       userInfo: false,
