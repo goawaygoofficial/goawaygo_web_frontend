@@ -3,10 +3,10 @@
 The website is a static build (`npm run build` → `dist/`) hosted on **Cloudflare Pages**, which builds and deploys
 it from GitHub on every push. The backend's setup is in `goawaygo_backend/docs/deployment.md`.
 
-| Environment | Branch    | Pages project         | Address                | API                        |
-| ----------- | --------- | --------------------- | ---------------------- | -------------------------- |
-| Staging     | `develop` | `goawaygo-web` | `staging.goawaygo.com` | `https://api.goawaygo.com` |
-| Production  | `main`    | `goawaygo` (later)    | `goawaygo.com`         | decided at launch          |
+| Environment | Branch    | Pages project      | Address                | API                        |
+| ----------- | --------- | ------------------ | ---------------------- | -------------------------- |
+| Staging     | `develop` | `goawaygo-web`     | `staging.goawaygo.com` | `https://api.goawaygo.com` |
+| Production  | `main`    | `goawaygo` (later) | `goawaygo.com`         | decided at launch          |
 
 The website and API must stay on the same registrable domain (`goawaygo.com`): the login refresh cookie is
 `SameSite=Strict`.
