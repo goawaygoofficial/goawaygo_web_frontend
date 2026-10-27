@@ -53,3 +53,110 @@
 .cta:hover {
   filter: brightness(1.06);
 }
+
+.heading {
+  margin-block: var(--space-2) var(--space-5);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  min-height: 9rem;
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  color: var(--color-white);
+}
+
+.sunset {
+  background: var(--gradient-sunset);
+}
+
+.ember {
+  background: var(--gradient-ember);
+}
+
+.coral {
+  background: var(--gradient-coral);
+}
+
+.peach {
+  background: var(--gradient-peach);
+}
+
+.where {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.tag {
+  align-self: flex-start;
+  padding: 0.125rem var(--space-2);
+  border-radius: var(--radius-chip);
+  background: var(--color-white-subtle);
+  font-size: var(--font-size-xs);
+  text-transform: capitalize;
+}
+
+/* The whole card opens the place; Remove sits above it. */
+.open {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: var(--radius-xl);
+}
+
+.open:focus-visible {
+  outline-offset: calc(-1 * var(--size-focus-ring));
+}
+
+.remove {
+  position: absolute;
+  z-index: 2;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-touch);
+  height: var(--size-touch);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: transparent;
+  color: var(--color-white);
+}
+
+.remove:hover:not(:disabled) {
+  background: var(--color-white-subtle);
+}
+
+.remove svg {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+}

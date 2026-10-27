@@ -33,6 +33,7 @@ export type AnalyticsEvent =
   | { name: 'sign_in_completed'; props: { method: 'email' | 'google' } }
   | { name: 'travel_category_opened'; props: { category: 'flights' | 'stays' | 'rentals' } }
   | { name: 'destination_searched'; props?: undefined }
+  | { name: 'trip_idea_saved'; props: { kind: 'popular' | 'hidden gem' } }
   | { name: 'app_download_clicked'; props: { variant: 'arm64' | 'universal' } }
   | { name: 'beta_join_clicked'; props?: undefined };
 

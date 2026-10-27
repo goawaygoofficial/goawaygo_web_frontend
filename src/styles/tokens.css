@@ -107,7 +107,8 @@
   --size-hero-height: clamp(11rem, 30vw, 20rem);
   --size-backdrop-height: clamp(10rem, 28vw, 16rem);
   --size-carousel-card: clamp(12rem, 60vw, 18rem);
-  --size-carousel-height: clamp(11rem, 50vw, 15rem);
+  /* Idea cards hold a photo, a name, a summary, tags and Save: taller than the plain carousel cards. */
+  --size-idea-card-height: clamp(17rem, 80vw, 19rem);
   --size-dialog: 22rem;
   --size-focus-ring: 3px;
   --size-sticky-search: 4.5rem;

@@ -29,32 +29,44 @@
 }
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: var(--space-1);
-  height: var(--size-carousel-height);
-  padding: var(--space-5);
+  height: var(--size-idea-card-height);
+  overflow: hidden;
   border-radius: var(--radius-xl);
+  background: var(--gradient-sunset);
   box-shadow: var(--shadow-card);
   color: var(--color-white);
-  text-decoration: none;
 }
 
-.sunset {
-  background: var(--gradient-sunset);
+.cardImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.ember {
-  background: var(--gradient-ember);
+/* Keeps the text readable on any photo. */
+.card::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.75), rgb(0 0 0 / 0.1) 55%, rgb(0 0 0 / 0.35));
+  content: '';
+  pointer-events: none;
 }
 
-.coral {
-  background: var(--gradient-coral);
-}
-
-.peach {
-  background: var(--gradient-peach);
+.cardBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-5) var(--space-5) var(--space-6);
+  pointer-events: none;
+  text-shadow: 0 1px 3px var(--color-shadow);
 }
 
 .cardEyebrow {
@@ -65,14 +77,108 @@
   opacity: 0.9;
 }
 
+.cardTitle,
+.cardTagline {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
 .cardTitle {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
 }
 
+/* Covers the whole card, so the card opens the place. */
+.cardLink {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: var(--radius-xl);
+}
+
+.cardLink:focus-visible {
+  outline-offset: calc(-1 * var(--size-focus-ring));
+}
+
 .cardTagline {
   font-size: var(--font-size-sm);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.tag {
+  padding: 0.125rem var(--space-2);
+  border-radius: var(--radius-chip);
+  background: var(--color-white-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: capitalize;
+}
+
+.save {
+  position: absolute;
+  z-index: 2;
+  top: var(--space-3);
+  right: var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 2.25rem;
+  padding: var(--space-1) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-white-glass);
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.save svg {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+}
+
+.save:hover:not(:disabled) {
+  background: var(--color-white);
+}
+
+.saved {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.credit {
+  position: absolute;
+  z-index: 2;
+  right: var(--space-4);
+  bottom: var(--space-1);
+  left: var(--space-5);
+  overflow: hidden;
+  color: var(--color-white-muted);
+  font-size: 0.625rem;
+  text-align: right;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.credit:hover {
+  color: var(--color-white);
+  text-decoration: underline;
+}
+
+.status {
+  color: var(--color-white-muted);
+  text-align: center;
 }
 
 .controls {

@@ -1,8 +1,8 @@
 import { Icon } from '@/components';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
 import { usePrefersReducedMotion } from '@/hooks';
-import type { TripIdea } from '../types';
-import { TripIdeaCard } from './TripIdeaCard';
+import type { TripIdea } from '@/features/discover';
 import styles from './TripIdeaCarousel.module.css';
 
 /** How much a card shrinks/fades per card-width away from the centre (same as the app's 0.3). */
@@ -13,13 +13,14 @@ const easeOut = (t: number) => 1 - (1 - t) * (1 - t);
 interface TripIdeaCarouselProps {
   ideas: readonly TripIdea[];
   label: string;
+  renderCard: (idea: TripIdea) => ReactNode;
 }
 
 /**
  * Horizontally scrolling, snap-to-centre carousel. The centred card is full size; neighbours
  * scale and fade with distance, like the app's `StackedCardCarousel`.
  */
-export function TripIdeaCarousel({ ideas, label }: TripIdeaCarouselProps) {
+export function TripIdeaCarousel({ ideas, label, renderCard }: TripIdeaCarouselProps) {
   const trackRef = useRef<HTMLUListElement>(null);
   const frameRef = useRef(0);
   const reducedMotion = usePrefersReducedMotion();
@@ -79,7 +80,7 @@ export function TripIdeaCarousel({ ideas, label }: TripIdeaCarouselProps) {
             aria-roledescription="slide"
             aria-label={`${String(index + 1)} of ${String(ideas.length)}`}
           >
-            <TripIdeaCard idea={idea} />
+            {renderCard(idea)}
           </li>
         ))}
       </ul>

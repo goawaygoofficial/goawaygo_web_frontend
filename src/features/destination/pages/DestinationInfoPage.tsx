@@ -1,31 +1,115 @@
-import { Navigate, useParams } from 'react-router-dom';
-import heroImage from '@/assets/images/home_image_01.png';
-import { PageHeader, PageShell } from '@/components';
+import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
+import { Button, Icon, PageHeader, PageShell } from '@/components';
+import { PhotoSlider } from '@/features/discover';
+import type { DestinationPage, DestinationQuery, PhotoSlide } from '@/features/discover';
 import { useBack } from '@/hooks';
 import { routes } from '@/lib/routes';
 import { InfoCard } from '../components/InfoCard';
-import { getDestinationInfoItems } from '../destinationInfoItems';
+import { TravelLoader } from '../components/TravelLoader';
+import { useDestination } from '../hooks/useDestination';
 import styles from './DestinationInfoPage.module.css';
 
+/** "Jaipur, Rajasthan, India" → "Rajasthan, India" (the name is the heading). */
+function context(page: DestinationPage): string {
+  const { name, label, country } = page.place;
+  const prefix = `${name}, `;
+  if (label.startsWith(prefix)) return label.slice(prefix.length);
+  return label === name ? (name === country ? '' : country) : label;
+}
+
+function photoSlides(page: DestinationPage): PhotoSlide[] {
+  if (page.spots.length === 0) {
+    return [{ key: page.place.label, title: page.place.name, photo: null }];
+  }
+  return page.spots.map((spot) => ({ key: spot.photo.url, title: spot.name, photo: spot.photo }));
+}
+
+/**
+ * A destination: a banner of its tourist spots and nine AI-written info cards. The whole page appears at once,
+ * after a travel animation, when everything is ready.
+ */
 export function DestinationInfoPage() {
   const { place = '' } = useParams();
+  const [search] = useSearchParams();
   const goBack = useBack(routes.home);
   const placeName = place.trim();
+  const id = search.get('id');
+  const query: DestinationQuery = id ? { placeId: id } : { text: search.get('q') ?? placeName };
+  const { state, retry } = useDestination(query);
 
   if (placeName.length === 0) return <Navigate to={routes.home} replace />;
 
   return (
     <PageShell width="wide">
       <PageHeader onBack={goBack} />
-      <h1 className={styles.heading}>{placeName}</h1>
-      <div className={styles.layout}>
-        <img src={heroImage} alt="" className={styles.hero} />
-        <ul className={styles.list} aria-label={`Travel information for ${placeName}`}>
-          {getDestinationInfoItems(placeName).map((item) => (
-            <InfoCard key={item.id} item={item} />
-          ))}
-        </ul>
-      </div>
+      {state.kind === 'loading' && <TravelLoader place={placeName} />}
+
+      {state.kind === 'notFound' && (
+        <Message
+          title="We couldn't find that place"
+          text={`Check the spelling of “${placeName}”, or pick a place from the suggestions while you type.`}
+        />
+      )}
+
+      {state.kind === 'error' && (
+        <Message title="Something went wrong" text={state.message} onRetry={retry} />
+      )}
+
+      {state.kind === 'ready' && state.page.status === 'unknown' && (
+        <Message
+          title={`We don't know ${state.page.place.name} well enough yet`}
+          text="Try the nearest city or a better-known place nearby."
+        />
+      )}
+
+      {state.kind === 'ready' && state.page.status !== 'unknown' && (
+        <>
+          <h1 className={styles.heading}>{state.page.place.name}</h1>
+          {context(state.page) && <p className={styles.context}>{context(state.page)}</p>}
+          <div className={styles.layout}>
+            <PhotoSlider
+              slides={photoSlides(state.page)}
+              label={`Photos of ${state.page.place.name}`}
+              className={styles.photos}
+            />
+            {state.page.status === 'busy' ? (
+              <div className={styles.busy} role="alert">
+                <p className={styles.busyTitle}>Our travel guide is busy right now</p>
+                <p>Lots of people are exploring at the moment. Please try again in a minute.</p>
+                <Button onClick={retry} className={styles.retry}>
+                  Try again
+                </Button>
+              </div>
+            ) : (
+              <ul
+                className={styles.list}
+                aria-label={`Travel information for ${state.page.place.name}`}
+              >
+                {state.page.cards.map((card) => (
+                  <InfoCard key={card.id} card={card} />
+                ))}
+              </ul>
+            )}
+          </div>
+        </>
+      )}
     </PageShell>
+  );
+}
+
+function Message({ title, text, onRetry }: { title: string; text: string; onRetry?: () => void }) {
+  return (
+    <section className={styles.message}>
+      <Icon name="travel_explore" className={styles.messageIcon} />
+      <h1 className={styles.messageTitle}>{title}</h1>
+      <p className={styles.messageText}>{text}</p>
+      {onRetry ? (
+        <Button onClick={onRetry}>Try again</Button>
+      ) : (
+        <Link to={routes.home} className={styles.messageLink}>
+          Search again
+        </Link>
+      )}
+    </section>
   );
 }

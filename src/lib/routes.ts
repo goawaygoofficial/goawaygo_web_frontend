@@ -25,5 +25,15 @@ export const routes = {
   stays: '/stays',
   rentals: '/rentals',
   destinationPattern: '/destination/:place',
-  destination: (place: string) => `/destination/${encodeURIComponent(place)}`,
+  /**
+   * A destination page. `id`: the place picked from the suggestions; `q`: what to search for when there is no id
+   * (defaults to the name in the path).
+   */
+  destination: (place: string, search?: { id?: string; q?: string }) => {
+    const params = new URLSearchParams();
+    if (search?.id) params.set('id', search.id);
+    if (search?.q) params.set('q', search.q);
+    const query = params.toString();
+    return `/destination/${encodeURIComponent(place)}${query ? `?${query}` : ''}`;
+  },
 } as const;

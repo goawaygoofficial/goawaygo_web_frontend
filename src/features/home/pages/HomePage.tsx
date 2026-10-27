@@ -1,14 +1,18 @@
 import flightsImage from '@/assets/images/flights.png';
-import heroImage from '@/assets/images/home_image_01.png';
 import rentalsImage from '@/assets/images/rentals.png';
 import staysImage from '@/assets/images/stays.png';
 import { IconTile, PageHeader, PageShell } from '@/components';
+import { useSavedPlaces } from '@/features/discover';
 import { GetAppLink } from '@/features/getApp';
 import { LegalLinks } from '@/features/legal';
 import { routes } from '@/lib/routes';
+import { useUser } from '@/providers';
 import { DestinationSearch } from '../components/DestinationSearch';
+import { RecentSearchesBanner } from '../components/RecentSearchesBanner';
+import { TripIdeaCard } from '../components/TripIdeaCard';
 import { TripIdeaCarousel } from '../components/TripIdeaCarousel';
-import { PLACEHOLDER_TRIP_IDEAS } from '../data/tripIdeas';
+import carouselStyles from '../components/TripIdeaCarousel.module.css';
+import { useTripIdeas } from '../hooks/useTripIdeas';
 import styles from './HomePage.module.css';
 
 const CATEGORIES = [
@@ -18,6 +22,10 @@ const CATEGORIES = [
 ] as const;
 
 export function HomePage() {
+  const { user } = useUser();
+  const ideas = useTripIdeas();
+  const saved = useSavedPlaces();
+
   return (
     <PageShell width="wide">
       <PageHeader showNotifications />
@@ -32,11 +40,28 @@ export function HomePage() {
           </nav>
           <DestinationSearch />
         </div>
-        <img src={heroImage} alt="" className={styles.hero} />
+        <RecentSearchesBanner />
       </div>
 
       <h2 className={styles.ideasHeading}>IDEAS FOR YOUR NEXT TRIP ...</h2>
-      <TripIdeaCarousel ideas={PLACEHOLDER_TRIP_IDEAS} label="Ideas for your next trip" />
+      {ideas === null && <p className={carouselStyles.status}>Finding ideas…</p>}
+      {ideas?.length === 0 && (
+        <p className={carouselStyles.status}>New ideas are on their way. Check back in a minute.</p>
+      )}
+      {ideas && ideas.length > 0 && (
+        <TripIdeaCarousel
+          ideas={ideas}
+          label="Ideas for your next trip"
+          renderCard={(idea) => (
+            <TripIdeaCard
+              idea={idea}
+              signedIn={user !== null}
+              saved={saved.isSaved(idea.id)}
+              onSave={saved.save}
+            />
+          )}
+        />
+      )}
       <div className={styles.getApp}>
         <GetAppLink />
       </div>

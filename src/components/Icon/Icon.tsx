@@ -2,6 +2,7 @@ import addSvg from '@material-design-icons/svg/filled/add.svg?raw';
 import androidSvg from '@material-design-icons/svg/filled/android.svg?raw';
 import arrowDropDownSvg from '@material-design-icons/svg/filled/arrow_drop_down.svg?raw';
 import attachMoneySvg from '@material-design-icons/svg/filled/attach_money.svg?raw';
+import bookmarkSvg from '@material-design-icons/svg/filled/bookmark.svg?raw';
 import calendarMonthSvg from '@material-design-icons/svg/filled/calendar_month.svg?raw';
 import calendarTodaySvg from '@material-design-icons/svg/filled/calendar_today.svg?raw';
 import cameraAltSvg from '@material-design-icons/svg/filled/camera_alt.svg?raw';
@@ -10,7 +11,9 @@ import directionsBusSvg from '@material-design-icons/svg/filled/directions_bus.s
 import downloadSvg from '@material-design-icons/svg/filled/download.svg?raw';
 import directionsCarSvg from '@material-design-icons/svg/filled/directions_car.svg?raw';
 import editSvg from '@material-design-icons/svg/filled/edit.svg?raw';
+import deleteOutlineSvg from '@material-design-icons/svg/filled/delete_outline.svg?raw';
 import gavelSvg from '@material-design-icons/svg/filled/gavel.svg?raw';
+import flightSvg from '@material-design-icons/svg/filled/flight.svg?raw';
 import healthAndSafetySvg from '@material-design-icons/svg/filled/health_and_safety.svg?raw';
 import hotelSvg from '@material-design-icons/svg/filled/hotel.svg?raw';
 import languageSvg from '@material-design-icons/svg/filled/language.svg?raw';
@@ -22,16 +25,22 @@ import publicSvg from '@material-design-icons/svg/filled/public.svg?raw';
 import removeSvg from '@material-design-icons/svg/filled/remove.svg?raw';
 import restaurantSvg from '@material-design-icons/svg/filled/restaurant.svg?raw';
 import searchSvg from '@material-design-icons/svg/filled/search.svg?raw';
+import travelExploreSvg from '@material-design-icons/svg/filled/travel_explore.svg?raw';
 import swapHorizSvg from '@material-design-icons/svg/filled/swap_horiz.svg?raw';
 import swapVertSvg from '@material-design-icons/svg/filled/swap_vert.svg?raw';
+import bookmarkBorderSvg from '@material-design-icons/svg/outlined/bookmark.svg?raw';
 import locationOnOutlinedSvg from '@material-design-icons/svg/outlined/location_on.svg?raw';
 import arrowBackIosSvg from '@material-design-icons/svg/round/arrow_back_ios.svg?raw';
 import arrowForwardIosSvg from '@material-design-icons/svg/round/arrow_forward_ios.svg?raw';
 import checkCircleOutlineSvg from '@material-design-icons/svg/round/check_circle_outline.svg?raw';
 import closeSvg from '@material-design-icons/svg/round/close.svg?raw';
 import errorOutlineSvg from '@material-design-icons/svg/round/error_outline.svg?raw';
+import expandMoreSvg from '@material-design-icons/svg/round/expand_more.svg?raw';
 import helpOutlineSvg from '@material-design-icons/svg/round/help_outline.svg?raw';
 import hotelRoundedSvg from '@material-design-icons/svg/round/hotel.svg?raw';
+import pauseSvg from '@material-design-icons/svg/round/pause.svg?raw';
+import playArrowSvg from '@material-design-icons/svg/round/play_arrow.svg?raw';
+import refreshSvg from '@material-design-icons/svg/round/refresh.svg?raw';
 import childCareSvg from '@material-design-icons/svg/sharp/child_care.svg?raw';
 import locationOnSvg from '@material-design-icons/svg/sharp/location_on.svg?raw';
 import myLocationSvg from '@material-design-icons/svg/sharp/my_location.svg?raw';
@@ -47,6 +56,8 @@ const SOURCES = {
   arrow_drop_down: arrowDropDownSvg,
   arrow_forward_ios_rounded: arrowForwardIosSvg,
   attach_money: attachMoneySvg,
+  bookmark: bookmarkSvg,
+  bookmark_border: bookmarkBorderSvg,
   calendar_month: calendarMonthSvg,
   calendar_today: calendarTodaySvg,
   camera_alt: cameraAltSvg,
@@ -54,11 +65,14 @@ const SOURCES = {
   check_circle_outline_rounded: checkCircleOutlineSvg,
   child_care_sharp: childCareSvg,
   close_rounded: closeSvg,
+  delete_outline: deleteOutlineSvg,
   directions_bus: directionsBusSvg,
   directions_car: directionsCarSvg,
   download: downloadSvg,
   edit: editSvg,
   error_outline_rounded: errorOutlineSvg,
+  expand_more_rounded: expandMoreSvg,
+  flight: flightSvg,
   gavel: gavelSvg,
   health_and_safety: healthAndSafetySvg,
   help_outline_rounded: helpOutlineSvg,
@@ -70,14 +84,18 @@ const SOURCES = {
   my_location_sharp: myLocationSvg,
   notifications: notificationsSvg,
   open_in_new: openInNewSvg,
+  pause_rounded: pauseSvg,
   person: personSvg,
   place: placeSvg,
+  play_arrow_rounded: playArrowSvg,
   public: publicSvg,
+  refresh_rounded: refreshSvg,
   remove: removeSvg,
   restaurant: restaurantSvg,
   search: searchSvg,
   swap_horiz: swapHorizSvg,
   swap_vert: swapVertSvg,
+  travel_explore: travelExploreSvg,
 } as const;
 
 export type IconName = keyof typeof SOURCES;
