@@ -79,7 +79,7 @@ Decided 2026-10-26. Design and reasons: `backend/docs/destination-prompts.md`.
 - **My Trips:** saved places (sign-in needed).
 - [x] Accounts: billing-free Google project + Gemini key, Geoapify key, Unsplash app (keys in Secret Manager)
 - [x] Backend: place search, recent searches, AI cards, tourist spots and photos, random ideas, saved places
-- [x] Website · [ ] App · [x] Privacy Policy (stored search history, place names sent to Google for AI)
+- [x] Website · [x] App · [x] Privacy Policy (stored search history, place names sent to Google for AI)
 
 ### Later sub-phases
 
