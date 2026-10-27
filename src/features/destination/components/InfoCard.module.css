@@ -1,11 +1,31 @@
 .card {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-4);
   border-radius: var(--radius-lg);
   background: var(--color-secondary);
   box-shadow: var(--shadow-soft);
+}
+
+.heading {
+  font-size: inherit;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-4);
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.toggle:disabled {
+  cursor: default;
+  opacity: 0.7;
 }
 
 .iconCircle {
@@ -25,6 +45,13 @@
   height: var(--size-icon-sm);
 }
 
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
@@ -33,4 +60,96 @@
 .subtitle {
   color: var(--color-white-light);
   font-size: var(--font-size-sm);
+}
+
+.chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+.chevron svg {
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
+}
+
+.open .chevron {
+  transform: rotate(180deg);
+}
+
+.panel {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.items {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  color: var(--color-primary);
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.item + .item {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-white-light);
+}
+
+.label {
+  font-weight: var(--font-weight-bold);
+}
+
+.detail {
+  line-height: var(--line-height-body);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.mayVary {
+  padding: 0.125rem var(--space-2);
+  border-radius: var(--radius-chip);
+  background: var(--color-secondary-lighter);
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-secondary-dark);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.link svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.note {
+  margin-top: var(--space-2);
+  color: var(--color-white-light);
+  font-size: var(--font-size-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
 }

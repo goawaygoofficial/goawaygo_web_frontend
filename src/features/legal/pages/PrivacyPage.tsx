@@ -91,6 +91,18 @@ export function PrivacyPage() {
                 <td>Contract</td>
               </tr>
               <tr>
+                <td>
+                  Your recent searches, if you are signed in: the last 5 places you opened and when
+                </td>
+                <td>To show your recent searches on Home, on every device you use.</td>
+                <td>Contract</td>
+              </tr>
+              <tr>
+                <td>Places you save to My Trips</td>
+                <td>To keep the places you saved, on every device you use.</td>
+                <td>Contract</td>
+              </tr>
+              <tr>
                 <td>Technical data: IP address, time, page or feature used</td>
                 <td>
                   To protect the service (e.g. limiting repeated sign-in attempts) and to fix
@@ -142,6 +154,11 @@ export function PrivacyPage() {
           <li>
             <strong>Visitor statistics</strong> on the website come from Cloudflare Web Analytics,
             which uses no cookies and doesn't identify you; we see only totals such as page views.
+          </li>
+          <li>
+            <strong>Your recent searches, if you are not signed in</strong>: the last 5 places you
+            opened are kept in your browser's storage (or in the app) to show them on Home. They
+            stay on your device; clearing your browser's site data removes them.
           </li>
           <li>We don't use advertising, cross-site tracking or social-media cookies.</li>
         </ul>
@@ -218,6 +235,14 @@ export function PrivacyPage() {
           </table>
         </div>
         <p>
+          <strong>Travel information and photos.</strong> To build destination pages we send only
+          place names and locations, never anything about you, to: Google's Gemini AI (writes the
+          travel information), Geoapify (finds places as you type), and Wikipedia, Wikidata and
+          Unsplash (find photos). Photos are then loaded by your browser or the app directly from
+          Wikimedia Commons and Unsplash, which receive your IP address and browser details, as any
+          website you visit would. Their own privacy policies apply to that.
+        </p>
+        <p>
           We don't sell your personal data, and we don't share it for targeted advertising. We
           disclose it to authorities only when the law requires it, and we would tell you unless the
           law forbids that.
@@ -254,6 +279,11 @@ export function PrivacyPage() {
             <strong>Your account</strong> (name, email, password hash, Google ID, sign-in sessions):
             while you have an account. When you ask us to delete it, we do so within{' '}
             {legal.responseDays} days.
+          </li>
+          <li>
+            <strong>Recent searches</strong> (signed in): only the last 5 are kept; older ones are
+            deleted as you search, and all are deleted with your account.{' '}
+            <strong>Places in My Trips</strong>: until you remove them or delete your account.
           </li>
           <li>
             <strong>Emailed links</strong>: they stop working after 30 minutes (password reset) or

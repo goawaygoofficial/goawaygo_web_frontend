@@ -40,15 +40,16 @@ npm install
 npm run dev               # http://localhost:5173
 ```
 
-| Script                            | What it does                                                  |
-| --------------------------------- | ------------------------------------------------------------- |
-| `npm run dev`                     | Dev server with HMR                                           |
-| `npm run build`                   | Type-check (`tsc -b`) and production build into `dist/`       |
-| `npm run preview`                 | Serve the production build locally                            |
-| `npm run typecheck`               | TypeScript only                                               |
-| `npm run lint`                    | ESLint                                                        |
-| `npm run format` / `format:check` | Prettier                                                      |
-| `npm run check`                   | typecheck + lint + format check + build (run before every PR) |
+| Script                            | What it does                                                         |
+| --------------------------------- | -------------------------------------------------------------------- |
+| `npm run dev`                     | Dev server with HMR                                                  |
+| `npm run dev:staging-api`         | Dev server using the staging API (no local backend; signed out only) |
+| `npm run build`                   | Type-check (`tsc -b`) and production build into `dist/`              |
+| `npm run preview`                 | Serve the production build locally                                   |
+| `npm run typecheck`               | TypeScript only                                                      |
+| `npm run lint`                    | ESLint                                                               |
+| `npm run format` / `format:check` | Prettier                                                             |
+| `npm run check`                   | typecheck + lint + format check + build (run before every PR)        |
 
 ### Environment variables
 
@@ -66,21 +67,21 @@ The backend must allow CORS from the web origin, for example `http://localhost:5
 
 ## Routes
 
-| Route                   | Screen           | Notes                                                                                   |
-| ----------------------- | ---------------- | --------------------------------------------------------------------------------------- |
-| `/`                     | Splash           | Logo bounce + wave. After ~3s goes to `/home` if the session was restored, else `/auth` |
-| `/auth`                 | Auth             | Google button / SIGN IN → cross-fades to the email form. SKIP enters as a guest         |
-| `/auth/register`        | Register         | Slides in over Auth                                                                     |
-| `/auth/forgot-password` | Forgot password  | Slides in over Auth                                                                     |
-| `/home`                 | Home tab         | Categories, destination search, trip-idea carousel                                      |
-| `/trips`                | My Trips tab     | Empty state (the app's tab is a placeholder)                                            |
-| `/wanderbook`           | Wanderbook tab   | Sticky search, collapsing profile header, sticky tabs, post grid                        |
-| `/profile`              | Profile tab      | Signed out: features + Google + SIGN IN. Signed in: tile grid, sign-out icon in header  |
-| `/profile/details`      | User profile     | Account rows + Sign Out (with confirmation)                                             |
-| `/flights`              | Book flights     | Slides in; tab bar hidden                                                               |
-| `/stays`                | Book hotels      | Slides in; tab bar hidden                                                               |
-| `/rentals`              | Rent a car       | Slides in; tab bar hidden                                                               |
-| `/destination/:place`   | Destination info | Opened from Home search or a carousel card                                              |
+| Route                   | Screen           | Notes                                                                                       |
+| ----------------------- | ---------------- | ------------------------------------------------------------------------------------------- |
+| `/`                     | Splash           | Logo bounce + wave. After ~3s goes to `/home` if the session was restored, else `/auth`     |
+| `/auth`                 | Auth             | Google button / SIGN IN → cross-fades to the email form. SKIP enters as a guest             |
+| `/auth/register`        | Register         | Slides in over Auth                                                                         |
+| `/auth/forgot-password` | Forgot password  | Slides in over Auth                                                                         |
+| `/home`                 | Home tab         | Categories, place search with suggestions, recent-searches banner, ideas (new every minute) |
+| `/trips`                | My Trips tab     | Places saved from the ideas (sign-in needed)                                                |
+| `/wanderbook`           | Wanderbook tab   | Sticky search, collapsing profile header, sticky tabs, post grid                            |
+| `/profile`              | Profile tab      | Signed out: features + Google + SIGN IN. Signed in: tile grid, sign-out icon in header      |
+| `/profile/details`      | User profile     | Account rows + Sign Out (with confirmation)                                                 |
+| `/flights`              | Book flights     | Slides in; tab bar hidden                                                                   |
+| `/stays`                | Book hotels      | Slides in; tab bar hidden                                                                   |
+| `/rentals`              | Rent a car       | Slides in; tab bar hidden                                                                   |
+| `/destination/:place`   | Destination info | `?id=` picked place or `?q=` text. Travel animation, then spot photos and the 9 AI cards    |
 
 The 4-tab bar is a bottom tab bar under 768px and a sticky top bar on wider screens.
 
@@ -122,6 +123,12 @@ place (`message` → `error` → fallback, plus the machine-readable `error` cod
 | `restoreSession`       | `POST /api/auth/refresh` (refresh cookie)       | 200 session, or 401          |
 | `signOut`              | `POST /api/auth/logout` (refresh cookie)        | 204                          |
 | `requestPasswordReset` | `POST /api/auth/forgot-password` `{email}`      | 2xx _(backend: next PR)_     |
+
+Discover (4.1, `src/features/discover`): `suggestPlaces` (`GET /api/discover/places`), `getDestination`
+(`GET /api/discover/destination`), `getRecentSearches` (`GET /api/discover/recent`), `getPhotosFor`
+(`POST /api/discover/photos`, for searches kept on the device when signed out), `getTripIdeas`
+(`GET /api/discover/ideas`), and My Trips (`/api/me/saved-places`). How the backend builds them:
+`backend/docs/destination-prompts.md`.
 
 The user travels snake_case on the wire (`UserDto`) and camelCase in the app (`User`), converted in
 `src/types/user.ts`.
@@ -179,9 +186,7 @@ blocks the popup, the user is asked to allow pop-ups.
 | What                                                    | Where                                        | Status                                                                                              |
 | ------------------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | Flight / hotel / rental search                          | `features/*/services/*Service.ts`            | `console.info`s the typed payload. The app's buttons are `// TODO` and there is no backend endpoint |
-| Trip ideas carousel                                     | `features/home/data/tripIdeas.ts`            | Placeholder `TripIdea[]`. The app shows blank coloured cards                                        |
 | Wanderbook profile + posts                              | `features/wanderbook/data/mockWanderbook.ts` | Mock data, labelled as sample posts in the UI. The signed-in user's name replaces the demo name     |
-| My Trips                                                | `features/trips`                             | Honest empty state. The app's tab is a placeholder text                                             |
 | Notifications bell, Wanderbook camera / edit buttons    | —                                            | Visibly disabled ("coming soon"). Empty handlers in the app                                         |
 | Profile tiles: Recently Viewed, Saved, Reviews, Rewards | `features/profile/pages/ProfilePage.tsx`     | Visibly disabled ("Coming soon"). My Trips and User Profile are wired                               |
 | Password reset email                                    | `features/auth/pages/ForgotPasswordPage.tsx` | The form is final; the backend endpoint arrives with the email-provider work                        |

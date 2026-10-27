@@ -45,6 +45,7 @@ export function DeleteDataPage() {
           <li>Your account: name, email address, password hash and Google sign-in link.</li>
           <li>All your sign-in sessions, on every device (you are signed out everywhere).</li>
           <li>Any unused verification or password-reset links.</li>
+          <li>Your recent searches and the places you saved to My Trips.</li>
           <li>Any content you have added to GoAwayGo.</li>
         </ul>
         <p>
