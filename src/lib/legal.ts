@@ -4,7 +4,7 @@
  */
 export const legal = {
   /** Shown as "Last updated" on every legal page. Change it whenever a page's meaning changes. */
-  lastUpdated: '28 October 2026',
+  lastUpdated: '30 October 2026',
   /** Privacy requests, data deletion and complaints, for every country. Forwards to the team inbox. */
   privacyEmail: 'privacy@goawaygo.com',
   /** Everything else. */

@@ -1,22 +1,35 @@
+import { Link } from 'react-router-dom';
 import { Icon } from '@/components';
-import type { WanderPost } from '../types';
+import { routes } from '@/lib/routes';
+import type { Post } from '../types';
 import styles from './PostGrid.module.css';
 
-export function PostGrid({ posts }: { posts: readonly WanderPost[] }) {
+/** A profile's posts as square tiles of their first photo; opens the post. */
+export function PostGrid({ posts, empty }: { posts: readonly Post[]; empty: string }) {
   if (posts.length === 0) {
-    return <p className={styles.empty}>No posts match that destination.</p>;
+    return <p className={styles.empty}>{empty}</p>;
   }
   return (
     <ul className={styles.grid}>
-      {posts.map((post) => (
-        <li key={post.id} className={styles.card}>
-          <span className={styles.location}>
-            <Icon name="place" />
-            {post.location}
-          </span>
-          <p className={styles.caption}>{post.caption}</p>
-        </li>
-      ))}
+      {posts.map((post) => {
+        const cover = post.photos[0];
+        return (
+          <li key={post.publicId} className={styles.tile}>
+            <Link
+              to={routes.wanderbookPost(post.publicId)}
+              className={styles.link}
+              aria-label={post.place ? `Post at ${post.place.name}` : 'Post'}
+            >
+              {cover && <img src={cover.url} alt="" loading="lazy" className={styles.image} />}
+              {post.photos.length > 1 && (
+                <span className={styles.multi} aria-hidden="true">
+                  <Icon name="photo_library" />
+                </span>
+              )}
+            </Link>
+          </li>
+        );
+      })}
     </ul>
   );
 }

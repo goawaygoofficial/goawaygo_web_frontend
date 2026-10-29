@@ -11,6 +11,8 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 interface RequestOptions {
   method?: HttpMethod;
   body?: unknown;
+  /** A file upload (multipart); sent instead of a JSON `body`. */
+  form?: FormData;
   /** Status that counts as success. Defaults to any 2xx. */
   expectedStatus?: number;
   /** Message used when the server gives no `message` / `error` in its error body. */
@@ -51,15 +53,16 @@ async function send(
   options: RequestOptions,
   token: string | null,
 ): Promise<Response> {
-  const { method = 'GET', body, signal } = options;
+  const { method = 'GET', body, form, signal } = options;
   const headers: Record<string, string> = {};
-  if (body !== undefined) headers['Content-Type'] = 'application/json';
+  // A multipart body sets its own Content-Type (with the boundary).
+  if (body !== undefined && form === undefined) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
   try {
     return await fetch(`${env.apiBaseUrl}${path}`, {
       method,
       headers,
-      body: body === undefined ? undefined : JSON.stringify(body),
+      body: form ?? (body === undefined ? undefined : JSON.stringify(body)),
       // Sends the HttpOnly refresh cookie to /api/auth/*; the browser never exposes it to this code.
       credentials: 'include',
       signal,

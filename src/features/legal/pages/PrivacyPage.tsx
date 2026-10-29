@@ -103,6 +103,30 @@ export function PrivacyPage() {
                 <td>Contract</td>
               </tr>
               <tr>
+                <td>
+                  Wanderbook: your profile (photo, cover, bio, home town, public or private), posts
+                  (photos, captions, place tags), comments, likes, follows and blocks
+                </td>
+                <td>
+                  To show your Wanderbook: to anyone if your profile is public, or only to followers
+                  you approve if it is private. Your name and profile photo are always visible.
+                </td>
+                <td>Contract</td>
+              </tr>
+              <tr>
+                <td>The location stored inside a photo you upload (GPS)</td>
+                <td>
+                  Read once to suggest the place tag (place, state, country), then removed from the
+                  photo. We never store or show the exact coordinates.
+                </td>
+                <td>Contract (you choose to post the photo)</td>
+              </tr>
+              <tr>
+                <td>Reports you send, and reports about your content</td>
+                <td>To review them and keep Wanderbook safe.</td>
+                <td>Legitimate interest in a safe service; legal obligations</td>
+              </tr>
+              <tr>
                 <td>Technical data: IP address, time, page or feature used</td>
                 <td>
                   To protect the service (e.g. limiting repeated sign-in attempts) and to fix
@@ -205,8 +229,20 @@ export function PrivacyPage() {
               </tr>
               <tr>
                 <td>Cloudflare</td>
-                <td>Hosts the website and app downloads, forwards our email, website statistics</td>
+                <td>
+                  Hosts the website, app downloads and Wanderbook photos, forwards our email,
+                  website statistics
+                </td>
                 <td>Worldwide network</td>
+              </tr>
+              <tr>
+                <td>OpenAI</td>
+                <td>
+                  Checks Wanderbook photos and text for content our Community Guidelines don&apos;t
+                  allow, before they appear (it doesn&apos;t use them to train its models and keeps
+                  them for at most 30 days)
+                </td>
+                <td>United States</td>
               </tr>
               <tr>
                 <td>Resend</td>
@@ -237,10 +273,11 @@ export function PrivacyPage() {
         <p>
           <strong>Travel information and photos.</strong> To build destination pages we send only
           place names and locations, never anything about you, to: Google's Gemini AI (writes the
-          travel information), Geoapify (finds places as you type), and Wikipedia, Wikidata and
-          Unsplash (find photos). Photos are then loaded by your browser or the app directly from
-          Wikimedia Commons and Unsplash, which receive your IP address and browser details, as any
-          website you visit would. Their own privacy policies apply to that.
+          travel information), Geoapify (finds places as you type, and the place name for a
+          Wanderbook photo's location; only the coordinates are sent, without anything about you),
+          and Wikipedia, Wikidata and Unsplash (find photos). Photos are then loaded by your browser
+          or the app directly from Wikimedia Commons and Unsplash, which receive your IP address and
+          browser details, as any website you visit would. Their own privacy policies apply to that.
         </p>
         <p>
           We don't sell your personal data, and we don't share it for targeted advertising. We
@@ -279,6 +316,10 @@ export function PrivacyPage() {
             <strong>Your account</strong> (name, email, password hash, Google ID, sign-in sessions):
             while you have an account. When you ask us to delete it, we do so within{' '}
             {legal.responseDays} days.
+          </li>
+          <li>
+            <strong>Wanderbook</strong> posts, photos, comments and likes: until you delete them or
+            your account. Removed photo files are deleted from storage at the same time.
           </li>
           <li>
             <strong>Recent searches</strong> (signed in): only the last 5 are kept; older ones are

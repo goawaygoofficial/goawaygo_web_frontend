@@ -16,6 +16,21 @@ export const routes = {
   home: '/home',
   trips: '/trips',
   wanderbook: '/wanderbook',
+  /** Wanderbook (4.2). Profiles and posts use the backend's random public ids. */
+  wanderbookProfilePattern: '/wanderbook/u/:publicId',
+  wanderbookProfile: (publicId: string) => `/wanderbook/u/${publicId}`,
+  wanderbookPeoplePattern: '/wanderbook/u/:publicId/:list',
+  wanderbookPeople: (publicId: string, list: 'followers' | 'following') =>
+    `/wanderbook/u/${publicId}/${list}`,
+  wanderbookPostPattern: '/wanderbook/p/:publicId',
+  wanderbookPost: (publicId: string) => `/wanderbook/p/${publicId}`,
+  wanderbookNewPost: '/wanderbook/new',
+  wanderbookEditProfile: '/wanderbook/edit',
+  wanderbookRequests: '/wanderbook/requests',
+  wanderbookBlocked: '/wanderbook/blocked',
+  /** Admins review Wanderbook reports here (the backend's report emails link to it). */
+  adminReports: '/admin/reports',
+  communityGuidelines: '/community-guidelines',
   profile: '/profile',
   profileDetails: '/profile/details',
   /** Register / Forgot Password opened from the Profile tab's sign-in panel. */

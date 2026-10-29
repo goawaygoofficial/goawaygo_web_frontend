@@ -67,21 +67,25 @@ The backend must allow CORS from the web origin, for example `http://localhost:5
 
 ## Routes
 
-| Route                   | Screen           | Notes                                                                                       |
-| ----------------------- | ---------------- | ------------------------------------------------------------------------------------------- |
-| `/`                     | Splash           | Logo bounce + wave. After ~3s goes to `/home` if the session was restored, else `/auth`     |
-| `/auth`                 | Auth             | Google button / SIGN IN → cross-fades to the email form. SKIP enters as a guest             |
-| `/auth/register`        | Register         | Slides in over Auth                                                                         |
-| `/auth/forgot-password` | Forgot password  | Slides in over Auth                                                                         |
-| `/home`                 | Home tab         | Categories, place search with suggestions, recent-searches banner, ideas (new every minute) |
-| `/trips`                | My Trips tab     | Places saved from the ideas (sign-in needed)                                                |
-| `/wanderbook`           | Wanderbook tab   | Sticky search, collapsing profile header, sticky tabs, post grid                            |
-| `/profile`              | Profile tab      | Signed out: features + Google + SIGN IN. Signed in: tile grid, sign-out icon in header      |
-| `/profile/details`      | User profile     | Account rows + Sign Out (with confirmation)                                                 |
-| `/flights`              | Book flights     | Slides in; tab bar hidden                                                                   |
-| `/stays`                | Book hotels      | Slides in; tab bar hidden                                                                   |
-| `/rentals`              | Rent a car       | Slides in; tab bar hidden                                                                   |
-| `/destination/:place`   | Destination info | `?id=` picked place or `?q=` text. Travel animation, then spot photos and the 9 AI cards    |
+| Route                                    | Screen                 | Notes                                                                                            |
+| ---------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------ |
+| `/`                                      | Splash                 | Logo bounce + wave. After ~3s goes to `/home` if the session was restored, else `/auth`          |
+| `/auth`                                  | Auth                   | Google button / SIGN IN → cross-fades to the email form. SKIP enters as a guest                  |
+| `/auth/register`                         | Register               | Slides in over Auth                                                                              |
+| `/auth/forgot-password`                  | Forgot password        | Slides in over Auth                                                                              |
+| `/home`                                  | Home tab               | Categories, place search with suggestions, recent-searches banner, ideas (new every minute)      |
+| `/trips`                                 | My Trips tab           | Places saved from the ideas (sign-in needed)                                                     |
+| `/wanderbook`                            | Wanderbook tab         | Your profile, My Wanderposts grid and the shared Feed; signed out: the feed and a sign-in invite |
+| `/wanderbook/u/:id`, `/wanderbook/p/:id` | Profile, post          | Follow or request, block, report; post with comments, likes, edit and delete                     |
+| `/wanderbook/new`, `/wanderbook/edit`    | New post, edit profile | Original photos (HEIC converted to JPEG), place tag from the photo's location                    |
+| `/admin/reports`                         | Wanderbook reports     | Admins only (`users.is_admin`): remove or dismiss                                                |
+| `/community-guidelines`                  | Community Guidelines   | Rules for Wanderbook posts                                                                       |
+| `/profile`                               | Profile tab            | Signed out: features + Google + SIGN IN. Signed in: tile grid, sign-out icon in header           |
+| `/profile/details`                       | User profile           | Account rows + Sign Out (with confirmation)                                                      |
+| `/flights`                               | Book flights           | Slides in; tab bar hidden                                                                        |
+| `/stays`                                 | Book hotels            | Slides in; tab bar hidden                                                                        |
+| `/rentals`                               | Rent a car             | Slides in; tab bar hidden                                                                        |
+| `/destination/:place`                    | Destination info       | `?id=` picked place or `?q=` text. Travel animation, then spot photos and the 9 AI cards         |
 
 The 4-tab bar is a bottom tab bar under 768px and a sticky top bar on wider screens.
 
@@ -186,8 +190,7 @@ blocks the popup, the user is asked to allow pop-ups.
 | What                                                    | Where                                        | Status                                                                                              |
 | ------------------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | Flight / hotel / rental search                          | `features/*/services/*Service.ts`            | `console.info`s the typed payload. The app's buttons are `// TODO` and there is no backend endpoint |
-| Wanderbook profile + posts                              | `features/wanderbook/data/mockWanderbook.ts` | Mock data, labelled as sample posts in the UI. The signed-in user's name replaces the demo name     |
-| Notifications bell, Wanderbook camera / edit buttons    | —                                            | Visibly disabled ("coming soon"). Empty handlers in the app                                         |
+| Notifications bell                                      | —                                            | Visibly disabled ("coming soon"). Empty handlers in the app                                         |
 | Profile tiles: Recently Viewed, Saved, Reviews, Rewards | `features/profile/pages/ProfilePage.tsx`     | Visibly disabled ("Coming soon"). My Trips and User Profile are wired                               |
 | Password reset email                                    | `features/auth/pages/ForgotPasswordPage.tsx` | The form is final; the backend endpoint arrives with the email-provider work                        |
 

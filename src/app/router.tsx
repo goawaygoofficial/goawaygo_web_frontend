@@ -6,17 +6,25 @@ import {
   ResetPasswordPage,
   VerifyEmailPage,
 } from '@/features/auth';
+import { AdminReportsPage } from '@/features/admin';
 import { DestinationInfoPage } from '@/features/destination';
 import { FlightSearchPage } from '@/features/flights';
 import { DownloadPage } from '@/features/getApp';
 import { HomePage } from '@/features/home';
-import { DeleteDataPage, PrivacyPage, TermsPage } from '@/features/legal';
+import { CommunityGuidelinesPage, DeleteDataPage, PrivacyPage, TermsPage } from '@/features/legal';
 import { ProfilePage, UserProfilePage } from '@/features/profile';
 import { RentalSearchPage } from '@/features/rentals';
 import { SplashPage } from '@/features/splash';
 import { StaySearchPage } from '@/features/stays';
 import { MyTripsPage } from '@/features/trips';
-import { WanderbookPage } from '@/features/wanderbook';
+import {
+  EditProfilePage,
+  NewPostPage,
+  PeoplePage,
+  PostPage,
+  WanderbookPage,
+  WanderbookProfilePage,
+} from '@/features/wanderbook';
 import { routes } from '@/lib/routes';
 import { OverlayLayout } from './layouts/OverlayLayout';
 import { ShellLayout } from './layouts/ShellLayout';
@@ -44,6 +52,8 @@ export const router = createBrowserRouter([
           { path: routes.home, element: <HomePage /> },
           { path: routes.trips, element: <MyTripsPage /> },
           { path: routes.wanderbook, element: <WanderbookPage /> },
+          { path: routes.wanderbookProfilePattern, element: <WanderbookProfilePage /> },
+          { path: routes.wanderbookPostPattern, element: <PostPage /> },
           {
             path: routes.profile,
             element: <ProfilePage />,
@@ -67,6 +77,13 @@ export const router = createBrowserRouter([
           { path: routes.privacy, element: <PrivacyPage /> },
           { path: routes.terms, element: <TermsPage /> },
           { path: routes.deleteMyData, element: <DeleteDataPage /> },
+          { path: routes.communityGuidelines, element: <CommunityGuidelinesPage /> },
+          { path: routes.wanderbookNewPost, element: <NewPostPage /> },
+          { path: routes.wanderbookEditProfile, element: <EditProfilePage /> },
+          { path: routes.wanderbookPeoplePattern, element: <PeoplePage /> },
+          { path: routes.wanderbookRequests, element: <PeoplePage mode="requests" /> },
+          { path: routes.wanderbookBlocked, element: <PeoplePage mode="blocked" /> },
+          { path: routes.adminReports, element: <AdminReportsPage /> },
         ],
       },
       { path: '*', element: <Navigate to={routes.home} replace /> },

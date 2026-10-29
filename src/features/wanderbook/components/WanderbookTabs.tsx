@@ -6,7 +6,7 @@ import styles from './WanderbookTabs.module.css';
 
 const WANDERBOOK_TABS = [
   { id: 'mine', label: 'My Wanderposts' },
-  { id: 'feed', label: 'Feed Post' },
+  { id: 'feed', label: 'Feed' },
 ] as const satisfies readonly { id: WanderbookTab; label: string }[];
 
 interface WanderbookTabsProps {
