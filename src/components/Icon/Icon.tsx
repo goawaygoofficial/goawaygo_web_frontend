@@ -1,4 +1,13 @@
 import addSvg from '@material-design-icons/svg/filled/add.svg?raw';
+import addASvg from '@material-design-icons/svg/filled/add_a_photo.svg?raw';
+import blockSvg from '@material-design-icons/svg/filled/block.svg?raw';
+import favoriteSvg from '@material-design-icons/svg/filled/favorite.svg?raw';
+import lockSvg from '@material-design-icons/svg/filled/lock.svg?raw';
+import moreHorizSvg from '@material-design-icons/svg/filled/more_horiz.svg?raw';
+import favoriteBorderSvg from '@material-design-icons/svg/outlined/favorite_border.svg?raw';
+import chatBubbleOutlineSvg from '@material-design-icons/svg/outlined/chat_bubble_outline.svg?raw';
+import flagOutlinedSvg from '@material-design-icons/svg/outlined/flag.svg?raw';
+import photoLibrarySvg from '@material-design-icons/svg/outlined/photo_library.svg?raw';
 import androidSvg from '@material-design-icons/svg/filled/android.svg?raw';
 import arrowDropDownSvg from '@material-design-icons/svg/filled/arrow_drop_down.svg?raw';
 import attachMoneySvg from '@material-design-icons/svg/filled/attach_money.svg?raw';
@@ -50,6 +59,15 @@ import myLocationSvg from '@material-design-icons/svg/sharp/my_location.svg?raw'
  * through `Icons.*`, so both frontends show identical icons. Names follow Flutter's, e.g. `location_on_sharp`.
  */
 const SOURCES = {
+  add_a_photo: addASvg,
+  block: blockSvg,
+  favorite: favoriteSvg,
+  lock: lockSvg,
+  more_horiz: moreHorizSvg,
+  favorite_border: favoriteBorderSvg,
+  chat_bubble_outline: chatBubbleOutlineSvg,
+  flag_outlined: flagOutlinedSvg,
+  photo_library: photoLibrarySvg,
   add: addSvg,
   android: androidSvg,
   arrow_back_ios_rounded: arrowBackIosSvg,

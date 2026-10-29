@@ -2,15 +2,22 @@
   padding-top: 0;
 }
 
-/* Keep the profile header at a readable width on desktop. */
-.headerColumn {
+/* One readable column, like a phone screen, also on desktop. */
+.column {
   max-width: var(--layout-content-max);
   margin-inline: auto;
 }
 
-.sampleNote {
-  margin-top: var(--space-3);
-  color: var(--color-white-muted);
-  font-size: var(--font-size-xs);
+.invite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-6) 0;
   text-align: center;
+}
+
+.inviteTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
 }

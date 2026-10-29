@@ -74,12 +74,28 @@ export function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="your-content" title="5. Content you share">
+      <LegalSection id="your-content" title="5. Content you share (Wanderbook)">
         <p>
-          You own what you post (such as trip stories and photos, when these features arrive). You
-          give us permission to store, show and share it inside GoAwayGo, as you choose, so the
-          service works. You can delete it at any time. Only post what you have the right to share.
-          We may remove content that breaks these terms or the law, and we act on valid complaints.
+          You own the photos, captions, comments and profile details you post in Wanderbook. You
+          give us a worldwide, free permission to store, copy and show them inside GoAwayGo, so the
+          service works: to everyone if your profile is public, or to the followers you approve if
+          it is private. This permission ends when you delete the content or your account (copies in
+          backups disappear within the times in our Privacy Policy). Others may see and share links
+          to what you make public.
+        </p>
+        <p>
+          Only post what you have the right to share, and follow our{' '}
+          <Link to={routes.communityGuidelines}>Community Guidelines</Link>. Before photos and text
+          appear, they are checked automatically for content those guidelines don&apos;t allow, and
+          may be refused. Anyone can report a post, comment or person; our team reviews reports and
+          may remove content or close accounts that break these terms, the guidelines or the law. If
+          your content was removed and you think that was a mistake, write to{' '}
+          <MailLink address={legal.supportEmail} />.
+        </p>
+        <p>
+          Photos are kept as you upload them, except that their hidden location data is removed;
+          only the place name you choose is shown. You can block anyone, which also ends follows
+          between you.
         </p>
       </LegalSection>
 

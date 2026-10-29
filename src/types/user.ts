@@ -6,6 +6,8 @@ export interface UserDto {
   profile_picture?: string | null;
   phone?: string | null;
   email_verified?: boolean;
+  /** Reviews Wanderbook reports (set by hand in the database). */
+  is_admin?: boolean;
 }
 
 /** User as the web app uses it. */
@@ -16,6 +18,7 @@ export interface User {
   profilePicture: string | null;
   phone: string | null;
   emailVerified: boolean;
+  isAdmin: boolean;
 }
 
 export function userFromDto(dto: UserDto): User {
@@ -26,6 +29,7 @@ export function userFromDto(dto: UserDto): User {
     profilePicture: dto.profile_picture ?? null,
     phone: dto.phone ?? null,
     emailVerified: dto.email_verified ?? false,
+    isAdmin: dto.is_admin ?? false,
   };
 }
 

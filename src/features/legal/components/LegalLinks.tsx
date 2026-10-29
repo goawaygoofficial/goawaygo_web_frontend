@@ -12,6 +12,7 @@ export function LegalLinks({ className }: { className?: string }) {
     <nav aria-label="Legal" className={[styles.links, className].filter(Boolean).join(' ')}>
       <Link to={routes.privacy}>Privacy Policy</Link>
       <Link to={routes.terms}>Terms of Use</Link>
+      <Link to={routes.communityGuidelines}>Community Guidelines</Link>
       <Link to={routes.deleteMyData}>Delete my data</Link>
       {analyticsAvailable && (
         <button type="button" className={styles.choices} onClick={reviewConsent}>

@@ -1,67 +1,74 @@
-import { Icon } from '@/components';
+import type { ReactNode } from 'react';
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import backdropImage from '@/assets/images/home_image_01.png';
+import { Icon } from '@/components';
+import { routes } from '@/lib/routes';
 import { useCollapseOnScroll } from '../hooks/useCollapseOnScroll';
-import type { WanderbookProfile } from '../types';
+import type { Profile } from '../types';
 import styles from './ProfileHeader.module.css';
 
-/** Backdrop, avatar, name, stats and bio. Scales, fades and slides away as the page scrolls. */
-export function ProfileHeader({ profile }: { profile: WanderbookProfile }) {
+/**
+ * Cover, profile photo, name, home town, counts and bio, with the actions under it (Follow, Edit profile, ...).
+ * Scales, fades and slides away as the page scrolls.
+ */
+export function ProfileHeader({ profile, children }: { profile: Profile; children?: ReactNode }) {
   const ref = useRef<HTMLElement>(null);
   useCollapseOnScroll(ref);
+  const listsVisible = profile.canSeePosts;
 
-  const stats = [
-    { label: 'Posts', count: profile.stats.posts },
-    { label: 'Followers', count: profile.stats.followers },
-    { label: 'Following', count: profile.stats.following },
-  ];
+  const stat = (label: string, count: number, list?: 'followers' | 'following') => {
+    const content = (
+      <>
+        <dt className={styles.statLabel}>{label}</dt>
+        <dd className={styles.statCount}>{count}</dd>
+      </>
+    );
+    return (
+      <div key={label} className={styles.stat}>
+        {list && listsVisible ? (
+          <Link to={routes.wanderbookPeople(profile.publicId, list)} className={styles.statLink}>
+            {content}
+          </Link>
+        ) : (
+          content
+        )}
+      </div>
+    );
+  };
 
   return (
     <header ref={ref} className={styles.header}>
       <div className={styles.backdrop}>
-        <img src={backdropImage} alt="" className={styles.backdropImage} />
-        <button
-          type="button"
-          className={styles.camera}
-          disabled
-          aria-label="Change cover photo (coming soon)"
-          title="Coming soon"
-        >
-          <Icon name="camera_alt" />
-        </button>
+        <img src={profile.coverUrl ?? backdropImage} alt="" className={styles.backdropImage} />
         <span className={styles.avatar} aria-hidden="true">
-          <Icon name="person" />
+          {profile.photoUrl ? (
+            <img src={profile.photoUrl} alt="" className={styles.avatarImage} />
+          ) : (
+            <Icon name="person" />
+          )}
         </span>
       </div>
 
-      <h1 className={styles.name}>{profile.name}</h1>
-      <p className={styles.location}>{profile.location}</p>
+      <h1 className={styles.name}>
+        {profile.name}
+        {profile.isPrivate && (
+          <span className={styles.lock} title="Private profile">
+            <Icon name="lock" />
+            <span className="visually-hidden">(private profile)</span>
+          </span>
+        )}
+      </h1>
+      {profile.homeTown && <p className={styles.location}>{profile.homeTown}</p>}
 
       <div className={styles.details}>
         <dl className={styles.stats}>
-          {stats.map((stat) => (
-            <div key={stat.label} className={styles.stat}>
-              <dt className={styles.statLabel}>{stat.label}</dt>
-              <dd className={styles.statCount}>{stat.count}</dd>
-            </div>
-          ))}
+          {stat('Posts', profile.posts)}
+          {stat('Followers', profile.followers, 'followers')}
+          {stat('Following', profile.following, 'following')}
         </dl>
-        <div className={styles.bioRow}>
-          <p className={styles.bio}>
-            {profile.bio.map((line) => (
-              <span key={line}>{line}</span>
-            ))}
-          </p>
-          <button
-            type="button"
-            className={styles.edit}
-            disabled
-            aria-label="Edit bio (coming soon)"
-            title="Coming soon"
-          >
-            <Icon name="edit" />
-          </button>
-        </div>
+        {profile.bio && <p className={styles.bio}>{profile.bio}</p>}
+        {children && <div className={styles.actionsRow}>{children}</div>}
       </div>
     </header>
   );
