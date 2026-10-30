@@ -107,7 +107,7 @@ Decided 2026-10-28. After 4.2 (before 4.3): enhancements and fixes from testing,
 - [x] Accounts: OpenAI key, R2 bucket `goawaygo-media` and access key (Secret Manager)
 - [x] Backend: profiles, follows and requests, private profiles, blocks, people search
 - [x] Backend: photos and moderation, posts, likes, comments, feed, reports, admin
-- [x] Website · [ ] App · [x] Legal pages (Terms, Community Guidelines, Privacy Policy, Delete my data)
+- [x] Website · [x] App · [x] Legal pages (Terms, Community Guidelines, Privacy Policy, Delete my data)
 
 ### Later sub-phases
 
