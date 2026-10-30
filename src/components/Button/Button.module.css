@@ -9,6 +9,8 @@
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-wide);
+  text-decoration: none;
+  cursor: pointer;
   transition:
     transform var(--duration-fast) var(--ease-standard),
     filter var(--duration-fast) var(--ease-standard),
@@ -28,6 +30,32 @@
 .google {
   padding: var(--space-3) var(--space-10);
   box-shadow: var(--shadow-soft);
+}
+
+/* Secondary actions on the blue background (Edit profile, Cancel, Load more, ...). */
+.outline {
+  padding: var(--space-3) var(--space-10);
+  border: 1px solid var(--color-white-subtle);
+  background: transparent;
+  color: var(--color-white);
+}
+
+.outline:not(:disabled):hover {
+  background: var(--color-white-faint);
+}
+
+/* Compact actions in lists, headers and cards. */
+.sm {
+  gap: var(--space-1);
+  min-height: 2.25rem;
+  padding: var(--space-1) var(--space-4);
+  font-size: var(--font-size-sm);
+  letter-spacing: normal;
+}
+
+.sm .icon svg {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
 }
 
 .primary {

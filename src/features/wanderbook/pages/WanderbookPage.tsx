@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Icon, PageShell } from '@/components';
+import { Button, ButtonLink, Icon, PageShell } from '@/components';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import { FeedList } from '../components/FeedList';
@@ -55,23 +54,17 @@ export function WanderbookPage() {
       <div className={styles.column}>
         {user && profile && (
           <ProfileHeader profile={profile}>
-            <Link to={routes.wanderbookNewPost} className={shared.pillButton}>
+            <ButtonLink to={routes.wanderbookNewPost} size="sm">
               <Icon name="add_a_photo" />
               New post
-            </Link>
-            <Link
-              to={routes.wanderbookEditProfile}
-              className={`${shared.pillButton} ${shared.quiet}`}
-            >
+            </ButtonLink>
+            <ButtonLink to={routes.wanderbookEditProfile} variant="outline" size="sm">
               Edit profile
-            </Link>
+            </ButtonLink>
             {profile.followRequests !== null && profile.followRequests > 0 && (
-              <Link
-                to={routes.wanderbookRequests}
-                className={`${shared.pillButton} ${shared.quiet}`}
-              >
+              <ButtonLink to={routes.wanderbookRequests} variant="outline" size="sm">
                 Requests ({profile.followRequests})
-              </Link>
+              </ButtonLink>
             )}
           </ProfileHeader>
         )}
@@ -81,9 +74,9 @@ export function WanderbookPage() {
             <p className={shared.muted}>
               Keep your trip photos as they are, tag the places, and follow other travellers.
             </p>
-            <Link to={routes.profile} className={shared.pillButton}>
+            <ButtonLink to={routes.profile} size="sm">
               Sign in to post
-            </Link>
+            </ButtonLink>
           </section>
         )}
 
@@ -100,13 +93,9 @@ export function WanderbookPage() {
                 <PostGrid posts={mine.items} empty="Share your first trip: tap New post." />
                 {mine.hasMore && (
                   <div className={shared.loadMore}>
-                    <button
-                      type="button"
-                      className={`${shared.pillButton} ${shared.quiet}`}
-                      onClick={mine.loadMore}
-                    >
+                    <Button type="button" variant="outline" size="sm" onClick={mine.loadMore}>
                       Load more
-                    </button>
+                    </Button>
                   </div>
                 )}
               </>

@@ -1,6 +1,7 @@
 import { ApiError } from './apiError';
 import { env } from './env';
 import { endSession, getAccessToken, refreshSession } from './session';
+import { isRecord } from './isRecord';
 
 export { ApiError } from './apiError';
 
@@ -18,10 +19,6 @@ interface RequestOptions {
   /** Message used when the server gives no `message` / `error` in its error body. */
   fallbackError: string;
   signal?: AbortSignal;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
 }
 
 /** The single place error messages are pulled out of a response body: message → error → fallback. */

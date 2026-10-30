@@ -1,4 +1,5 @@
 import { ApiError, apiRequest } from '@/lib/apiClient';
+import { isRecord } from '@/lib/isRecord';
 import type {
   BannerSlide,
   DestinationPage,
@@ -10,10 +11,6 @@ import type {
 } from '../types';
 
 const UNEXPECTED = 'Unexpected response from the server.';
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
-}
 
 function isPlace(value: unknown): value is Place {
   return (

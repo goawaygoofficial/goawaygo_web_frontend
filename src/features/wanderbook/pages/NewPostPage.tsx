@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { Icon, PageHeader, PageShell } from '@/components';
+import { Button, Icon, PageHeader, PageShell } from '@/components';
 import { useBack } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
 import { routes } from '@/lib/routes';
@@ -191,13 +191,9 @@ export function NewPostPage() {
         />
 
         {error && <p className={shared.error}>{error}</p>}
-        <button
-          type="submit"
-          className={shared.pillButton}
-          disabled={ready.length === 0 || busy || posting}
-        >
+        <Button type="submit" size="sm" disabled={ready.length === 0 || busy || posting}>
           {posting ? 'Posting…' : busy ? 'Uploading photos…' : 'Share'}
-        </button>
+        </Button>
       </form>
     </PageShell>
   );

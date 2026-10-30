@@ -1,3 +1,4 @@
+import { Button } from '@/components';
 import { useEffect, useRef, useState } from 'react';
 import { toErrorMessage } from '@/lib/apiClient';
 import { report } from '../services/wanderbookService';
@@ -43,9 +44,9 @@ export function ReportDialog({ target, onClose }: ReportDialogProps) {
             Thanks for telling us
           </h2>
           <p>Our team will review it. You can also block the person so you don&apos;t see them.</p>
-          <button type="button" className={shared.pillButton} onClick={close}>
+          <Button type="button" size="sm" onClick={close}>
             Done
-          </button>
+          </Button>
         </div>
       )}
       {target && state !== 'sent' && (
@@ -98,20 +99,12 @@ export function ReportDialog({ target, onClose }: ReportDialogProps) {
           </label>
           {error && <p className={shared.error}>{error}</p>}
           <div className={styles.buttons}>
-            <button
-              type="button"
-              className={`${shared.pillButton} ${shared.quiet}`}
-              onClick={close}
-            >
+            <Button type="button" variant="outline" size="sm" onClick={close}>
               Cancel
-            </button>
-            <button
-              type="submit"
-              className={shared.pillButton}
-              disabled={!reason || state === 'sending'}
-            >
+            </Button>
+            <Button type="submit" size="sm" disabled={!reason || state === 'sending'}>
               {state === 'sending' ? 'Sending…' : 'Send report'}
-            </button>
+            </Button>
           </div>
         </form>
       )}

@@ -12,7 +12,16 @@ function frameRatio(photo: Photo | undefined): number {
  * A post's photos, swiped or scrolled sideways. Photos are the originals and are never cropped: each fits the
  * frame whole, and "Full size" opens the original file.
  */
-export function PhotoCarousel({ photos, label }: { photos: Photo[]; label: string }) {
+export function PhotoCarousel({
+  photos,
+  label,
+  morphName,
+}: {
+  photos: Photo[];
+  label: string;
+  /** view-transition-name of the first photo, so it morphs to and from the grid tile (MorphLink). */
+  morphName?: string;
+}) {
   const track = useRef<HTMLUListElement>(null);
   const [index, setIndex] = useState(0);
   const current = photos[index] ?? photos[0];
@@ -41,6 +50,7 @@ export function PhotoCarousel({ photos, label }: { photos: Photo[]; label: strin
               width={photo.width}
               height={photo.height}
               loading={position === 0 ? 'eager' : 'lazy'}
+              style={position === 0 && morphName ? { viewTransitionName: morphName } : undefined}
               className={styles.image}
             />
           </li>

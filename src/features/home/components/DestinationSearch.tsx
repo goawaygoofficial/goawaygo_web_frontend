@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Icon, TextField } from '@/components';
-import { suggestPlaces } from '@/features/discover';
+import { placeContext, suggestPlaces } from '@/features/discover';
 import type { Place } from '@/features/discover';
 import { routes } from '@/lib/routes';
 import { track } from '@/lib/analytics';
@@ -10,12 +10,6 @@ import styles from './DestinationSearch.module.css';
 /** Wait this long after the last key press before asking for suggestions. */
 const DEBOUNCE_MS = 250;
 const MIN_CHARS = 2;
-
-/** "Jaipur, Rajasthan, India" → "Rajasthan, India" (the name is shown separately). */
-function placeContext(place: Place): string {
-  const prefix = `${place.name}, `;
-  return place.label.startsWith(prefix) ? place.label.slice(prefix.length) : place.label;
-}
 
 /**
  * "Where do you want to be?" with real places suggested while typing (countries, regions, cities, landmarks).

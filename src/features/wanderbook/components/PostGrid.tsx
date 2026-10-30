@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import { Icon } from '@/components';
+import { Icon, MorphLink } from '@/components';
 import { routes } from '@/lib/routes';
 import type { Post } from '../types';
 import styles from './PostGrid.module.css';
@@ -15,18 +14,27 @@ export function PostGrid({ posts, empty }: { posts: readonly Post[]; empty: stri
         const cover = post.photos[0];
         return (
           <li key={post.publicId} className={styles.tile}>
-            <Link
+            <MorphLink
+              state={{ preview: post }}
               to={routes.wanderbookPost(post.publicId)}
               className={styles.link}
               aria-label={post.place ? `Post at ${post.place.name}` : 'Post'}
             >
-              {cover && <img src={cover.url} alt="" loading="lazy" className={styles.image} />}
+              {cover && (
+                <img
+                  src={cover.url}
+                  style={{ viewTransitionName: `post-${post.publicId}` }}
+                  alt=""
+                  loading="lazy"
+                  className={styles.image}
+                />
+              )}
               {post.photos.length > 1 && (
                 <span className={styles.multi} aria-hidden="true">
                   <Icon name="photo_library" />
                 </span>
               )}
-            </Link>
+            </MorphLink>
           </li>
         );
       })}

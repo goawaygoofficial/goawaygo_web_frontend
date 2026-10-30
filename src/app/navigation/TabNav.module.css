@@ -23,6 +23,7 @@
 }
 
 .link {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -41,6 +42,44 @@
 .active,
 .active:hover {
   color: var(--color-secondary);
+}
+
+/* The active tab's indicator grows in, and its icon gives a little pop, as you switch tabs. */
+.link::after {
+  position: absolute;
+  bottom: var(--space-1);
+  left: 50%;
+  width: var(--space-6);
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--color-secondary);
+  content: '';
+  transform: translateX(-50%) scaleX(0);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.active .icon {
+  animation: tab-pop var(--duration-base) var(--ease-out);
+}
+
+@keyframes tab-pop {
+  40% {
+    transform: scale(1.18) translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link::after {
+    transition: none;
+  }
+
+  .active .icon {
+    animation: none;
+  }
 }
 
 .icon {

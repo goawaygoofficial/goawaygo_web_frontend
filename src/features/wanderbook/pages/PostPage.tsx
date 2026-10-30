@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { Icon, PageHeader, PageShell } from '@/components';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Button, ButtonLink, Icon, PageHeader, PageShell } from '@/components';
 import { useBack } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
 import { routes } from '@/lib/routes';
@@ -61,7 +61,9 @@ export function PostPage() {
   }, [publicId, user?.id]);
 
   const current = loaded?.id === publicId ? loaded : null;
-  const post = current?.post ?? null;
+  // The post as the previous page showed it (MorphLink), so its photo is here at once; the fresh copy replaces it.
+  const preview = (useLocation().state as { preview?: Post } | null)?.preview;
+  const post = current?.post ?? (preview?.publicId === publicId ? preview : null);
   const editing = search.get('edit') === '1' && post?.isYours === true;
   const setPost = (next: Post) => {
     setLoaded({ id: publicId, post: next, error: null });
@@ -71,7 +73,7 @@ export function PostPage() {
     <PageShell>
       <PageHeader onBack={goBack} />
       <div className={styles.column}>
-        {!current && <p className={shared.status}>Loading…</p>}
+        {!current && !post && <p className={shared.status}>Loading…</p>}
         {current?.error && <p className={shared.status}>{current.error}</p>}
         {post && editing && (
           <EditPost
@@ -166,9 +168,9 @@ export function PostPage() {
                   }}
                 />
               ) : (
-                <Link to={routes.profile} className={`${shared.pillButton} ${shared.quiet}`}>
+                <ButtonLink to={routes.profile} variant="outline" size="sm">
                   Sign in to comment
-                </Link>
+                </ButtonLink>
               )}
             </section>
           </>
@@ -309,18 +311,19 @@ function EditPost({ post, onDone }: { post: Post; onDone: (saved: Post | null) =
       <PlaceFields value={place} onChange={setPlace} />
       {error && <p className={shared.error}>{error}</p>}
       <div className={styles.buttons}>
-        <button
+        <Button
           type="button"
-          className={`${shared.pillButton} ${shared.quiet}`}
+          variant="outline"
+          size="sm"
           onClick={() => {
             onDone(null);
           }}
         >
           Cancel
-        </button>
-        <button type="submit" className={shared.pillButton} disabled={saving}>
+        </Button>
+        <Button type="submit" size="sm" disabled={saving}>
           {saving ? 'Saving…' : 'Save'}
-        </button>
+        </Button>
       </div>
     </form>
   );

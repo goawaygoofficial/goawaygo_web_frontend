@@ -34,26 +34,6 @@
   color: var(--color-white-muted);
 }
 
-/* Same look as the primary Button, but a real link since it navigates. */
-.cta {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--size-touch);
-  padding: var(--space-3) var(--space-10);
-  border-radius: var(--radius-pill);
-  background: var(--color-secondary);
-  box-shadow: var(--shadow-soft);
-  color: var(--color-white);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--letter-spacing-wide);
-  text-decoration: none;
-}
-
-.cta:hover {
-  filter: brightness(1.06);
-}
-
 .heading {
   margin-block: var(--space-2) var(--space-5);
   font-size: var(--font-size-xl);

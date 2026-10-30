@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import myTripsIcon from '@/assets/icons/mytrips_white.png';
-import { Icon, PageHeader, PageShell } from '@/components';
+import { ButtonLink, Icon, PageHeader, PageShell } from '@/components';
 import { useSavedPlaces } from '@/features/discover';
 import type { SavedPlace } from '@/features/discover';
 import { routes } from '@/lib/routes';
@@ -120,9 +120,7 @@ function EmptyState({
           {title}
         </h1>
         <p className={styles.text}>{text}</p>
-        <Link to={link.to} className={styles.cta}>
-          {link.label}
-        </Link>
+        <ButtonLink to={link.to}>{link.label}</ButtonLink>
       </section>
     </PageShell>
   );

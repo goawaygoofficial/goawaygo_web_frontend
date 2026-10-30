@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { PageHeader, PageShell } from '@/components';
+import { Button, PageHeader, PageShell } from '@/components';
 import { useBack } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
 import { routes } from '@/lib/routes';
@@ -102,45 +102,48 @@ export function PeoplePage({ mode }: { mode?: 'requests' | 'blocked' }) {
               actions={
                 list === 'requests' ? (
                   <>
-                    <button
+                    <Button
                       type="button"
-                      className={shared.pillButton}
+                      size="sm"
                       onClick={() => {
                         run(answerFollowRequest(person.publicId, true), person);
                       }}
                     >
                       Approve
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       type="button"
-                      className={`${shared.pillButton} ${shared.quiet}`}
+                      variant="outline"
+                      size="sm"
                       onClick={() => {
                         run(answerFollowRequest(person.publicId, false), person);
                       }}
                     >
                       Decline
-                    </button>
+                    </Button>
                   </>
                 ) : list === 'blocked' ? (
-                  <button
+                  <Button
                     type="button"
-                    className={`${shared.pillButton} ${shared.quiet}`}
+                    variant="outline"
+                    size="sm"
                     onClick={() => {
                       run(block(person.publicId, false), person);
                     }}
                   >
                     Unblock
-                  </button>
+                  </Button>
                 ) : list === 'followers' && myId === publicId ? (
-                  <button
+                  <Button
                     type="button"
-                    className={`${shared.pillButton} ${shared.quiet}`}
+                    variant="outline"
+                    size="sm"
                     onClick={() => {
                       run(removeFollower(person.publicId), person);
                     }}
                   >
                     Remove
-                  </button>
+                  </Button>
                 ) : undefined
               }
             />
@@ -148,13 +151,9 @@ export function PeoplePage({ mode }: { mode?: 'requests' | 'blocked' }) {
         </ul>
         {people.hasMore && list !== 'blocked' && (
           <div className={shared.loadMore}>
-            <button
-              type="button"
-              className={`${shared.pillButton} ${shared.quiet}`}
-              onClick={people.loadMore}
-            >
+            <Button type="button" variant="outline" size="sm" onClick={people.loadMore}>
               Load more
-            </button>
+            </Button>
           </div>
         )}
       </div>
