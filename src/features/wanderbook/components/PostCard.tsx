@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Icon } from '@/components';
+import { Icon, MorphLink } from '@/components';
 import { toErrorMessage } from '@/lib/apiClient';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
@@ -118,7 +118,11 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
         </div>
       </header>
 
-      <PhotoCarousel photos={post.photos} label={`Photos by ${post.author.name}`} />
+      <PhotoCarousel
+        photos={post.photos}
+        label={`Photos by ${post.author.name}`}
+        morphName={`post-${post.publicId}`}
+      />
 
       <div className={styles.actions}>
         <button
@@ -131,13 +135,14 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
           <Icon name={post.likedByYou ? 'favorite' : 'favorite_border'} />
         </button>
         {!full && (
-          <Link
+          <MorphLink
+            state={{ preview: post }}
             to={routes.wanderbookPost(post.publicId)}
             className={shared.iconButton}
             aria-label="Comments"
           >
             <Icon name="chat_bubble_outline" />
-          </Link>
+          </MorphLink>
         )}
       </div>
       <p className={styles.counts}>
@@ -145,9 +150,9 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
         {post.comments > 0 && !full && (
           <>
             {' · '}
-            <Link to={routes.wanderbookPost(post.publicId)}>
+            <MorphLink state={{ preview: post }} to={routes.wanderbookPost(post.publicId)}>
               {post.comments} {post.comments === 1 ? 'comment' : 'comments'}
-            </Link>
+            </MorphLink>
           </>
         )}
       </p>
@@ -160,9 +165,13 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
         </p>
       )}
       <p className={shared.muted}>
-        <Link to={routes.wanderbookPost(post.publicId)} className={styles.time}>
+        <MorphLink
+          state={{ preview: post }}
+          to={routes.wanderbookPost(post.publicId)}
+          className={styles.time}
+        >
           {timeAgo(post.createdAt)}
-        </Link>
+        </MorphLink>
         {post.editedAt && ' · edited'}
       </p>
       {error && <p className={shared.error}>{error}</p>}

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { PageHeader, PageShell } from '@/components';
+import { Button, PageHeader, PageShell } from '@/components';
 import { useBack } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
 import { routes } from '@/lib/routes';
@@ -91,14 +91,15 @@ export function EditProfilePage() {
           <div className={styles.photos}>
             <div className={styles.photoRow}>
               <Avatar url={profile.photoUrl} size="4.5rem" />
-              <button
+              <Button
                 type="button"
-                className={`${shared.pillButton} ${shared.quiet}`}
+                variant="outline"
+                size="sm"
                 disabled={busy !== null}
                 onClick={() => avatarInput.current?.click()}
               >
                 {busy === 'avatar' ? 'Uploading…' : 'Change profile photo'}
-              </button>
+              </Button>
               {profile.photoUrl && (
                 <button
                   type="button"
@@ -118,14 +119,15 @@ export function EditProfilePage() {
               ) : (
                 <span className={styles.cover} />
               )}
-              <button
+              <Button
                 type="button"
-                className={`${shared.pillButton} ${shared.quiet}`}
+                variant="outline"
+                size="sm"
                 disabled={busy !== null}
                 onClick={() => coverInput.current?.click()}
               >
                 {busy === 'cover' ? 'Uploading…' : 'Change cover'}
-              </button>
+              </Button>
               {profile.coverUrl && (
                 <button
                   type="button"
@@ -195,9 +197,9 @@ export function EditProfilePage() {
           </label>
 
           {message && <p className={shared.muted}>{message}</p>}
-          <button type="submit" className={shared.pillButton} disabled={busy !== null}>
+          <Button type="submit" size="sm" disabled={busy !== null}>
             {busy === 'save' ? 'Saving…' : 'Save'}
-          </button>
+          </Button>
           <p className={styles.more}>
             <Link to={routes.wanderbookRequests}>Follow requests</Link>
             <Link to={routes.wanderbookBlocked}>Blocked people</Link>

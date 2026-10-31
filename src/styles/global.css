@@ -77,7 +77,27 @@ a {
   border: 0;
 }
 
+/*
+ * Photo morphs between pages (MorphLink + matching view-transition-name): the photo flies to its place on the next
+ * page while the rest cross-fades.
+ */
+::view-transition-group(*) {
+  animation-duration: var(--duration-slow);
+  animation-timing-function: var(--ease-standard);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-base);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+
   *,
   *::before,
   *::after {

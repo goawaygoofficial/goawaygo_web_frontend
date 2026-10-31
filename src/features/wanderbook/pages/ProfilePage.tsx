@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { Icon, PageHeader, PageShell } from '@/components';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Button, Icon, PageHeader, PageShell } from '@/components';
 import { useBack } from '@/hooks';
 import { toErrorMessage } from '@/lib/apiClient';
 import { routes } from '@/lib/routes';
@@ -11,7 +11,7 @@ import { ReportDialog } from '../components/ReportDialog';
 import shared from '../components/Wanderbook.module.css';
 import { usePaged } from '../hooks/usePaged';
 import { block, follow, getProfile, getProfilePosts } from '../services/wanderbookService';
-import type { Profile } from '../types';
+import type { Person, Profile } from '../types';
 import styles from './WanderbookPage.module.css';
 
 function followLabel(profile: Profile): string {
@@ -55,6 +55,8 @@ export function ProfilePage() {
 
   const current = loaded?.key === key ? loaded : null;
   const profile = current?.profile ?? null;
+  // The person as the previous page showed them (MorphLink), so their photo is here at once.
+  const preview = (useLocation().state as { preview?: Person } | null)?.preview;
   const posts = usePaged(
     `posts|${key}|${String(profile?.canSeePosts)}|${String(profile?.relationship)}`,
     (cursor, signal) =>
@@ -89,24 +91,43 @@ export function ProfilePage() {
     <PageShell width="wide" className={styles.page}>
       <PageHeader onBack={goBack} />
       <div className={styles.column}>
-        {!current && <p className={shared.status}>Loading…</p>}
+        {!current && preview?.publicId === publicId && (
+          <ProfileHeader
+            placeholder
+            morphAvatar
+            profile={{
+              ...preview,
+              coverUrl: null,
+              bio: '',
+              homeTown: preview.homeTown ?? '',
+              posts: 0,
+              followers: 0,
+              following: 0,
+              relationship: 'none',
+              followsYou: false,
+              blockedByYou: false,
+              canSeePosts: false,
+              followRequests: null,
+            }}
+          />
+        )}
+        {!current && preview?.publicId !== publicId && <p className={shared.status}>Loading…</p>}
         {current?.error && <p className={shared.status}>{current.error}</p>}
         {profile && (
           <>
-            <ProfileHeader profile={profile}>
+            <ProfileHeader profile={profile} morphAvatar>
               {!profile.blockedByYou && (
-                <button
+                <Button
                   type="button"
-                  className={[shared.pillButton, profile.relationship !== 'none' && shared.quiet]
-                    .filter(Boolean)
-                    .join(' ')}
+                  variant={profile.relationship === 'none' ? 'primary' : 'outline'}
+                  size="sm"
                   disabled={busy}
                   onClick={() => {
                     act(() => follow(publicId, profile.relationship === 'none'));
                   }}
                 >
                   {followLabel(profile)}
-                </button>
+                </Button>
               )}
               {profile.followsYou && profile.relationship !== 'none' && (
                 <span className={shared.muted}>Follows you</span>
@@ -125,9 +146,10 @@ export function ProfilePage() {
             </ProfileHeader>
             {menuOpen && (
               <div className={styles.invite}>
-                <button
+                <Button
                   type="button"
-                  className={`${shared.pillButton} ${shared.quiet}`}
+                  variant="outline"
+                  size="sm"
                   onClick={() => {
                     setMenuOpen(false);
                     if (
@@ -143,10 +165,11 @@ export function ProfilePage() {
                 >
                   <Icon name="block" />
                   {profile.blockedByYou ? 'Unblock' : 'Block'}
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className={`${shared.pillButton} ${shared.quiet}`}
+                  variant="outline"
+                  size="sm"
                   onClick={() => {
                     setMenuOpen(false);
                     if (user) setReporting(true);
@@ -155,7 +178,7 @@ export function ProfilePage() {
                 >
                   <Icon name="flag_outlined" />
                   Report
-                </button>
+                </Button>
               </div>
             )}
             {error && <p className={shared.error}>{error}</p>}
@@ -171,13 +194,9 @@ export function ProfilePage() {
                 <PostGrid posts={posts.items} empty="No posts yet." />
                 {posts.hasMore && (
                   <div className={shared.loadMore}>
-                    <button
-                      type="button"
-                      className={`${shared.pillButton} ${shared.quiet}`}
-                      onClick={posts.loadMore}
-                    >
+                    <Button type="button" variant="outline" size="sm" onClick={posts.loadMore}>
                       Load more
-                    </button>
+                    </Button>
                   </div>
                 )}
               </>

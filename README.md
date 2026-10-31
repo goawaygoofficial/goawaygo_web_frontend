@@ -201,5 +201,13 @@ blocks the popup, the user is asked to allow pop-ups.
 - Dialogs use the native `<dialog>`: focus is trapped and Esc closes them. They also auto-dismiss
   after 3s like the app.
 - Choice chips are radio inputs. Wanderbook tabs follow the WAI-ARIA tabs pattern (arrow keys).
-- `prefers-reduced-motion` turns off the splash bounce, the wave, the slide-ins, the carousel
-  scaling and the Wanderbook header collapse.
+- **Navigation motion** (`src/app/layouts/usePageMotion.ts`): switching tabs glides in from the side of the tab
+  you came from; pages opened from a page come in from the right, Back from the left; pages over the tabs slide all
+  the way, like the app's panels. The active tab's indicator grows in and its icon pops.
+- **Photo morphs** (`MorphLink` + matching CSS `view-transition-name`): a post's grid tile or feed photo grows into the
+  post page, and a person's photo in a list moves into their profile header. The link passes what it already shows
+  (`state.preview`), so the next page can draw that photo at once. Browsers without View Transitions just navigate.
+- `prefers-reduced-motion` turns off the splash bounce, the wave, the slide-ins, page motion, photo morphs, the
+  carousel scaling and the Wanderbook header collapse.
+- Buttons: `Button` and `ButtonLink` (a link that looks like a button), `size="sm"` for compact actions and
+  `variant="outline"` for secondary ones. Don't style buttons per page.

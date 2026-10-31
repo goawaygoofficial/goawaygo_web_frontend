@@ -1,0 +1,91 @@
+/*
+ * How pages come in (see usePageMotion). Tab pages glide a little sideways and fade; pages opened over the tabs
+ * (OverlayLayout) slide all the way in, like the app's panels. Nothing moves with reduced motion.
+ */
+
+.forward,
+.back,
+.tabLeft,
+.tabRight {
+  animation-duration: var(--duration-slide);
+  animation-timing-function: var(--ease-out);
+  animation-fill-mode: backwards;
+}
+
+.forward {
+  animation-name: from-right;
+}
+
+.back {
+  animation-name: from-left;
+}
+
+.tabRight {
+  animation-name: glide-from-right;
+  animation-duration: var(--duration-base);
+}
+
+.tabLeft {
+  animation-name: glide-from-left;
+  animation-duration: var(--duration-base);
+}
+
+/* Pages over the tabs: the whole page slides, as the app's panels do. */
+.overlay.forward {
+  animation-name: slide-from-right;
+}
+
+.overlay.back {
+  animation-name: slide-from-left;
+}
+
+@keyframes from-right {
+  from {
+    opacity: 0;
+    transform: translateX(var(--space-12));
+  }
+}
+
+@keyframes from-left {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--space-12)));
+  }
+}
+
+@keyframes glide-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(var(--space-6));
+  }
+}
+
+@keyframes glide-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--space-6)));
+  }
+}
+
+@keyframes slide-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slide-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .forward,
+  .back,
+  .tabLeft,
+  .tabRight {
+    animation: none;
+  }
+}

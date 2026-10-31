@@ -1,3 +1,4 @@
+import { Button } from '@/components';
 import { useState } from 'react';
 import type { Paged } from '../hooks/usePaged';
 import type { Post } from '../types';
@@ -32,14 +33,15 @@ export function FeedList({ feed, empty }: { feed: Paged<Post>; empty: string }) 
       ))}
       {feed.hasMore && (
         <div className={shared.loadMore}>
-          <button
+          <Button
             type="button"
-            className={`${shared.pillButton} ${shared.quiet}`}
+            variant="outline"
+            size="sm"
             disabled={feed.loadingMore}
             onClick={feed.loadMore}
           >
             {feed.loadingMore ? 'Loading…' : 'Load more'}
-          </button>
+          </Button>
         </div>
       )}
       <ReportDialog

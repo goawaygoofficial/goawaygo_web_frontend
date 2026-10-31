@@ -1,6 +1,6 @@
-import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
-import { Button, Icon, PageHeader, PageShell } from '@/components';
-import { PhotoSlider } from '@/features/discover';
+import { Navigate, useParams, useSearchParams } from 'react-router-dom';
+import { Button, ButtonLink, Icon, PageHeader, PageShell } from '@/components';
+import { PhotoSlider, placeContext } from '@/features/discover';
 import type { DestinationPage, DestinationQuery, PhotoSlide } from '@/features/discover';
 import { useBack } from '@/hooks';
 import { routes } from '@/lib/routes';
@@ -8,14 +8,6 @@ import { InfoCard } from '../components/InfoCard';
 import { TravelLoader } from '../components/TravelLoader';
 import { useDestination } from '../hooks/useDestination';
 import styles from './DestinationInfoPage.module.css';
-
-/** "Jaipur, Rajasthan, India" → "Rajasthan, India" (the name is the heading). */
-function context(page: DestinationPage): string {
-  const { name, label, country } = page.place;
-  const prefix = `${name}, `;
-  if (label.startsWith(prefix)) return label.slice(prefix.length);
-  return label === name ? (name === country ? '' : country) : label;
-}
 
 function photoSlides(page: DestinationPage): PhotoSlide[] {
   if (page.spots.length === 0) {
@@ -65,7 +57,9 @@ export function DestinationInfoPage() {
       {state.kind === 'ready' && state.page.status !== 'unknown' && (
         <>
           <h1 className={styles.heading}>{state.page.place.name}</h1>
-          {context(state.page) && <p className={styles.context}>{context(state.page)}</p>}
+          {placeContext(state.page.place) && (
+            <p className={styles.context}>{placeContext(state.page.place)}</p>
+          )}
           <div className={styles.layout}>
             <PhotoSlider
               slides={photoSlides(state.page)}
@@ -106,9 +100,7 @@ function Message({ title, text, onRetry }: { title: string; text: string; onRetr
       {onRetry ? (
         <Button onClick={onRetry}>Try again</Button>
       ) : (
-        <Link to={routes.home} className={styles.messageLink}>
-          Search again
-        </Link>
+        <ButtonLink to={routes.home}>Search again</ButtonLink>
       )}
     </section>
   );

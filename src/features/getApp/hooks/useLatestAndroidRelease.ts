@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { appLinks } from '@/lib/appLinks';
 import type { AndroidRelease, ApkFile } from '../types';
+import { isRecord } from '@/lib/isRecord';
 
 export type LatestReleaseState =
   { kind: 'loading' } | { kind: 'ready'; release: AndroidRelease } | { kind: 'unavailable' };
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
-}
 
 function toApkFile(value: unknown): ApkFile | null {
   if (!isRecord(value)) return null;
