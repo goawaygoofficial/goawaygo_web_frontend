@@ -1,5 +1,6 @@
 export { Button, ButtonLink } from './Button/Button';
 export { ChoiceChips } from './ChoiceChips/ChoiceChips';
+export { MultiChoiceChips } from './ChoiceChips/MultiChoiceChips';
 export { CounterField } from './CounterField/CounterField';
 export { DateField } from './DateField/DateField';
 export { FeatureList } from './FeatureList/FeatureList';

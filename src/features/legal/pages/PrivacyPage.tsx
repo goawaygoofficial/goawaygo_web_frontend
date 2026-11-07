@@ -104,6 +104,18 @@ export function PrivacyPage() {
               </tr>
               <tr>
                 <td>
+                  Trip plans: the place, dates, number of days, who is going (solo, couple, family
+                  or friends), pace, budget level, interests, any wish you type when changing a day,
+                  the plan the AI wrote, and whether you shared it
+                </td>
+                <td>
+                  To write your plan, keep it in My Trips on every device, and show it to people you
+                  share its link with.
+                </td>
+                <td>Contract</td>
+              </tr>
+              <tr>
+                <td>
                   Wanderbook: your profile (photo, cover, bio, home town, public or private), posts
                   (photos, captions, place tags), comments, likes, follows and blocks
                 </td>
@@ -238,9 +250,9 @@ export function PrivacyPage() {
               <tr>
                 <td>OpenAI</td>
                 <td>
-                  Checks Wanderbook photos and text for content our Community Guidelines don&apos;t
-                  allow, before they appear (it doesn&apos;t use them to train its models and keeps
-                  them for at most 30 days)
+                  Checks Wanderbook photos and text, and shared trip plans, for content our
+                  Community Guidelines don&apos;t allow, before they appear (it doesn&apos;t use
+                  them to train its models and keeps them for at most 30 days)
                 </td>
                 <td>United States</td>
               </tr>
@@ -263,7 +275,8 @@ export function PrivacyPage() {
                 <td>Google</td>
                 <td>
                   “Continue with Google” sign-in; beta app delivery (Firebase App Distribution, if
-                  you join the beta); our team inbox (Gmail) for emails you send us
+                  you join the beta); our team inbox (Gmail) for emails you send us; Gemini AI,
+                  which writes your trip plans from the details you choose
                 </td>
                 <td>Worldwide</td>
               </tr>
@@ -278,6 +291,15 @@ export function PrivacyPage() {
           and Wikipedia, Wikidata and Unsplash (find photos). Photos are then loaded by your browser
           or the app directly from Wikimedia Commons and Unsplash, which receive your IP address and
           browser details, as any website you visit would. Their own privacy policies apply to that.
+        </p>
+        <p>
+          <strong>Trip plans.</strong> To write or change a plan we send Google&apos;s Gemini AI the
+          plan details listed in section 2 (place, dates, who is going, pace, budget, interests and
+          any wish you type), never your name, email or account. While we use Gemini&apos;s free
+          tier, Google may use what we send to improve its services, so please don&apos;t type
+          personal details in a wish. Before a plan is shared by link, and when a shared plan
+          changes, its text is checked by OpenAI&apos;s moderation service (as for Wanderbook). A
+          shared plan can be seen by anyone with its link until you stop sharing or delete it.
         </p>
         <p>
           <strong>Flights, stays and car rentals.</strong> To show flight prices and open partner
@@ -334,7 +356,8 @@ export function PrivacyPage() {
           <li>
             <strong>Recent searches</strong> (signed in): only the last 5 are kept; older ones are
             deleted as you search, and all are deleted with your account.{' '}
-            <strong>Places in My Trips</strong>: until you remove them or delete your account.
+            <strong>Places in My Trips</strong> and <strong>trip plans</strong>: until you remove
+            them or delete your account.
           </li>
           <li>
             <strong>Emailed links</strong>: they stop working after 30 minutes (password reset) or

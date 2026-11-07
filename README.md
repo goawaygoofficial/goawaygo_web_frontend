@@ -74,7 +74,7 @@ The backend must allow CORS from the web origin, for example `http://localhost:5
 | `/auth/register`                         | Register               | Slides in over Auth                                                                              |
 | `/auth/forgot-password`                  | Forgot password        | Slides in over Auth                                                                              |
 | `/home`                                  | Home tab               | Categories, place search with suggestions, recent-searches banner, ideas (new every minute)      |
-| `/trips`                                 | My Trips tab           | Places saved from the ideas (sign-in needed)                                                     |
+| `/trips`                                 | My Trips tab           | Trip plans and places saved from the ideas (sign-in needed)                                      |
 | `/wanderbook`                            | Wanderbook tab         | Your profile, My Wanderposts grid and the shared Feed; signed out: the feed and a sign-in invite |
 | `/wanderbook/u/:id`, `/wanderbook/p/:id` | Profile, post          | Follow or request, block, report; post with comments, likes, edit and delete                     |
 | `/wanderbook/new`, `/wanderbook/edit`    | New post, edit profile | Original photos (HEIC converted to JPEG), place tag from the photo's location                    |
@@ -86,6 +86,8 @@ The backend must allow CORS from the web origin, for example `http://localhost:5
 | `/flights/results`                       | Flight results         | Recent fares on the date and that month ("may change"), floating "See all flights"               |
 | `/stays/results`, `/rentals/results`     | Partner results        | Partner cards opened on the search; no prices yet. The search lives in the query string          |
 | `/destination/:place`                    | Destination info       | `?id=` picked place or `?q=` text. Travel animation, then spot photos and the 9 AI cards         |
+| `/plans/new`                             | Plan a trip (4.4)      | Place in the query string (from a destination page or a saved place); the AI writes the plan     |
+| `/plans/:id`, `/plans/shared/:id`        | Trip plan              | Days, cost estimate, booking shortcuts; owner: change a day, share by link, delete               |
 
 The 4-tab bar is a bottom tab bar under 768px and a sticky top bar on wider screens.
 
@@ -99,7 +101,7 @@ src/
                 FieldPair (+ SwapButton), ChoiceChips, FormRow, SearchFormLayout, PageHeader,
                 PageShell, Logo, MaskIcon, IconTile, FeatureList, StatusDialog, NotificationButton
   features/
-    auth/ home/ flights/ stays/ rentals/ destination/ wanderbook/ profile/ trips/ splash/
+    auth/ home/ flights/ stays/ rentals/ book/ destination/ plans/ wanderbook/ profile/ trips/ splash/
       components/ pages/ hooks/ services/ data/ types.ts   (only the folders a feature needs)
   hooks/        useAsyncAction, useBack, usePrefersReducedMotion
   lib/          apiClient.ts, apiError.ts, session.ts, env.ts, routes.ts, validation.ts, date.ts, googleIdentity.ts

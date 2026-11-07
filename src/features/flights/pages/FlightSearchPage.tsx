@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import flightsImage from '@/assets/images/flights.png';
 import {
   ChoiceChips,
@@ -28,6 +28,28 @@ const INITIAL_FORM: FlightSearchRequest = {
   returnDate: '',
   passengers: 1,
 };
+
+const IATA = /^[A-Z]{3}$/;
+const DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** The form opened from a trip plan's Flights shortcut: destination and dates filled in. */
+function fromShortcut(params: URLSearchParams): FlightSearchRequest {
+  const to = params.get('to') ?? '';
+  const toName = params.get('toName') ?? '';
+  const depart = params.get('depart') ?? '';
+  const back = params.get('return') ?? '';
+  const airport: Airport | null =
+    IATA.test(to) && toName
+      ? { code: to, type: 'city', name: toName, city: '', country: '', countryCode: '' }
+      : null;
+  return {
+    ...INITIAL_FORM,
+    to: airport,
+    toText: airport ? `${airport.name} (${airport.code})` : '',
+    departureDate: DATE.test(depart) ? depart : '',
+    returnDate: DATE.test(back) ? back : '',
+  };
+}
 
 function airportLabel(airport: Airport): string {
   return airport.type === 'airport'
@@ -65,7 +87,8 @@ export function FlightSearchPage() {
     track({ name: 'travel_category_opened', props: { category: 'flights' } });
   }, []);
   const navigate = useNavigate();
-  const [form, setForm] = useState(INITIAL_FORM);
+  const [params] = useSearchParams();
+  const [form, setForm] = useState(() => fromShortcut(params));
   const [error, setError] = useState<string>();
   const update = (patch: Partial<FlightSearchRequest>) => {
     setForm((current) => ({ ...current, ...patch }));

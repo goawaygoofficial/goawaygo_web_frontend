@@ -10,6 +10,7 @@ import { AdminReportsPage } from '@/features/admin';
 import { DestinationInfoPage } from '@/features/destination';
 import { FlightResultsPage, RentalResultsPage, StayResultsPage } from '@/features/book';
 import { FlightSearchPage } from '@/features/flights';
+import { PlanFormPage, PlanPage } from '@/features/plans';
 import { DownloadPage } from '@/features/getApp';
 import { HomePage } from '@/features/home';
 import { CommunityGuidelinesPage, DeleteDataPage, PrivacyPage, TermsPage } from '@/features/legal';
@@ -76,6 +77,9 @@ export const router = createBrowserRouter([
           { path: routes.stays, element: <StaySearchPage /> },
           { path: routes.rentals, element: <RentalSearchPage /> },
           { path: routes.destinationPattern, element: <DestinationInfoPage /> },
+          { path: routes.planNew, element: <PlanFormPage /> },
+          { path: routes.sharedPlanPattern, element: <PlanPage shared /> },
+          { path: routes.planPattern, element: <PlanPage /> },
           { path: routes.profileDetails, element: <UserProfilePage /> },
           { path: routes.download, element: <DownloadPage /> },
           { path: routes.privacy, element: <PrivacyPage /> },

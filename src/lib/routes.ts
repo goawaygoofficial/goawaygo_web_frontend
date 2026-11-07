@@ -43,6 +43,13 @@ export const routes = {
   flightResults: '/flights/results',
   stayResults: '/stays/results',
   rentalResults: '/rentals/results',
+  /** AI trip planner (4.4): the form takes the place in its query (`features/plans/options.ts`). */
+  planNew: '/plans/new',
+  planPattern: '/plans/:id',
+  plan: (id: string) => `/plans/${id}`,
+  /** A plan shared by link; the app shares the same path on the website. */
+  sharedPlanPattern: '/plans/shared/:id',
+  sharedPlan: (id: string) => `/plans/shared/${id}`,
   destinationPattern: '/destination/:place',
   /**
    * A destination page. `id`: the place picked from the suggestions; `q`: what to search for when there is no id

@@ -1,0 +1,193 @@
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.titleIcon {
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.heading {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+.subheading {
+  color: var(--color-white-muted);
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-3);
+}
+
+.label {
+  margin-top: var(--space-2);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-3);
+}
+
+.error {
+  color: var(--color-secondary-lighter);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+}
+
+.note,
+.status {
+  margin-top: var(--space-4);
+  color: var(--color-white-muted);
+  font-size: var(--font-size-xs);
+  text-align: center;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  padding: var(--space-5) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-white-faint);
+  text-align: center;
+}
+
+.panelIcon {
+  width: var(--size-icon-lg);
+  height: var(--size-icon-lg);
+  color: var(--color-secondary-light);
+}
+
+.panelTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.planTitle {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+}
+
+.infoRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  color: var(--color-primary-light);
+  font-size: var(--font-size-sm);
+}
+
+.info {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.info svg {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+}
+
+.summary {
+  margin-block: var(--space-3) var(--space-4);
+  color: var(--color-white-muted);
+}
+
+.shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* The founder's floating pill, here as three booking shortcuts. */
+.shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--gradient-orange-white);
+  box-shadow: var(--shadow-soft);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.shortcut svg {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+}
+
+.shortcut:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.days {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.section {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.tips {
+  margin-top: var(--space-5);
+}
+
+.tips ul {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-5);
+  color: var(--color-white-muted);
+}
+
+.link {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  color: var(--color-primary-light);
+  font-size: var(--font-size-sm);
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}

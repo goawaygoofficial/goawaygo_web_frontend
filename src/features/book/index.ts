@@ -5,3 +5,4 @@ export { StayResultsPage } from './pages/StayResultsPage';
 export { carQuery, flightQuery, stayQuery } from './searchParams';
 export { suggestAirports } from './services/bookService';
 export type { Airport } from './types';
+export { formatDateRange, formatDay, formatPrice, plural } from './format';
