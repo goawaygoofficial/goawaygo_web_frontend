@@ -280,6 +280,16 @@ export function PrivacyPage() {
           browser details, as any website you visit would. Their own privacy policies apply to that.
         </p>
         <p>
+          <strong>Flights, stays and car rentals.</strong> To show flight prices and open partner
+          websites we send Travelpayouts (our affiliate network, which runs Aviasales) only what you
+          searched: places, dates and the number of travellers, never your name, email or account.
+          When you open a partner from GoAwayGo, your browser goes through Travelpayouts to the
+          partner (for example Aviasales, Trip.com or DiscoverCars). They receive your IP address
+          and browser details and may set cookies to record that you came from GoAwayGo, so a
+          booking can be credited to us. Anything you book is between you and the partner, under
+          their privacy policy.
+        </p>
+        <p>
           We don't sell your personal data, and we don't share it for targeted advertising. We
           disclose it to authorities only when the law requires it, and we would tell you unless the
           law forbids that.

@@ -8,6 +8,7 @@ import {
 } from '@/features/auth';
 import { AdminReportsPage } from '@/features/admin';
 import { DestinationInfoPage } from '@/features/destination';
+import { FlightResultsPage, RentalResultsPage, StayResultsPage } from '@/features/book';
 import { FlightSearchPage } from '@/features/flights';
 import { DownloadPage } from '@/features/getApp';
 import { HomePage } from '@/features/home';
@@ -69,6 +70,9 @@ export const router = createBrowserRouter([
         element: <OverlayLayout />,
         children: [
           { path: routes.flights, element: <FlightSearchPage /> },
+          { path: routes.flightResults, element: <FlightResultsPage /> },
+          { path: routes.stayResults, element: <StayResultsPage /> },
+          { path: routes.rentalResults, element: <RentalResultsPage /> },
           { path: routes.stays, element: <StaySearchPage /> },
           { path: routes.rentals, element: <RentalSearchPage /> },
           { path: routes.destinationPattern, element: <DestinationInfoPage /> },

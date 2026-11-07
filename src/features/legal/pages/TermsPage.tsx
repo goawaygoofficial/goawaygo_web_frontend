@@ -107,6 +107,11 @@ export function TermsPage() {
           earn a commission when you book through a link; this never changes the price you pay. We
           aren't responsible for partner websites or their content.
         </p>
+        <p>
+          Flight prices we show are recent prices other travellers found, not live offers: they can
+          change or be gone by the time you book. The price and conditions shown on the partner's
+          website when you book are the ones that apply.
+        </p>
       </LegalSection>
 
       <LegalSection id="our-rights" title="7. Our content">

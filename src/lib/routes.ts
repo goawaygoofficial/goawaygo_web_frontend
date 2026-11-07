@@ -39,6 +39,10 @@ export const routes = {
   flights: '/flights',
   stays: '/stays',
   rentals: '/rentals',
+  /** Book (4.3) results; the search is in the query (`features/book/searchParams.ts`). */
+  flightResults: '/flights/results',
+  stayResults: '/stays/results',
+  rentalResults: '/rentals/results',
   destinationPattern: '/destination/:place',
   /**
    * A destination page. `id`: the place picked from the suggestions; `q`: what to search for when there is no id

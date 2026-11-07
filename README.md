@@ -82,9 +82,9 @@ The backend must allow CORS from the web origin, for example `http://localhost:5
 | `/community-guidelines`                  | Community Guidelines   | Rules for Wanderbook posts                                                                       |
 | `/profile`                               | Profile tab            | Signed out: features + Google + SIGN IN. Signed in: tile grid, sign-out icon in header           |
 | `/profile/details`                       | User profile           | Account rows + Sign Out (with confirmation)                                                      |
-| `/flights`                               | Book flights           | Slides in; tab bar hidden                                                                        |
-| `/stays`                                 | Book hotels            | Slides in; tab bar hidden                                                                        |
-| `/rentals`                               | Rent a car             | Slides in; tab bar hidden                                                                        |
+| `/flights`, `/stays`, `/rentals`         | Book (4.3) forms       | Slides in; tab bar hidden. Airports and places suggested while typing                            |
+| `/flights/results`                       | Flight results         | Recent fares on the date and that month ("may change"), floating "See all flights"               |
+| `/stays/results`, `/rentals/results`     | Partner results        | Partner cards opened on the search; no prices yet. The search lives in the query string          |
 | `/destination/:place`                    | Destination info       | `?id=` picked place or `?q=` text. Travel animation, then spot photos and the 9 AI cards         |
 
 The 4-tab bar is a bottom tab bar under 768px and a sticky top bar on wider screens.
@@ -187,12 +187,11 @@ blocks the popup, the user is asked to allow pop-ups.
 
 ## Stubs and placeholders (not implemented on purpose)
 
-| What                                                    | Where                                        | Status                                                                                              |
-| ------------------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Flight / hotel / rental search                          | `features/*/services/*Service.ts`            | `console.info`s the typed payload. The app's buttons are `// TODO` and there is no backend endpoint |
-| Notifications bell                                      | —                                            | Visibly disabled ("coming soon"). Empty handlers in the app                                         |
-| Profile tiles: Recently Viewed, Saved, Reviews, Rewards | `features/profile/pages/ProfilePage.tsx`     | Visibly disabled ("Coming soon"). My Trips and User Profile are wired                               |
-| Password reset email                                    | `features/auth/pages/ForgotPasswordPage.tsx` | The form is final; the backend endpoint arrives with the email-provider work                        |
+| What                                                    | Where                                        | Status                                                                       |
+| ------------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- |
+| Notifications bell                                      | —                                            | Visibly disabled ("coming soon"). Empty handlers in the app                  |
+| Profile tiles: Recently Viewed, Saved, Reviews, Rewards | `features/profile/pages/ProfilePage.tsx`     | Visibly disabled ("Coming soon"). My Trips and User Profile are wired        |
+| Password reset email                                    | `features/auth/pages/ForgotPasswordPage.tsx` | The form is final; the backend endpoint arrives with the email-provider work |
 
 ## Accessibility and motion
 

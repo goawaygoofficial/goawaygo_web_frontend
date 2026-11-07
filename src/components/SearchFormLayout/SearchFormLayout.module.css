@@ -27,3 +27,9 @@
   justify-content: center;
   margin-top: var(--space-2);
 }
+
+.error {
+  color: var(--color-secondary-lighter);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+}

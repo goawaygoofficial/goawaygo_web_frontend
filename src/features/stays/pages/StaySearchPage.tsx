@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import staysImage from '@/assets/images/stays.png';
-import {
-  CounterField,
-  DateField,
-  FieldPair,
-  FormRow,
-  Icon,
-  SearchFormLayout,
-  TextField,
-} from '@/components';
+import { CounterField, DateField, FieldPair, FormRow, Icon, SearchFormLayout } from '@/components';
+import { SuggestField, stayQuery } from '@/features/book';
+import { placeContext, suggestPlaces } from '@/features/discover';
+import type { Place } from '@/features/discover';
 import { track } from '@/lib/analytics';
-import { searchStays } from '../services/stayService';
+import { routes } from '@/lib/routes';
 import type { StaySearchRequest } from '../types';
 
 const INITIAL_FORM: StaySearchRequest = {
@@ -18,34 +14,81 @@ const INITIAL_FORM: StaySearchRequest = {
   checkIn: '',
   checkOut: '',
   rooms: 1,
-  adults: 1,
+  adults: 2,
 };
+
+const MAX_NIGHTS = 30;
+
+function describePlace(place: Place) {
+  return {
+    key: place.id,
+    title: place.name,
+    context: placeContext(place),
+    icon: <Icon name={place.type === 'country' ? 'public' : 'location_on_outlined'} />,
+  };
+}
+
+function nights(checkIn: string, checkOut: string): number {
+  return Math.round((Date.parse(checkOut) - Date.parse(checkIn)) / 86_400_000);
+}
+
+/** What stops the search, or null when it can run. */
+function problem(form: StaySearchRequest): string | null {
+  if (form.destination.trim().length < 2) return 'Type where you want to stay.';
+  if (!form.checkIn || !form.checkOut) return 'Choose your check-in and check-out dates.';
+  const stay = nights(form.checkIn, form.checkOut);
+  if (stay < 1) return 'Check-out must be after check-in.';
+  if (stay > MAX_NIGHTS) return `Choose a stay of up to ${String(MAX_NIGHTS)} nights.`;
+  if (form.rooms > form.adults) return 'Choose at least one guest per room.';
+  return null;
+}
 
 export function StaySearchPage() {
   useEffect(() => {
     track({ name: 'travel_category_opened', props: { category: 'stays' } });
   }, []);
+  const navigate = useNavigate();
   const [form, setForm] = useState(INITIAL_FORM);
+  const [error, setError] = useState<string>();
   const update = (patch: Partial<StaySearchRequest>) => {
     setForm((current) => ({ ...current, ...patch }));
+    setError(undefined);
   };
 
   return (
     <SearchFormLayout
       title="Book Your Hotels"
       imageSrc={staysImage}
+      error={error}
       onSubmit={() => {
-        searchStays(form);
+        const stop = problem(form);
+        if (stop) {
+          setError(stop);
+          return;
+        }
+        track({ name: 'book_searched', props: { category: 'stays' } });
+        const query = stayQuery({
+          place: form.destination.trim(),
+          checkin: form.checkIn,
+          checkout: form.checkOut,
+          adults: form.adults,
+          rooms: form.rooms,
+        });
+        void navigate(`${routes.stayResults}?${query}`);
       }}
     >
-      <TextField
+      <SuggestField
         label="Where?"
-        placeholder="Where?"
-        tone="tinted"
+        placeholder="Where? (city or area)"
         icon={<Icon name="public" />}
-        value={form.destination}
-        onChange={(event) => {
-          update({ destination: event.target.value });
+        text={form.destination}
+        onTextChange={(destination) => {
+          update({ destination });
+        }}
+        suggest={suggestPlaces}
+        describe={describePlace}
+        onPick={(place) => {
+          update({ destination: place.name });
         }}
       />
 
@@ -53,11 +96,7 @@ export function StaySearchPage() {
         orientation="horizontal"
         swapLabel="Swap check-in and check-out dates"
         onSwap={() => {
-          setForm((current) => ({
-            ...current,
-            checkIn: current.checkOut,
-            checkOut: current.checkIn,
-          }));
+          update({ checkIn: form.checkOut, checkOut: form.checkIn });
         }}
         first={
           <DateField
@@ -85,15 +124,15 @@ export function StaySearchPage() {
           icon={<Icon name="hotel_rounded" />}
           value={form.rooms}
           onChange={(rooms) => {
-            update({ rooms });
+            update({ rooms: Math.min(8, Math.max(1, rooms)) });
           }}
         />
         <CounterField
-          label="Adults"
+          label="Guests"
           icon={<Icon name="person" />}
           value={form.adults}
           onChange={(adults) => {
-            update({ adults });
+            update({ adults: Math.min(30, Math.max(1, adults)) });
           }}
         />
       </FormRow>

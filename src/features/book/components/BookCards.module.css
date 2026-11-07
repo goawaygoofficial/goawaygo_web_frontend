@@ -1,0 +1,85 @@
+/* The founder's result card: two orange halves, the lighter one on the left. */
+.card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-secondary);
+  box-shadow: var(--shadow-card);
+  color: var(--color-white);
+  text-decoration: none;
+  transition: transform 150ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.side,
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: var(--space-4);
+}
+
+.side {
+  background: var(--color-secondary-light);
+}
+
+.price {
+  /* Long partner names ("EconomyBookings") must fit the left half on a phone. */
+  font-size: clamp(var(--font-size-md), 4.2vw, var(--font-size-lg));
+  font-weight: var(--font-weight-bold);
+  overflow-wrap: anywhere;
+}
+
+.small {
+  color: var(--color-white-muted);
+  font-size: var(--font-size-xs);
+}
+
+.airline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.airlineLogo {
+  flex-shrink: 0;
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
+  border-radius: var(--radius-round);
+  background: var(--color-white);
+  object-fit: contain;
+}
+
+.title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+}
+
+.line {
+  color: var(--color-white-muted);
+  font-size: var(--font-size-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}
