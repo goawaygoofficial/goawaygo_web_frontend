@@ -1,17 +1,11 @@
-import type { TripType } from '@/types/search';
-
-/** Exactly the options offered by the app's car-type dropdown. */
-export const CAR_TYPES = ['Sedan', 'SUV', 'Hatchback', 'Convertible', 'Van'] as const;
-
-export type CarType = (typeof CAR_TYPES)[number];
+import type { Airport } from '@/features/book';
 
 export interface RentalSearchRequest {
-  pickup: string;
-  dropOff: string;
-  tripType: TripType;
+  /** What is typed in Pick-up; `pickup` is set once a suggestion is picked. */
+  pickupText: string;
+  pickup: Airport | null;
   /** `YYYY-MM-DD` */
-  departureDate: string;
-  /** `YYYY-MM-DD`; empty for one-way rentals. */
-  returnDate: string;
-  carType: CarType | '';
+  pickupDate: string;
+  /** `YYYY-MM-DD` */
+  dropOffDate: string;
 }

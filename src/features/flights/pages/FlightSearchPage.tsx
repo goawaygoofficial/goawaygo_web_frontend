@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import flightsImage from '@/assets/images/flights.png';
 import {
   ChoiceChips,
@@ -8,31 +9,67 @@ import {
   FormRow,
   Icon,
   SearchFormLayout,
-  TextField,
 } from '@/components';
+import { SuggestField, flightQuery, suggestAirports } from '@/features/book';
+import type { Airport } from '@/features/book';
 import { TRIP_TYPE_OPTIONS } from '@/types/search';
 import type { TripType } from '@/types/search';
 import { track } from '@/lib/analytics';
-import { searchFlights } from '../services/flightService';
+import { routes } from '@/lib/routes';
 import type { FlightSearchRequest } from '../types';
 
 const INITIAL_FORM: FlightSearchRequest = {
-  from: '',
-  to: '',
+  fromText: '',
+  from: null,
+  toText: '',
+  to: null,
   tripType: 'roundTrip',
   departureDate: '',
   returnDate: '',
-  adults: 1,
-  children: 0,
+  passengers: 1,
 };
+
+function airportLabel(airport: Airport): string {
+  return airport.type === 'airport'
+    ? `${airport.name} (${airport.code})`
+    : `${airport.name} (${airport.code}), ${airport.country}`;
+}
+
+function describeAirport(airport: Airport) {
+  return {
+    key: `${airport.type}-${airport.code}`,
+    title: `${airport.name} (${airport.code})`,
+    context:
+      airport.type === 'airport'
+        ? `${airport.city ? `${airport.city}, ` : ''}${airport.country}`
+        : `All airports · ${airport.country}`,
+    icon: <Icon name={airport.type === 'airport' ? 'flight' : 'location_on_outlined'} />,
+  };
+}
+
+/** What stops the search, or null when it can run. */
+function problem(form: FlightSearchRequest): string | null {
+  if (!form.from) return 'Pick where you fly from from the suggestions.';
+  if (!form.to) return 'Pick where you fly to from the suggestions.';
+  if (form.from.code === form.to.code) return 'Pick a different destination.';
+  if (!form.departureDate) return 'Choose a departure date.';
+  if (form.tripType === 'roundTrip' && !form.returnDate) return 'Choose a return date.';
+  if (form.tripType === 'roundTrip' && form.returnDate < form.departureDate) {
+    return 'The return date must be on or after the departure date.';
+  }
+  return null;
+}
 
 export function FlightSearchPage() {
   useEffect(() => {
     track({ name: 'travel_category_opened', props: { category: 'flights' } });
   }, []);
+  const navigate = useNavigate();
   const [form, setForm] = useState(INITIAL_FORM);
+  const [error, setError] = useState<string>();
   const update = (patch: Partial<FlightSearchRequest>) => {
     setForm((current) => ({ ...current, ...patch }));
+    setError(undefined);
   };
   const isRoundTrip = form.tripType === 'roundTrip';
 
@@ -40,37 +77,61 @@ export function FlightSearchPage() {
     <SearchFormLayout
       title="Book Your Flights"
       imageSrc={flightsImage}
+      error={error}
       onSubmit={() => {
-        searchFlights(form);
+        const stop = problem(form);
+        if (stop || !form.from || !form.to) {
+          setError(stop ?? undefined);
+          return;
+        }
+        track({ name: 'book_searched', props: { category: 'flights' } });
+        const query = flightQuery({
+          from: form.from.code,
+          fromName: form.from.name,
+          to: form.to.code,
+          toName: form.to.name,
+          depart: form.departureDate,
+          returnDate: isRoundTrip ? form.returnDate : '',
+          adults: form.passengers,
+        });
+        void navigate(`${routes.flightResults}?${query}`);
       }}
     >
       <FieldPair
         orientation="vertical"
         swapLabel="Swap origin and destination"
         onSwap={() => {
-          setForm((current) => ({ ...current, from: current.to, to: current.from }));
+          update({ fromText: form.toText, from: form.to, toText: form.fromText, to: form.from });
         }}
         first={
-          <TextField
+          <SuggestField
             label="From"
-            placeholder="From"
-            tone="tinted"
+            placeholder="From (city or airport)"
             icon={<Icon name="location_on_outlined" />}
-            value={form.from}
-            onChange={(event) => {
-              update({ from: event.target.value });
+            text={form.fromText}
+            onTextChange={(fromText) => {
+              update({ fromText, from: null });
+            }}
+            suggest={suggestAirports}
+            describe={describeAirport}
+            onPick={(from) => {
+              update({ from, fromText: airportLabel(from) });
             }}
           />
         }
         second={
-          <TextField
+          <SuggestField
             label="To"
-            placeholder="To"
-            tone="tinted"
+            placeholder="To (city or airport)"
             icon={<Icon name="public" />}
-            value={form.to}
-            onChange={(event) => {
-              update({ to: event.target.value });
+            text={form.toText}
+            onTextChange={(toText) => {
+              update({ toText, to: null });
+            }}
+            suggest={suggestAirports}
+            describe={describeAirport}
+            onPick={(to) => {
+              update({ to, toText: airportLabel(to) });
             }}
           />
         }
@@ -89,11 +150,7 @@ export function FlightSearchPage() {
         orientation="horizontal"
         swapLabel="Swap departure and return dates"
         onSwap={() => {
-          setForm((current) => ({
-            ...current,
-            departureDate: current.returnDate,
-            returnDate: current.departureDate,
-          }));
+          update({ departureDate: form.returnDate, returnDate: form.departureDate });
         }}
         first={
           <DateField
@@ -119,19 +176,11 @@ export function FlightSearchPage() {
 
       <FormRow>
         <CounterField
-          label="Adults"
+          label="Passengers"
           icon={<Icon name="person" />}
-          value={form.adults}
-          onChange={(adults) => {
-            update({ adults });
-          }}
-        />
-        <CounterField
-          label="Children"
-          icon={<Icon name="child_care_sharp" />}
-          value={form.children}
-          onChange={(children) => {
-            update({ children });
+          value={form.passengers}
+          onChange={(passengers) => {
+            update({ passengers: Math.min(9, Math.max(1, passengers)) });
           }}
         />
       </FormRow>
