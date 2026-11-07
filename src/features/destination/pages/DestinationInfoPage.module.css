@@ -7,8 +7,12 @@
 }
 
 .context {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
   color: var(--color-white-muted);
+}
+
+.plan {
+  margin-bottom: var(--space-4);
 }
 
 .layout {

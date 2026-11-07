@@ -1,6 +1,7 @@
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { Button, ButtonLink, Icon, PageHeader, PageShell } from '@/components';
 import { PhotoSlider, placeContext } from '@/features/discover';
+import { planPlaceQuery } from '@/features/plans';
 import type { DestinationPage, DestinationQuery, PhotoSlide } from '@/features/discover';
 import { useBack } from '@/hooks';
 import { routes } from '@/lib/routes';
@@ -60,6 +61,21 @@ export function DestinationInfoPage() {
           {placeContext(state.page.place) && (
             <p className={styles.context}>{placeContext(state.page.place)}</p>
           )}
+          <ButtonLink
+            size="sm"
+            className={styles.plan}
+            icon={<Icon name="travel_explore" />}
+            to={`${routes.planNew}?${planPlaceQuery({
+              placeId: state.page.place.id,
+              name: state.page.place.name,
+              area: state.page.place.region || state.page.place.city,
+              country: state.page.place.country,
+              lat: state.page.place.lat,
+              lon: state.page.place.lon,
+            })}`}
+          >
+            Plan a trip here
+          </ButtonLink>
           <div className={styles.layout}>
             <PhotoSlider
               slides={photoSlides(state.page)}

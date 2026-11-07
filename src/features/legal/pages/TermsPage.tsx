@@ -99,7 +99,7 @@ export function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="partners" title="6. Travel partners and links">
+      <LegalSection id="partners" title="6. Travel partners, links and AI plans">
         <p>
           GoAwayGo may show flights, stays, rentals and other offers from partner websites and link
           to them. GoAwayGo is not a travel agent and does not sell those services: any booking,
@@ -111,6 +111,12 @@ export function TermsPage() {
           Flight prices we show are recent prices other travellers found, not live offers: they can
           change or be gone by the time you book. The price and conditions shown on the partner's
           website when you book are the ones that apply.
+        </p>
+        <p>
+          Trip plans and destination information are written by AI. They can be wrong or out of
+          date: check opening times, prices, safety and entry rules before you travel. Costs in a
+          plan are rough estimates, not quotes. If you share a plan by link, anyone with the link
+          can see it, and the rules in section 4 apply to anything you type in it.
         </p>
       </LegalSection>
 

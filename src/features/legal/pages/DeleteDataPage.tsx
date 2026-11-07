@@ -45,7 +45,7 @@ export function DeleteDataPage() {
           <li>Your account: name, email address, password hash and Google sign-in link.</li>
           <li>All your sign-in sessions, on every device (you are signed out everywhere).</li>
           <li>Any unused verification or password-reset links.</li>
-          <li>Your recent searches and the places you saved to My Trips.</li>
+          <li>Your recent searches, the places you saved to My Trips and your trip plans.</li>
           <li>
             Your Wanderbook profile, posts and their photos, comments, likes, follows and blocks.
           </li>

@@ -140,3 +140,91 @@
   width: var(--size-icon-sm);
   height: var(--size-icon-sm);
 }
+
+.section {
+  margin-bottom: var(--space-6);
+}
+
+.subheading {
+  margin-bottom: var(--space-3);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A trip plan: the founder's two-tone orange card (Book). */
+.planCard {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-secondary);
+  box-shadow: var(--shadow-card);
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.planCard:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.planSide,
+.planMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: var(--space-4);
+}
+
+.planSide {
+  background: var(--color-secondary-light);
+}
+
+.planPlace {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  overflow-wrap: anywhere;
+}
+
+.planTitle {
+  font-weight: var(--font-weight-bold);
+}
+
+.planMeta {
+  color: var(--color-white-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Above the card's own link, like Remove. */
+.planLink {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-white-glass);
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.planLink svg {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+}

@@ -38,6 +38,8 @@ export type AnalyticsEvent =
       name: 'partner_opened';
       props: { category: 'flights' | 'stays' | 'rentals'; partner: string };
     }
+  | { name: 'trip_plan_created'; props: { days: number } }
+  | { name: 'trip_plan_shared'; props?: undefined }
   | { name: 'trip_idea_saved'; props: { kind: 'popular' | 'hidden gem' } }
   | { name: 'app_download_clicked'; props: { variant: 'arm64' | 'universal' } }
   | { name: 'beta_join_clicked'; props?: undefined };
