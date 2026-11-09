@@ -6,6 +6,7 @@ import { apiRequest, toErrorMessage } from '@/lib/apiClient';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import styles from './AdminReportsPage.module.css';
+import { t } from '@/lib/i18n';
 
 /** An open report as the backend's admin API returns it. */
 interface Report {
@@ -68,7 +69,7 @@ export function AdminReportsPage() {
   const act = (report: Report, action: 'remove' | 'dismiss') => {
     if (
       action === 'remove' &&
-      !window.confirm(`Delete this ${report.targetType}? This can't be undone.`)
+      !window.confirm(t("Delete this {0}? This can't be undone.", report.targetType))
     )
       return;
     // Every open report on the same thing closes with it, so reload the list.
@@ -83,25 +84,25 @@ export function AdminReportsPage() {
   return (
     <PageShell>
       <PageHeader onBack={goBack}>
-        <h1 className={styles.title}>Wanderbook reports</h1>
+        <h1 className={styles.title}>{t('Wanderbook reports')}</h1>
       </PageHeader>
       <p className={styles.status}>
-        <Link to={routes.adminAnnouncements}>Send an announcement</Link>
+        <Link to={routes.adminAnnouncements}>{t('Send an announcement')}</Link>
       </p>
       {error && <p className={styles.error}>{error}</p>}
-      {!reports && !error && <p className={styles.status}>Loading…</p>}
-      {reports?.length === 0 && <p className={styles.status}>No open reports.</p>}
+      {!reports && !error && <p className={styles.status}>{t('Loading…')}</p>}
+      {reports?.length === 0 && <p className={styles.status}>{t('No open reports.')}</p>}
       <ul className={styles.list}>
         {reports?.map((report) => (
           <li key={report.id} className={styles.report}>
             <p className={styles.meta}>
-              <strong>{report.targetType}</strong> · {report.reason.replace('_', ' ')} · by{' '}
-              {report.reporterName} · {new Date(report.createdAt).toLocaleString()}
-              {report.reportsOnTarget > 1 && ` · ${String(report.reportsOnTarget)} reports`}
+              <strong>{report.targetType}</strong> · {report.reason.replace('_', ' ')} ·{' '}
+              {t('by {0}', report.reporterName)} · {new Date(report.createdAt).toLocaleString()}
+              {report.reportsOnTarget > 1 && t(' · {0} reports', String(report.reportsOnTarget))}
             </p>
             {report.details && <p className={styles.details}>“{report.details}”</p>}
             {!report.target.exists ? (
-              <p className={styles.status}>Already deleted.</p>
+              <p className={styles.status}>{t('Already deleted.')}</p>
             ) : (
               <div className={styles.target}>
                 <p>
@@ -125,7 +126,7 @@ export function AdminReportsPage() {
                         : routes.wanderbookProfile(report.target.publicId)
                     }
                   >
-                    Open
+                    {t('Open')}
                   </Link>
                 )}
               </div>
@@ -139,7 +140,7 @@ export function AdminReportsPage() {
                     act(report, 'remove');
                   }}
                 >
-                  Remove {report.targetType}
+                  {t('Remove {0}', report.targetType)}
                 </button>
               )}
               <button
@@ -149,7 +150,7 @@ export function AdminReportsPage() {
                   act(report, 'dismiss');
                 }}
               >
-                Dismiss
+                {t('Dismiss')}
               </button>
             </div>
           </li>

@@ -8,6 +8,7 @@ import { formatDateRange, plural } from '../format';
 import { useResults } from '../hooks/useResults';
 import { readStayQuery } from '../searchParams';
 import { stayPartners } from '../services/bookService';
+import { t } from '@/lib/i18n';
 
 /**
  * Stay results: hotel partners opened on the place, dates and guests. No hotel prices here yet (no free source);
@@ -19,7 +20,7 @@ export function StayResultsPage() {
   const { state, retry } = useResults(
     params.toString(),
     (signal) => (search ? stayPartners(search, signal) : Promise.reject(new Error(''))),
-    'Could not open hotel partners.',
+    t('Could not open hotel partners.'),
   );
   if (!search) return <Navigate to={routes.stays} replace />;
 
@@ -27,31 +28,38 @@ export function StayResultsPage() {
   return (
     <ResultsLayout
       icon="hotel"
-      title="Stays"
+      title={t('Stays')}
       heading={search.place}
       dates={dates}
       travellers={`${plural(search.adults, 'guest')} · ${plural(search.rooms, 'room')}`}
-      note="Hotels and prices open on the partner's site, with your dates filled in"
+      note={t("Hotels and prices open on the partner's site, with your dates filled in")}
       backTo={routes.stays}
     >
-      {state.kind === 'loading' && <ResultsMessage title="Opening hotel partners…" />}
+      {state.kind === 'loading' && <ResultsMessage title={t('Opening hotel partners…')} />}
       {state.kind === 'error' && (
-        <ResultsMessage title="Hotel partners didn't open" text={state.message} onRetry={retry} />
+        <ResultsMessage
+          title={t("Hotel partners didn't open")}
+          text={state.message}
+          onRetry={retry}
+        />
       )}
       {state.kind === 'ready' &&
         (state.data.length === 0 ? (
-          <ResultsMessage title="No hotel partners here yet" text="Please try again later." />
+          <ResultsMessage
+            title={t('No hotel partners here yet')}
+            text={t('Please try again later.')}
+          />
         ) : (
           state.data.map((partner) => (
             <PartnerCardLink
               key={partner.id}
               partner={partner}
-              kind={`Hotels in ${search.place}`}
-              title={`See hotels for ${dates}`}
+              kind={t('Hotels in {0}', search.place)}
+              title={t('See hotels for {0}', dates)}
               detail={
                 partner.id === 'tripcom'
-                  ? `Pick ${search.place} from Trip.com's list to see hotels`
-                  : 'Your dates and guests are filled in'
+                  ? t("Pick {0} from Trip.com's list to see hotels", search.place)
+                  : t('Your dates and guests are filled in')
               }
               onOpen={() => {
                 track({

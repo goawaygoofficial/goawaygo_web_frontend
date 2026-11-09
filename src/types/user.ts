@@ -16,6 +16,8 @@ export interface UserDto {
   google_linked?: boolean;
   /** A new email waiting for its confirmation link. */
   pending_email?: string | null;
+  /** The language the account's pushes and emails use. */
+  language?: string;
 }
 
 /** User as the web app uses it. */

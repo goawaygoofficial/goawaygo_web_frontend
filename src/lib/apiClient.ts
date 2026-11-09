@@ -1,7 +1,9 @@
 import { ApiError } from './apiError';
 import { env } from './env';
 import { endSession, getAccessToken, refreshSession } from './session';
+import { getLanguage } from './i18n';
 import { isRecord } from './isRecord';
+import { t } from '@/lib/i18n';
 
 export { ApiError } from './apiError';
 
@@ -55,6 +57,8 @@ async function send(
   // A multipart body sets its own Content-Type (with the boundary).
   if (body !== undefined && form === undefined) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
+  // The backend answers in this language (errors, AI content, the bell).
+  headers['Accept-Language'] = getLanguage();
   try {
     return await fetch(`${env.apiBaseUrl}${path}`, {
       method,
@@ -66,7 +70,7 @@ async function send(
     });
   } catch (cause) {
     if (cause instanceof DOMException && cause.name === 'AbortError') throw cause;
-    throw new ApiError(NETWORK_ERROR_MESSAGE, 0);
+    throw new ApiError(t(NETWORK_ERROR_MESSAGE), 0);
   }
 }
 
@@ -94,7 +98,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions): Prom
     options.expectedStatus === undefined ? response.ok : response.status === options.expectedStatus;
   if (!ok) {
     throw new ApiError(
-      extractErrorMessage(data, options.fallbackError),
+      extractErrorMessage(data, t(options.fallbackError)),
       response.status,
       extractErrorCode(data),
     );
@@ -103,7 +107,8 @@ export async function apiRequest<T>(path: string, options: RequestOptions): Prom
 }
 
 /** Turns any thrown value into a message that is safe to show to the user. */
-export function toErrorMessage(error: unknown, fallback = 'Something went wrong.'): string {
-  if (error instanceof Error && error.message.length > 0) return error.message;
+export function toErrorMessage(error: unknown, fallback = t('Something went wrong.')): string {
+  // Messages made here are English keys; the backend's are already translated (t leaves them as they are).
+  if (error instanceof Error && error.message.length > 0) return t(error.message);
   return fallback;
 }

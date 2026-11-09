@@ -9,6 +9,7 @@ import { InfoCard } from '../components/InfoCard';
 import { TravelLoader } from '../components/TravelLoader';
 import { useDestination } from '../hooks/useDestination';
 import styles from './DestinationInfoPage.module.css';
+import { t } from '@/lib/i18n';
 
 function photoSlides(page: DestinationPage): PhotoSlide[] {
   if (page.spots.length === 0) {
@@ -39,19 +40,22 @@ export function DestinationInfoPage() {
 
       {state.kind === 'notFound' && (
         <Message
-          title="We couldn't find that place"
-          text={`Check the spelling of “${placeName}”, or pick a place from the suggestions while you type.`}
+          title={t("We couldn't find that place")}
+          text={t(
+            'Check the spelling of “{0}”, or pick a place from the suggestions while you type.',
+            placeName,
+          )}
         />
       )}
 
       {state.kind === 'error' && (
-        <Message title="Something went wrong" text={state.message} onRetry={retry} />
+        <Message title={t('Something went wrong')} text={state.message} onRetry={retry} />
       )}
 
       {state.kind === 'ready' && state.page.status === 'unknown' && (
         <Message
-          title={`We don't know ${state.page.place.name} well enough yet`}
-          text="Try the nearest city or a better-known place nearby."
+          title={t("We don't know {0} well enough yet", state.page.place.name)}
+          text={t('Try the nearest city or a better-known place nearby.')}
         />
       )}
 
@@ -74,26 +78,28 @@ export function DestinationInfoPage() {
               lon: state.page.place.lon,
             })}`}
           >
-            Plan a trip here
+            {t('Plan a trip here')}
           </ButtonLink>
           <div className={styles.layout}>
             <PhotoSlider
               slides={photoSlides(state.page)}
-              label={`Photos of ${state.page.place.name}`}
+              label={t('Photos of {0}', state.page.place.name)}
               className={styles.photos}
             />
             {state.page.status === 'busy' ? (
               <div className={styles.busy} role="alert">
-                <p className={styles.busyTitle}>Our travel guide is busy right now</p>
-                <p>Lots of people are exploring at the moment. Please try again in a minute.</p>
+                <p className={styles.busyTitle}>{t('Our travel guide is busy right now')}</p>
+                <p>
+                  {t('Lots of people are exploring at the moment. Please try again in a minute.')}
+                </p>
                 <Button onClick={retry} className={styles.retry}>
-                  Try again
+                  {t('Try again')}
                 </Button>
               </div>
             ) : (
               <ul
                 className={styles.list}
-                aria-label={`Travel information for ${state.page.place.name}`}
+                aria-label={t('Travel information for {0}', state.page.place.name)}
               >
                 {state.page.cards.map((card) => (
                   <InfoCard key={card.id} card={card} />
@@ -114,9 +120,9 @@ function Message({ title, text, onRetry }: { title: string; text: string; onRetr
       <h1 className={styles.messageTitle}>{title}</h1>
       <p className={styles.messageText}>{text}</p>
       {onRetry ? (
-        <Button onClick={onRetry}>Try again</Button>
+        <Button onClick={onRetry}>{t('Try again')}</Button>
       ) : (
-        <ButtonLink to={routes.home}>Search again</ButtonLink>
+        <ButtonLink to={routes.home}>{t('Search again')}</ButtonLink>
       )}
     </section>
   );

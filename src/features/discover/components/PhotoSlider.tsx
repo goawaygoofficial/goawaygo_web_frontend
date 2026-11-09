@@ -4,6 +4,7 @@ import { Icon } from '@/components';
 import { usePrefersReducedMotion } from '@/hooks';
 import type { Photo } from '../types';
 import styles from './PhotoSlider.module.css';
+import { t } from '@/lib/i18n';
 
 const AUTO_ADVANCE_MS = 5000;
 
@@ -75,7 +76,7 @@ export function PhotoSlider({ slides, label, className }: PhotoSliderProps) {
               key={slide.key}
               className={[styles.slide, active && styles.active].filter(Boolean).join(' ')}
               aria-roledescription="slide"
-              aria-label={`${String(position + 1)} of ${String(count)}: ${slide.title}`}
+              aria-label={t('{0} of {1}: {2}', String(position + 1), String(count), slide.title)}
               aria-hidden={!active}
             >
               {slide.photo ? (
@@ -98,7 +99,7 @@ export function PhotoSlider({ slides, label, className }: PhotoSliderProps) {
                   to={slide.to}
                   className={styles.open}
                   tabIndex={active ? 0 : -1}
-                  aria-label={`Open ${slide.subtitle ?? slide.title}`}
+                  aria-label={t('Open {0}', slide.subtitle ?? slide.title)}
                 />
               )}
               {slide.photo && (
@@ -122,7 +123,7 @@ export function PhotoSlider({ slides, label, className }: PhotoSliderProps) {
           <button
             type="button"
             className={styles.control}
-            aria-label="Previous photo"
+            aria-label={t('Previous photo')}
             onClick={() => {
               go(current - 1);
             }}
@@ -137,7 +138,7 @@ export function PhotoSlider({ slides, label, className }: PhotoSliderProps) {
                 className={[styles.dot, position === current && styles.dotActive]
                   .filter(Boolean)
                   .join(' ')}
-                aria-label={`Show photo ${String(position + 1)}: ${slide.title}`}
+                aria-label={t('Show photo {0}: {1}', String(position + 1), slide.title)}
                 aria-current={position === current}
                 onClick={() => {
                   go(position);
@@ -148,7 +149,7 @@ export function PhotoSlider({ slides, label, className }: PhotoSliderProps) {
           <button
             type="button"
             className={styles.control}
-            aria-label="Next photo"
+            aria-label={t('Next photo')}
             onClick={() => {
               go(current + 1);
             }}
@@ -159,7 +160,7 @@ export function PhotoSlider({ slides, label, className }: PhotoSliderProps) {
             <button
               type="button"
               className={styles.control}
-              aria-label={paused ? 'Play slideshow' : 'Pause slideshow'}
+              aria-label={paused ? t('Play slideshow') : t('Pause slideshow')}
               onClick={() => {
                 setPaused((value) => !value);
               }}

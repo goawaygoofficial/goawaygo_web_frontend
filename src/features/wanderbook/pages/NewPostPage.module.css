@@ -45,7 +45,7 @@
 .remove {
   position: absolute;
   top: var(--space-1);
-  right: var(--space-1);
+  inset-inline-end: var(--space-1);
   display: inline-flex;
   padding: 2px;
   border: 0;

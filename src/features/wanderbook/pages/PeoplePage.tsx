@@ -19,6 +19,7 @@ import {
 } from '../services/wanderbookService';
 import type { Person } from '../types';
 import styles from './PostPage.module.css';
+import { t } from '@/lib/i18n';
 
 type Mode = 'followers' | 'following' | 'requests' | 'blocked';
 
@@ -87,13 +88,13 @@ export function PeoplePage({ mode }: { mode?: 'requests' | 'blocked' }) {
   return (
     <PageShell>
       <PageHeader onBack={goBack}>
-        <h1 className={styles.heading}>{TITLES[list]}</h1>
+        <h1 className={styles.heading}>{t(TITLES[list])}</h1>
       </PageHeader>
       <div className={styles.column}>
         {error && <p className={shared.error}>{error}</p>}
         {people.error && list !== 'blocked' && <p className={shared.status}>{people.error}</p>}
-        {!items && !people.error && <p className={shared.status}>Loading…</p>}
-        {items?.length === 0 && <p className={shared.status}>Nobody here yet.</p>}
+        {!items && !people.error && <p className={shared.status}>{t('Loading…')}</p>}
+        {items?.length === 0 && <p className={shared.status}>{t('Nobody here yet.')}</p>}
         <ul className={shared.list}>
           {items?.map((person) => (
             <PersonRow
@@ -109,7 +110,7 @@ export function PeoplePage({ mode }: { mode?: 'requests' | 'blocked' }) {
                         run(answerFollowRequest(person.publicId, true), person);
                       }}
                     >
-                      Approve
+                      {t('Approve')}
                     </Button>
                     <Button
                       type="button"
@@ -119,7 +120,7 @@ export function PeoplePage({ mode }: { mode?: 'requests' | 'blocked' }) {
                         run(answerFollowRequest(person.publicId, false), person);
                       }}
                     >
-                      Decline
+                      {t('Decline')}
                     </Button>
                   </>
                 ) : list === 'blocked' ? (
@@ -131,7 +132,7 @@ export function PeoplePage({ mode }: { mode?: 'requests' | 'blocked' }) {
                       run(block(person.publicId, false), person);
                     }}
                   >
-                    Unblock
+                    {t('Unblock')}
                   </Button>
                 ) : list === 'followers' && myId === publicId ? (
                   <Button
@@ -142,7 +143,7 @@ export function PeoplePage({ mode }: { mode?: 'requests' | 'blocked' }) {
                       run(removeFollower(person.publicId), person);
                     }}
                   >
-                    Remove
+                    {t('Remove')}
                   </Button>
                 ) : undefined
               }
@@ -152,7 +153,7 @@ export function PeoplePage({ mode }: { mode?: 'requests' | 'blocked' }) {
         {people.hasMore && list !== 'blocked' && (
           <div className={shared.loadMore}>
             <Button type="button" variant="outline" size="sm" onClick={people.loadMore}>
-              Load more
+              {t('Load more')}
             </Button>
           </div>
         )}

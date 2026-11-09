@@ -6,6 +6,7 @@ import type { AuthFlow } from '../authFlow';
 import { GoogleSignInButton } from './GoogleSignInButton';
 import { SignInForm } from './SignInForm';
 import styles from './SignInPanel.module.css';
+import { t } from '@/lib/i18n';
 
 /**
  * "Continue with Google" + "SIGN IN", cross-fading into the email form in place. The same panel is used on the
@@ -28,7 +29,7 @@ export function SignInPanel({ flow }: { flow: AuthFlow }) {
             setShowForm(true);
           }}
         >
-          SIGN IN
+          {t('SIGN IN')}
         </Button>
         <SignUpNotice />
       </div>

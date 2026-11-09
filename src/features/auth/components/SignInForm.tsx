@@ -12,6 +12,7 @@ import type { AuthFlow } from '../authFlow';
 import { useCompleteSignIn } from '../hooks/useCompleteSignIn';
 import { signIn } from '../services/authService';
 import styles from './AuthForms.module.css';
+import { t } from '@/lib/i18n';
 
 interface SignInFormProps {
   flow: AuthFlow;
@@ -28,15 +29,15 @@ export function SignInForm({ flow, onClose }: SignInFormProps) {
   const submit = useCallback(async () => {
     const trimmedEmail = email.trim();
     if (trimmedEmail.length === 0 || password.length === 0) {
-      await showError('Please enter both email and password.');
+      await showError(t('Please enter both email and password.'));
       return;
     }
     try {
       const result = await signIn({ email: trimmedEmail, password });
       track({ name: 'sign_in_completed', props: { method: 'email' } });
-      await completeSignIn(result, 'Welcome back');
+      await completeSignIn(result, t('Welcome back'));
     } catch (error) {
-      await showError(toErrorMessage(error, 'Signin failed'));
+      await showError(toErrorMessage(error, t('Signin failed')));
       setEmail('');
       setPassword('');
     }
@@ -49,43 +50,48 @@ export function SignInForm({ flow, onClose }: SignInFormProps) {
   };
 
   return (
-    <form className={styles.form} onSubmit={onSubmit} noValidate aria-label="Sign in with email">
+    <form
+      className={styles.form}
+      onSubmit={onSubmit}
+      noValidate
+      aria-label={t('Sign in with email')}
+    >
       <button
         type="button"
         className={styles.close}
-        aria-label="Close sign-in form"
+        aria-label={t('Close sign-in form')}
         onClick={onClose}
       >
         <Icon name="close_rounded" />
       </button>
       <TextField
-        label="Email address"
+        label={t('Email address')}
         type="email"
         autoComplete="email"
-        placeholder="Enter your Email address..."
+        placeholder={t('Enter your Email address...')}
         value={email}
         onChange={(event) => {
           setEmail(event.target.value);
         }}
       />
       <TextField
-        label="Password"
+        label={t('Password')}
         type="password"
         autoComplete="current-password"
-        placeholder="Password..."
+        placeholder={t('Password...')}
         value={password}
         onChange={(event) => {
           setPassword(event.target.value);
         }}
       />
       <Link to={flow.forgotPasswordPath} className={styles.forgot}>
-        Forgot Password?
+        {t('Forgot Password?')}
       </Link>
       <Button type="submit" fullWidth loading={pending} icon={<img src={emailIcon} alt="" />}>
-        SIGN IN
+        {t('SIGN IN')}
       </Button>
       <Link to={flow.registerPath} className={styles.accentLink}>
-        Not Registered? Register
+        {t('Not Registered? Register')}
       </Link>
     </form>
   );

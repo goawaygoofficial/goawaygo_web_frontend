@@ -36,7 +36,7 @@
 }
 
 .textButton {
-  margin-left: var(--space-2);
+  margin-inline-start: var(--space-2);
   padding: 0;
   border: 0;
   background: transparent;
@@ -47,7 +47,7 @@
 }
 
 .textButton:first-child {
-  margin-left: 0;
+  margin-inline-start: 0;
 }
 
 .newComment {

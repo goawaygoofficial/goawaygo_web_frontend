@@ -7,9 +7,10 @@ import { routes } from '@/lib/routes';
 import { useLatestAndroidRelease } from '../hooks/useLatestAndroidRelease';
 import type { AndroidRelease } from '../types';
 import styles from './DownloadPage.module.css';
+import { t } from '@/lib/i18n';
 
 function megabytes(bytes: number): string {
-  return `${(bytes / 1_000_000).toFixed(1)} MB`;
+  return t('{0} MB', (bytes / 1_000_000).toFixed(1));
 }
 
 /**
@@ -22,10 +23,10 @@ export function DownloadPage() {
   return (
     <PageShell>
       <PageHeader onBack={goBack} />
-      <h1 className={styles.heading}>Get GoAwayGo for Android</h1>
+      <h1 className={styles.heading}>{t('Get GoAwayGo for Android')}</h1>
       {appLinks.playStoreUrl ? (
         <section className={styles.card}>
-          <p className={styles.text}>Install GoAwayGo from Google Play.</p>
+          <p className={styles.text}>{t('Install GoAwayGo from Google Play.')}</p>
           <a
             className={styles.primary}
             href={appLinks.playStoreUrl}
@@ -33,14 +34,15 @@ export function DownloadPage() {
             rel="noreferrer"
           >
             <Icon name="android" />
-            Get it on Google Play
+            {t('Get it on Google Play')}
           </a>
         </section>
       ) : (
         <>
           <p className={styles.lead}>
-            GoAwayGo is in beta. It's free and needs Android 8.0 or newer; the iPhone version comes
-            later.
+            {t(
+              "GoAwayGo is in beta. It's free and needs Android 8.0 or newer; the iPhone version comes later.",
+            )}
           </p>
           <DirectDownload />
           {appLinks.androidBetaUrl && <BetaSignUp />}
@@ -57,13 +59,18 @@ function DirectDownload() {
   return (
     <section className={styles.card} aria-labelledby="download-heading">
       <h2 id="download-heading" className={styles.cardTitle}>
-        Download the app
+        {t('Download the app')}
       </h2>
-      {state.kind === 'loading' && <p className={styles.text}>Checking the latest version…</p>}
+      {state.kind === 'loading' && (
+        <p className={styles.text}>{t('Checking the latest version…')}</p>
+      )}
       {state.kind === 'unavailable' && (
         <p className={styles.text}>
-          The download isn't available right now. Please try again later
-          {appLinks.androidBetaUrl ? ', or join the beta below.' : '.'}
+          {appLinks.androidBetaUrl
+            ? t(
+                "The download isn't available right now. Please try again later, or join the beta below.",
+              )
+            : t("The download isn't available right now. Please try again later.")}
         </p>
       )}
       {state.kind === 'ready' && <ReleaseDetails release={state.release} />}
@@ -75,7 +82,7 @@ function ReleaseDetails({ release }: { release: AndroidRelease }) {
   return (
     <>
       <p className={styles.meta}>
-        Version {release.version} ({release.build}) · {release.date} ·{' '}
+        {t('Version {0} ({1})', release.version, release.build)} · {release.date} ·{' '}
         {megabytes(release.arm64.size)}
       </p>
       {release.notes && <p className={styles.text}>{release.notes}</p>}
@@ -88,11 +95,11 @@ function ReleaseDetails({ release }: { release: AndroidRelease }) {
         }}
       >
         <Icon name="download" />
-        Download for Android
+        {t('Download for Android')}
       </a>
       {release.universal && (
         <p className={styles.small}>
-          Doesn't install on your phone (older 32-bit models)?{' '}
+          {t("Doesn't install on your phone (older 32-bit models)?")}{' '}
           <a
             className={styles.link}
             href={release.universal.url}
@@ -101,32 +108,35 @@ function ReleaseDetails({ release }: { release: AndroidRelease }) {
               track({ name: 'app_download_clicked', props: { variant: 'universal' } });
             }}
           >
-            Download the version for all phones ({megabytes(release.universal.size)})
+            {t('Download the version for all phones ({0})', megabytes(release.universal.size))}
           </a>
         </p>
       )}
 
-      <h3 className={styles.stepsTitle}>How to install</h3>
+      <h3 className={styles.stepsTitle}>{t('How to install')}</h3>
       <ol className={styles.steps}>
-        <li>Tap “Download for Android” and open the file when it finishes.</li>
+        <li>{t('Tap “Download for Android” and open the file when it finishes.')}</li>
         <li>
-          If Android asks, allow your browser to <strong>install unknown apps</strong> (Settings
-          opens; switch it on, then go back).
+          {t('If Android asks, allow your browser to')} <strong>{t('install unknown apps')}</strong>{' '}
+          {t('(Settings opens; switch it on, then go back).')}
         </li>
-        <li>Tap “Install”, then “Open”.</li>
-        <li>For a new version, download it again from this page; your account stays signed in.</li>
+        <li>{t('Tap “Install”, then “Open”.')}</li>
+        <li>
+          {t('For a new version, download it again from this page; your account stays signed in.')}
+        </li>
       </ol>
 
       <details className={styles.details}>
-        <summary>Check the file (SHA-256)</summary>
+        <summary>{t('Check the file (SHA-256)')}</summary>
         <p className={styles.small}>
-          The file you downloaded should have this fingerprint. Android also checks that every
-          update is signed by GoAwayGo.
+          {t(
+            'The file you downloaded should have this fingerprint. Android also checks that every update is signed by GoAwayGo.',
+          )}
         </p>
         <code className={styles.hash}>{release.arm64.sha256}</code>
         {release.universal && (
           <>
-            <p className={styles.small}>All-phones version:</p>
+            <p className={styles.small}>{t('All-phones version:')}</p>
             <code className={styles.hash}>{release.universal.sha256}</code>
           </>
         )}
@@ -139,11 +149,12 @@ function BetaSignUp() {
   return (
     <section className={styles.card} aria-labelledby="beta-heading">
       <h2 id="beta-heading" className={styles.cardTitle}>
-        Join the beta testers
+        {t('Join the beta testers')}
       </h2>
       <p className={styles.text}>
-        Get notified of every new version and send us feedback from the app. You sign up with your
-        email and install through Google's Firebase App Tester.
+        {t(
+          "Get notified of every new version and send us feedback from the app. You sign up with your email and install through Google's Firebase App Tester.",
+        )}
       </p>
       <a
         className={styles.secondary}
@@ -155,7 +166,7 @@ function BetaSignUp() {
         }}
       >
         <Icon name="open_in_new" />
-        Join the beta
+        {t('Join the beta')}
       </a>
     </section>
   );

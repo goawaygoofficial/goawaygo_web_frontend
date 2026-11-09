@@ -95,6 +95,20 @@ The backend must allow CORS from the web origin, for example `http://localhost:5
 
 The 4-tab bar is a bottom tab bar under 768px and a sticky top bar on wider screens.
 
+## Languages and currencies (4.7)
+
+English, Hindi, Spanish, French, German, Arabic (right to left) and Japanese. Text is written in English and
+wrapped in `t('English sentence {0}', value)` from `@/lib/i18n`; `src/lib/i18n/messages/<code>.json` holds the
+translations (the same files as the app). After adding or changing text, run `node scripts/i18n-keys.mjs` and add
+the new sentences to every messages file: `npm run check` fails while one is missing (`npm run i18n:check`).
+
+- The language: the visitor's choice (Profile tab), else the browser's, else English. Every API request sends it as
+  `Accept-Language`, and a signed-in account follows it (its pushes and emails).
+- Dates, numbers and prices use the browser's locale for that language (`getLocale()`).
+- Prices: the account's currency, else the visitor's choice (Profile tab), else a guess from the browser's region.
+- Use logical CSS properties (`margin-inline-start`, `inset-inline-end`, `text-align: start`) so Arabic mirrors.
+- Legal pages stay in English.
+
 ## Project structure
 
 ```

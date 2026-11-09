@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Icon } from '@/components';
 import styles from './TravelLoader.module.css';
+import { t } from '@/lib/i18n';
 
 const MESSAGES = [
   'Packing your bags…',
@@ -32,7 +33,9 @@ export function TravelLoader({ place }: { place: string }) {
 
   return (
     <div className={styles.loader} role="status">
-      <span className="visually-hidden">Getting {place} ready. This can take up to a minute.</span>
+      <span className="visually-hidden">
+        {t('Getting {0} ready. This can take up to a minute.', place)}
+      </span>
       <div className={styles.scene} aria-hidden="true">
         <svg viewBox="0 0 120 120" className={styles.globe}>
           <defs>
@@ -71,7 +74,7 @@ export function TravelLoader({ place }: { place: string }) {
       </div>
       <p className={styles.place}>{place}</p>
       <p className={styles.message} key={message} aria-hidden="true">
-        {MESSAGES[message]}
+        {t(MESSAGES[message] ?? '')}
       </p>
     </div>
   );

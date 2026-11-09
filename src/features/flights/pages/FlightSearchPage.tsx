@@ -17,6 +17,7 @@ import type { TripType } from '@/types/search';
 import { track } from '@/lib/analytics';
 import { routes } from '@/lib/routes';
 import type { FlightSearchRequest } from '../types';
+import { t } from '@/lib/i18n';
 
 const INITIAL_FORM: FlightSearchRequest = {
   fromText: '',
@@ -64,20 +65,20 @@ function describeAirport(airport: Airport) {
     context:
       airport.type === 'airport'
         ? `${airport.city ? `${airport.city}, ` : ''}${airport.country}`
-        : `All airports · ${airport.country}`,
+        : t('All airports · {0}', airport.country),
     icon: <Icon name={airport.type === 'airport' ? 'flight' : 'location_on_outlined'} />,
   };
 }
 
 /** What stops the search, or null when it can run. */
 function problem(form: FlightSearchRequest): string | null {
-  if (!form.from) return 'Pick where you fly from from the suggestions.';
-  if (!form.to) return 'Pick where you fly to from the suggestions.';
-  if (form.from.code === form.to.code) return 'Pick a different destination.';
-  if (!form.departureDate) return 'Choose a departure date.';
-  if (form.tripType === 'roundTrip' && !form.returnDate) return 'Choose a return date.';
+  if (!form.from) return t('Pick where you fly from from the suggestions.');
+  if (!form.to) return t('Pick where you fly to from the suggestions.');
+  if (form.from.code === form.to.code) return t('Pick a different destination.');
+  if (!form.departureDate) return t('Choose a departure date.');
+  if (form.tripType === 'roundTrip' && !form.returnDate) return t('Choose a return date.');
   if (form.tripType === 'roundTrip' && form.returnDate < form.departureDate) {
-    return 'The return date must be on or after the departure date.';
+    return t('The return date must be on or after the departure date.');
   }
   return null;
 }
@@ -98,7 +99,7 @@ export function FlightSearchPage() {
 
   return (
     <SearchFormLayout
-      title="Book Your Flights"
+      title={t('Book Your Flights')}
       imageSrc={flightsImage}
       error={error}
       onSubmit={() => {
@@ -122,14 +123,14 @@ export function FlightSearchPage() {
     >
       <FieldPair
         orientation="vertical"
-        swapLabel="Swap origin and destination"
+        swapLabel={t('Swap origin and destination')}
         onSwap={() => {
           update({ fromText: form.toText, from: form.to, toText: form.fromText, to: form.from });
         }}
         first={
           <SuggestField
-            label="From"
-            placeholder="From (city or airport)"
+            label={t('From')}
+            placeholder={t('From (city or airport)')}
             icon={<Icon name="location_on_outlined" />}
             text={form.fromText}
             onTextChange={(fromText) => {
@@ -144,8 +145,8 @@ export function FlightSearchPage() {
         }
         second={
           <SuggestField
-            label="To"
-            placeholder="To (city or airport)"
+            label={t('To')}
+            placeholder={t('To (city or airport)')}
             icon={<Icon name="public" />}
             text={form.toText}
             onTextChange={(toText) => {
@@ -161,7 +162,7 @@ export function FlightSearchPage() {
       />
 
       <ChoiceChips
-        legend="Trip type"
+        legend={t('Trip type')}
         options={TRIP_TYPE_OPTIONS}
         value={form.tripType}
         onChange={(tripType: TripType) => {
@@ -171,13 +172,13 @@ export function FlightSearchPage() {
 
       <FieldPair
         orientation="horizontal"
-        swapLabel="Swap departure and return dates"
+        swapLabel={t('Swap departure and return dates')}
         onSwap={() => {
           update({ departureDate: form.returnDate, returnDate: form.departureDate });
         }}
         first={
           <DateField
-            label="Departure"
+            label={t('Departure')}
             value={form.departureDate}
             onChange={(departureDate) => {
               update({ departureDate });
@@ -187,7 +188,7 @@ export function FlightSearchPage() {
         second={
           isRoundTrip ? (
             <DateField
-              label="Return"
+              label={t('Return')}
               value={form.returnDate}
               onChange={(returnDate) => {
                 update({ returnDate });
@@ -199,7 +200,7 @@ export function FlightSearchPage() {
 
       <FormRow>
         <CounterField
-          label="Passengers"
+          label={t('Passengers')}
           icon={<Icon name="person" />}
           value={form.passengers}
           onChange={(passengers) => {

@@ -1,3 +1,4 @@
+import { getCurrency } from '@/lib/i18n';
 import { ApiError, apiRequest } from '@/lib/apiClient';
 import { isRecord } from '@/lib/isRecord';
 import type {
@@ -11,9 +12,6 @@ import type {
 } from '../types';
 
 const UNEXPECTED = 'Unexpected response from the server.';
-
-/** Prices shown in Indian rupees for now (India first); every currency later (4.7). */
-export const CURRENCY = 'INR';
 
 function isAirport(value: unknown): value is Airport {
   return (
@@ -67,7 +65,7 @@ export async function searchFlights(
     to: search.to,
     depart: search.depart,
     adults: String(search.adults),
-    currency: CURRENCY,
+    currency: getCurrency(),
     channel: 'web',
   });
   if (search.returnDate) params.set('return', search.returnDate);
@@ -98,7 +96,7 @@ export async function stayPartners(
     checkout: search.checkout,
     adults: String(search.adults),
     rooms: String(search.rooms),
-    currency: CURRENCY,
+    currency: getCurrency(),
     channel: 'web',
   });
   const data = await apiRequest<unknown>(`/api/book/stays?${params.toString()}`, {
@@ -114,7 +112,7 @@ export async function carPartners(search: CarSearch, signal?: AbortSignal): Prom
     place: search.place,
     pickup: search.pickup,
     dropoff: search.dropoff,
-    currency: CURRENCY,
+    currency: getCurrency(),
     channel: 'web',
   });
   if (search.airport) params.set('airport', search.airport);

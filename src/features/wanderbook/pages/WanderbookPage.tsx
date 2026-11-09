@@ -13,6 +13,7 @@ import { usePaged } from '../hooks/usePaged';
 import { getFeed, getMyProfile, getProfilePosts } from '../services/wanderbookService';
 import type { Profile, WanderbookTab } from '../types';
 import styles from './WanderbookPage.module.css';
+import { t } from '@/lib/i18n';
 
 /**
  * The Wanderbook tab. Signed in: your profile, "My Wanderposts" (your grid) and "Feed" (everyone's newest posts).
@@ -56,26 +57,26 @@ export function WanderbookPage() {
           <ProfileHeader profile={profile}>
             <ButtonLink to={routes.wanderbookNewPost} size="sm">
               <Icon name="add_a_photo" />
-              New post
+              {t('New post')}
             </ButtonLink>
             <ButtonLink to={routes.wanderbookEditProfile} variant="outline" size="sm">
-              Edit profile
+              {t('Edit profile')}
             </ButtonLink>
             {profile.followRequests !== null && profile.followRequests > 0 && (
               <ButtonLink to={routes.wanderbookRequests} variant="outline" size="sm">
-                Requests ({profile.followRequests})
+                {t('Requests ({0})', profile.followRequests)}
               </ButtonLink>
             )}
           </ProfileHeader>
         )}
         {!user && status !== 'restoring' && (
           <section className={styles.invite}>
-            <h1 className={styles.inviteTitle}>Your travel scrapbook</h1>
+            <h1 className={styles.inviteTitle}>{t('Your travel scrapbook')}</h1>
             <p className={shared.muted}>
-              Keep your trip photos as they are, tag the places, and follow other travellers.
+              {t('Keep your trip photos as they are, tag the places, and follow other travellers.')}
             </p>
             <ButtonLink to={routes.profile} size="sm">
-              Sign in to post
+              {t('Sign in to post')}
             </ButtonLink>
           </section>
         )}
@@ -85,25 +86,25 @@ export function WanderbookPage() {
           id={user ? panelId(shownTab) : undefined}
           role={user ? 'tabpanel' : undefined}
           aria-labelledby={user ? tabId(shownTab) : undefined}
-          aria-label={user ? undefined : 'Feed'}
+          aria-label={user ? undefined : t('Feed')}
         >
           {shownTab === 'mine' ? (
             mine.items ? (
               <>
-                <PostGrid posts={mine.items} empty="Share your first trip: tap New post." />
+                <PostGrid posts={mine.items} empty={t('Share your first trip: tap New post.')} />
                 {mine.hasMore && (
                   <div className={shared.loadMore}>
                     <Button type="button" variant="outline" size="sm" onClick={mine.loadMore}>
-                      Load more
+                      {t('Load more')}
                     </Button>
                   </div>
                 )}
               </>
             ) : (
-              <p className={shared.status}>{mine.error ?? 'Loading…'}</p>
+              <p className={shared.status}>{mine.error ?? t('Loading…')}</p>
             )
           ) : (
-            <FeedList feed={feed} empty="No posts yet. Be the first to share a trip!" />
+            <FeedList feed={feed} empty={t('No posts yet. Be the first to share a trip!')} />
           )}
         </section>
       </div>

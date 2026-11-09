@@ -5,6 +5,7 @@ import type { Person } from '../types';
 import { PersonRow } from './People';
 import shared from './Wanderbook.module.css';
 import styles from './WanderbookSearchBar.module.css';
+import { t } from '@/lib/i18n';
 
 const MIN_CHARS = 2;
 
@@ -40,12 +41,12 @@ export function WanderbookSearchBar() {
       <div role="search" className={styles.pill}>
         <Icon name="search" className={styles.icon} />
         <label htmlFor={id} className="visually-hidden">
-          Search travellers by name
+          {t('Search travellers by name')}
         </label>
         <input
           id={id}
           type="search"
-          placeholder="Search travellers"
+          placeholder={t('Search travellers')}
           autoComplete="off"
           maxLength={50}
           value={text}
@@ -58,9 +59,9 @@ export function WanderbookSearchBar() {
       {shown && (
         <div className={styles.results} aria-live="polite">
           {shown.people.length === 0 ? (
-            <p className={shared.muted}>No travellers found.</p>
+            <p className={shared.muted}>{t('No travellers found.')}</p>
           ) : (
-            <ul className={shared.list} aria-label="Travellers">
+            <ul className={shared.list} aria-label={t('Travellers')}>
               {shown.people.map((person) => (
                 <PersonRow key={person.publicId} person={person} />
               ))}

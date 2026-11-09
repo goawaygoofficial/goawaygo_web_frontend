@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { toErrorMessage } from '@/lib/apiClient';
 import { useDialog, useUser } from '@/providers';
 import { resendVerificationEmail } from '../services/authService';
+import { t } from '@/lib/i18n';
 
 /**
  * Emails the signed-in user a new verification link and says so in a dialog. On failure the user is re-read, so a
@@ -15,10 +16,10 @@ export function useResendVerification(): () => Promise<void> {
   return useCallback(async () => {
     try {
       await resendVerificationEmail();
-      await showSuccess(`We've sent a new verification link to ${email ?? 'your email'}.`);
+      await showSuccess(t("We've sent a new verification link to {0}.", email ?? t('your email')));
     } catch (error) {
       await reloadUser().catch(() => undefined);
-      await showError(toErrorMessage(error, 'Failed to send verification email'));
+      await showError(toErrorMessage(error, t('Failed to send verification email')));
     }
   }, [email, reloadUser, showError, showSuccess]);
 }

@@ -2,6 +2,7 @@ import { Icon, MorphLink } from '@/components';
 import { routes } from '@/lib/routes';
 import type { Post } from '../types';
 import styles from './PostGrid.module.css';
+import { t } from '@/lib/i18n';
 
 /** A profile's posts as square tiles of their first photo; opens the post. */
 export function PostGrid({ posts, empty }: { posts: readonly Post[]; empty: string }) {
@@ -18,7 +19,7 @@ export function PostGrid({ posts, empty }: { posts: readonly Post[]; empty: stri
               state={{ preview: post }}
               to={routes.wanderbookPost(post.publicId)}
               className={styles.link}
-              aria-label={post.place ? `Post at ${post.place.name}` : 'Post'}
+              aria-label={post.place ? t('Post at {0}', post.place.name) : t('Post')}
             >
               {cover && (
                 <img

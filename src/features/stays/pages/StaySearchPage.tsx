@@ -8,6 +8,7 @@ import type { Place } from '@/features/discover';
 import { track } from '@/lib/analytics';
 import { routes } from '@/lib/routes';
 import type { StaySearchRequest } from '../types';
+import { t } from '@/lib/i18n';
 
 const INITIAL_FORM: StaySearchRequest = {
   destination: '',
@@ -34,12 +35,12 @@ function nights(checkIn: string, checkOut: string): number {
 
 /** What stops the search, or null when it can run. */
 function problem(form: StaySearchRequest): string | null {
-  if (form.destination.trim().length < 2) return 'Type where you want to stay.';
-  if (!form.checkIn || !form.checkOut) return 'Choose your check-in and check-out dates.';
+  if (form.destination.trim().length < 2) return t('Type where you want to stay.');
+  if (!form.checkIn || !form.checkOut) return t('Choose your check-in and check-out dates.');
   const stay = nights(form.checkIn, form.checkOut);
-  if (stay < 1) return 'Check-out must be after check-in.';
-  if (stay > MAX_NIGHTS) return `Choose a stay of up to ${String(MAX_NIGHTS)} nights.`;
-  if (form.rooms > form.adults) return 'Choose at least one guest per room.';
+  if (stay < 1) return t('Check-out must be after check-in.');
+  if (stay > MAX_NIGHTS) return t('Choose a stay of up to {0} nights.', String(MAX_NIGHTS));
+  if (form.rooms > form.adults) return t('Choose at least one guest per room.');
   return null;
 }
 
@@ -57,7 +58,7 @@ export function StaySearchPage() {
 
   return (
     <SearchFormLayout
-      title="Book Your Hotels"
+      title={t('Book Your Hotels')}
       imageSrc={staysImage}
       error={error}
       onSubmit={() => {
@@ -78,8 +79,8 @@ export function StaySearchPage() {
       }}
     >
       <SuggestField
-        label="Where?"
-        placeholder="Where? (city or area)"
+        label={t('Where?')}
+        placeholder={t('Where? (city or area)')}
         icon={<Icon name="public" />}
         text={form.destination}
         onTextChange={(destination) => {
@@ -94,13 +95,13 @@ export function StaySearchPage() {
 
       <FieldPair
         orientation="horizontal"
-        swapLabel="Swap check-in and check-out dates"
+        swapLabel={t('Swap check-in and check-out dates')}
         onSwap={() => {
           update({ checkIn: form.checkOut, checkOut: form.checkIn });
         }}
         first={
           <DateField
-            label="Check-in"
+            label={t('Check-in')}
             value={form.checkIn}
             onChange={(checkIn) => {
               update({ checkIn });
@@ -109,7 +110,7 @@ export function StaySearchPage() {
         }
         second={
           <DateField
-            label="Check-out"
+            label={t('Check-out')}
             value={form.checkOut}
             onChange={(checkOut) => {
               update({ checkOut });
@@ -120,7 +121,7 @@ export function StaySearchPage() {
 
       <FormRow>
         <CounterField
-          label="Rooms"
+          label={t('Rooms')}
           icon={<Icon name="hotel_rounded" />}
           value={form.rooms}
           onChange={(rooms) => {
@@ -128,7 +129,7 @@ export function StaySearchPage() {
           }}
         />
         <CounterField
-          label="Guests"
+          label={t('Guests')}
           icon={<Icon name="person" />}
           value={form.adults}
           onChange={(adults) => {

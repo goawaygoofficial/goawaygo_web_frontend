@@ -9,6 +9,7 @@ import type { BannerSlide, PhotoSlide } from '@/features/discover';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import styles from './RecentSearchesBanner.module.css';
+import { t } from '@/lib/i18n';
 
 type BannerState = { kind: 'loading' } | { kind: 'ready'; slides: BannerSlide[] };
 
@@ -58,16 +59,20 @@ export function RecentSearchesBanner() {
 
   if (state.kind === 'loading') {
     return (
-      <div className={styles.placeholder} aria-busy="true" aria-label="Loading recent searches" />
+      <div
+        className={styles.placeholder}
+        aria-busy="true"
+        aria-label={t('Loading recent searches')}
+      />
     );
   }
   if (state.slides.length === 0) {
     return (
       <div className={styles.empty}>
-        <p className={styles.emptyTitle}>No recent searches</p>
-        <p className={styles.emptyText}>Places you search for will show here.</p>
+        <p className={styles.emptyTitle}>{t('No recent searches')}</p>
+        <p className={styles.emptyText}>{t('Places you search for will show here.')}</p>
       </div>
     );
   }
-  return <PhotoSlider slides={state.slides.map(toPhotoSlide)} label="Your recent searches" />;
+  return <PhotoSlider slides={state.slides.map(toPhotoSlide)} label={t('Your recent searches')} />;
 }

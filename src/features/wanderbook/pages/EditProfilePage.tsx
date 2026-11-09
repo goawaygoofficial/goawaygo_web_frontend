@@ -11,6 +11,7 @@ import { PHOTO_ACCEPT, uploadOriginal } from '../photoUpload';
 import { getMyProfile, setProfilePhoto, updateMyProfile } from '../services/wanderbookService';
 import type { Profile } from '../types';
 import styles from './EditProfilePage.module.css';
+import { t } from '@/lib/i18n';
 
 /** Edit your Wanderbook profile: photo, cover, bio, home town, and whether it is private. */
 export function EditProfilePage() {
@@ -64,10 +65,10 @@ export function EditProfilePage() {
   return (
     <PageShell>
       <PageHeader onBack={goBack}>
-        <h1 className={styles.title}>Edit profile</h1>
+        <h1 className={styles.title}>{t('Edit profile')}</h1>
       </PageHeader>
       {!profile ? (
-        <p className={shared.status}>{message ?? 'Loading…'}</p>
+        <p className={shared.status}>{message ?? t('Loading…')}</p>
       ) : (
         <form
           className={styles.form}
@@ -78,7 +79,7 @@ export function EditProfilePage() {
             updateMyProfile({ bio: bio.trim(), homeTown: homeTown.trim(), isPrivate })
               .then((next) => {
                 setProfile(next);
-                setMessage('Saved.');
+                setMessage(t('Saved.'));
               })
               .catch((cause: unknown) => {
                 setMessage(toErrorMessage(cause));
@@ -98,7 +99,7 @@ export function EditProfilePage() {
                 disabled={busy !== null}
                 onClick={() => avatarInput.current?.click()}
               >
-                {busy === 'avatar' ? 'Uploading…' : 'Change profile photo'}
+                {busy === 'avatar' ? t('Uploading…') : t('Change profile photo')}
               </Button>
               {profile.photoUrl && (
                 <button
@@ -109,7 +110,7 @@ export function EditProfilePage() {
                     changePhoto('avatar', null);
                   }}
                 >
-                  Remove
+                  {t('Remove')}
                 </button>
               )}
             </div>
@@ -126,7 +127,7 @@ export function EditProfilePage() {
                 disabled={busy !== null}
                 onClick={() => coverInput.current?.click()}
               >
-                {busy === 'cover' ? 'Uploading…' : 'Change cover'}
+                {busy === 'cover' ? t('Uploading…') : t('Change cover')}
               </Button>
               {profile.coverUrl && (
                 <button
@@ -137,7 +138,7 @@ export function EditProfilePage() {
                     changePhoto('cover', null);
                   }}
                 >
-                  Remove
+                  {t('Remove')}
                 </button>
               )}
             </div>
@@ -158,7 +159,7 @@ export function EditProfilePage() {
           </div>
 
           <label className={shared.field}>
-            <span className={shared.fieldLabel}>Bio</span>
+            <span className={shared.fieldLabel}>{t('Bio')}</span>
             <textarea
               maxLength={150}
               value={bio}
@@ -169,7 +170,7 @@ export function EditProfilePage() {
             <span className={shared.counter}>{bio.length}/150</span>
           </label>
           <label className={shared.field}>
-            <span className={shared.fieldLabel}>Home town</span>
+            <span className={shared.fieldLabel}>{t('Home town')}</span>
             <input
               maxLength={100}
               value={homeTown}
@@ -187,23 +188,24 @@ export function EditProfilePage() {
               }}
             />
             <span>
-              <span className={shared.fieldLabel}>Private profile</span>
+              <span className={shared.fieldLabel}>{t('Private profile')}</span>
               <span className={shared.muted}>
                 {' '}
-                Only followers you approve see your posts and lists. Turning it off approves waiting
-                requests.
+                {t(
+                  'Only followers you approve see your posts and lists. Turning it off approves waiting requests.',
+                )}
               </span>
             </span>
           </label>
 
           {message && <p className={shared.muted}>{message}</p>}
           <Button type="submit" size="sm" disabled={busy !== null}>
-            {busy === 'save' ? 'Saving…' : 'Save'}
+            {busy === 'save' ? t('Saving…') : t('Save')}
           </Button>
           <p className={styles.more}>
-            <Link to={routes.wanderbookRequests}>Follow requests</Link>
-            <Link to={routes.wanderbookBlocked}>Blocked people</Link>
-            <Link to={routes.communityGuidelines}>Community Guidelines</Link>
+            <Link to={routes.wanderbookRequests}>{t('Follow requests')}</Link>
+            <Link to={routes.wanderbookBlocked}>{t('Blocked people')}</Link>
+            <Link to={routes.communityGuidelines}>{t('Community Guidelines')}</Link>
           </p>
         </form>
       )}

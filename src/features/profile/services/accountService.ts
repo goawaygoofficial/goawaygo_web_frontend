@@ -4,9 +4,10 @@ import { startSession } from '@/lib/session';
 import { isUserDto, userFromDto } from '@/types';
 import type { User } from '@/types';
 import type { Proof, RecentlyViewed, Regions, ViewedPlace, ViewedPlan } from '../types';
+import { t } from '@/lib/i18n';
 
 function toUser(data: unknown): User {
-  if (!isUserDto(data)) throw new Error('Unexpected response from server.');
+  if (!isUserDto(data)) throw new Error(t('Unexpected response from server.'));
   return userFromDto(data);
 }
 
@@ -34,7 +35,7 @@ export function getRegions(): Promise<Regions> {
   }).then(
     (data) => {
       if (!isRecord(data) || !Array.isArray(data.countries) || !Array.isArray(data.currencies)) {
-        throw new Error('Unexpected response from server.');
+        throw new Error(t('Unexpected response from server.'));
       }
       return data as unknown as Regions;
     },
@@ -107,7 +108,7 @@ export async function getRecentlyViewed(signal?: AbortSignal): Promise<RecentlyV
     signal,
     fallbackError: 'Could not load what you viewed.',
   });
-  if (!isRecord(data)) throw new Error('Unexpected response from server.');
+  if (!isRecord(data)) throw new Error(t('Unexpected response from server.'));
   return {
     places: Array.isArray(data.places) ? data.places.filter(isViewedPlace) : [],
     plans: Array.isArray(data.plans) ? data.plans.filter(isViewedPlan) : [],

@@ -14,6 +14,7 @@ import { changeDay, deletePlan, getPlan, getSharedPlan, sharePlan } from '../ser
 import type { Plan } from '../types';
 import cards from '../components/PlanCards.module.css';
 import styles from './PlanPages.module.css';
+import { t } from '@/lib/i18n';
 
 type State =
   | { kind: 'loading' }
@@ -25,7 +26,7 @@ function label<T extends string>(
   options: readonly { value: T; label: string }[],
   value: T,
 ): string {
-  return options.find((o) => o.value === value)?.label ?? value;
+  return t(options.find((o) => o.value === value)?.label ?? value);
 }
 
 /**
@@ -60,7 +61,7 @@ export function PlanPage({ shared = false }: { shared?: boolean }) {
               ? { kind: 'notFound' }
               : {
                   kind: 'error',
-                  message: cause instanceof Error ? cause.message : 'Could not open this plan.',
+                  message: cause instanceof Error ? cause.message : t('Could not open this plan.'),
                 },
         });
       });
@@ -83,26 +84,26 @@ export function PlanPage({ shared = false }: { shared?: boolean }) {
       <PageHeader onBack={goBack} />
       {state.kind === 'loading' && (
         <p className={styles.status} role="status">
-          Opening the plan…
+          {t('Opening the plan…')}
         </p>
       )}
       {state.kind === 'notFound' && (
         <section className={styles.panel}>
-          <p className={styles.panelTitle}>This plan isn&apos;t available</p>
-          <p>It may have been deleted, or it isn&apos;t shared any more.</p>
-          <ButtonLink to={routes.home}>Home</ButtonLink>
+          <p className={styles.panelTitle}>{t("This plan isn't available")}</p>
+          <p>{t("It may have been deleted, or it isn't shared any more.")}</p>
+          <ButtonLink to={routes.home}>{t('Home')}</ButtonLink>
         </section>
       )}
       {state.kind === 'error' && (
         <section className={styles.panel} role="alert">
-          <p className={styles.panelTitle}>Something went wrong</p>
+          <p className={styles.panelTitle}>{t('Something went wrong')}</p>
           <p>{state.message}</p>
           <Button
             onClick={() => {
               setAttempt((value) => value + 1);
             }}
           >
-            Try again
+            {t('Try again')}
           </Button>
         </section>
       )}
@@ -154,29 +155,33 @@ function PlanView({
 
       <div className={cards.estimate}>
         <span className={cards.estimateSide}>
-          <span className={cards.big}>≈ {money(plan.estimate.perDay)} a day</span>
-          <span className={cards.small}>Food, local transport and activities</span>
+          <span className={cards.big}>{t('≈ {0} a day', money(plan.estimate.perDay))}</span>
+          <span className={cards.small}>{t('Food, local transport and activities')}</span>
         </span>
         <span className={cards.estimateMain}>
           {plan.estimate.nights > 0 && (
-            <span className={cards.line}>Stays ≈ {money(plan.estimate.stayPerNight)} a night</span>
+            <span className={cards.line}>
+              {t('Stays ≈ {0} a night', money(plan.estimate.stayPerNight))}
+            </span>
           )}
           <span className={cards.line}>
-            <strong>≈ {money(plan.estimate.total)}</strong> for the trip
+            <strong>≈ {money(plan.estimate.total)}</strong> {t('for the trip')}
           </span>
-          <span className={cards.small}>AI estimate for the group · flights not included</span>
+          <span className={cards.small}>
+            {t('AI estimate for the group · flights not included')}
+          </span>
         </span>
       </div>
 
-      <nav className={styles.shortcuts} aria-label="Book this trip">
+      <nav className={styles.shortcuts} aria-label={t('Book this trip')}>
         <Link className={styles.shortcut} to={links.flights}>
-          <Icon name="flight" /> Flights
+          <Icon name="flight" /> {t('Flights')}
         </Link>
         <Link className={styles.shortcut} to={links.stays}>
-          <Icon name="hotel" /> Stays
+          <Icon name="hotel" /> {t('Stays')}
         </Link>
         <Link className={styles.shortcut} to={links.cars}>
-          <Icon name="directions_car" /> Car rentals
+          <Icon name="directions_car" /> {t('Car rentals')}
         </Link>
       </nav>
 
@@ -200,7 +205,7 @@ function PlanView({
       {plan.tips.length > 0 && (
         <section className={styles.tips} aria-labelledby="tips-heading">
           <h2 id="tips-heading" className={styles.section}>
-            Tips for the trip
+            {t('Tips for the trip')}
           </h2>
           <ul>
             {plan.tips.map((tip) => (
@@ -214,12 +219,12 @@ function PlanView({
         <OwnerActions plan={plan} onChanged={onChanged} onDeleted={onDeleted} />
       ) : (
         <section className={styles.panel}>
-          <p>Made with GoAwayGo&apos;s AI trip planner.</p>
-          <ButtonLink to={routes.home}>Plan your own trip</ButtonLink>
+          <p>{t("Made with GoAwayGo's AI trip planner.")}</p>
+          <ButtonLink to={routes.home}>{t('Plan your own trip')}</ButtonLink>
         </section>
       )}
       <p className={styles.note}>
-        Plans are written by AI. Check opening times, prices and travel advice before you go.
+        {t('Plans are written by AI. Check opening times, prices and travel advice before you go.')}
       </p>
     </>
   );
@@ -245,7 +250,7 @@ function OwnerActions({
     setError(undefined);
     action()
       .catch((cause: unknown) => {
-        setError(cause instanceof Error ? cause.message : 'Something went wrong.');
+        setError(cause instanceof Error ? cause.message : t('Something went wrong.'));
       })
       .finally(() => {
         setBusy(false);
@@ -253,10 +258,10 @@ function OwnerActions({
   };
 
   return (
-    <section className={styles.panel} aria-label="Share or delete this plan">
+    <section className={styles.panel} aria-label={t('Share or delete this plan')}>
       {plan.shared ? (
         <>
-          <p>Anyone with this link can view the plan:</p>
+          <p>{t('Anyone with this link can view the plan:')}</p>
           <p className={styles.link}>{link}</p>
           <div className={styles.buttons}>
             <Button
@@ -267,7 +272,7 @@ function OwnerActions({
                 });
               }}
             >
-              {copied ? 'Link copied' : 'Copy link'}
+              {copied ? t('Link copied') : t('Copy link')}
             </Button>
             <Button
               size="sm"
@@ -279,7 +284,7 @@ function OwnerActions({
                 });
               }}
             >
-              Stop sharing
+              {t('Stop sharing')}
             </Button>
           </div>
         </>
@@ -293,7 +298,7 @@ function OwnerActions({
             });
           }}
         >
-          Share by link
+          {t('Share by link')}
         </Button>
       )}
       <Button
@@ -311,7 +316,7 @@ function OwnerActions({
           });
         }}
       >
-        {confirmDelete ? 'Tap again to delete this plan' : 'Delete plan'}
+        {confirmDelete ? t('Tap again to delete this plan') : t('Delete plan')}
       </Button>
       {error && (
         <p className={styles.error} role="alert">

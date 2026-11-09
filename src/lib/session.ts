@@ -1,7 +1,9 @@
 import { ApiError } from './apiError';
 import { env } from './env';
+import { getLanguage } from './i18n';
 import { isUserDto } from '@/types';
 import type { UserDto } from '@/types';
+import { t } from '@/lib/i18n';
 
 /**
  * The browser session.
@@ -39,7 +41,7 @@ export function getAccessToken(): string | null {
 
 /** Validates a sign-in / refresh body, stores its access token and notifies listeners. */
 export function startSession(data: unknown): SessionDto {
-  if (!isSessionDto(data)) throw new ApiError('Unexpected response from the server.', 200);
+  if (!isSessionDto(data)) throw new ApiError(t('Unexpected response from the server.'), 200);
   accessToken = data.accessToken;
   notify(data.user);
   return data;
@@ -75,16 +77,17 @@ async function doRefresh(): Promise<SessionDto | null> {
   try {
     response = await fetch(`${env.apiBaseUrl}/api/auth/refresh`, {
       method: 'POST',
+      headers: { 'Accept-Language': getLanguage() },
       credentials: 'include',
     });
   } catch {
-    throw new ApiError('Unable to connect to server.', 0);
+    throw new ApiError(t('Unable to connect to server.'), 0);
   }
   if (response.status === 401) {
     endSession();
     return null;
   }
-  if (!response.ok) throw new ApiError('Could not restore your session.', response.status);
+  if (!response.ok) throw new ApiError(t('Could not restore your session.'), response.status);
   return startSession(await response.json());
 }
 

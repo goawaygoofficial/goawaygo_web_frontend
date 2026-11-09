@@ -7,6 +7,7 @@ import type { Airport } from '@/features/book';
 import { track } from '@/lib/analytics';
 import { routes } from '@/lib/routes';
 import type { RentalSearchRequest } from '../types';
+import { t } from '@/lib/i18n';
 
 const INITIAL_FORM: RentalSearchRequest = {
   pickupText: '',
@@ -23,21 +24,21 @@ function describePickup(place: Airport) {
     title: place.type === 'airport' ? `${place.name} (${place.code})` : place.name,
     context:
       place.type === 'airport'
-        ? `Airport · ${place.city ? `${place.city}, ` : ''}${place.country}`
-        : `City · ${place.country}`,
+        ? t('Airport · {0}{1}', place.city ? `${place.city}, ` : '', place.country)
+        : t('City · {0}', place.country),
     icon: <Icon name={place.type === 'airport' ? 'flight' : 'location_on_outlined'} />,
   };
 }
 
 /** What stops the search, or null when it can run. */
 function problem(form: RentalSearchRequest): string | null {
-  if (form.pickupText.trim().length < 2) return 'Type where you pick up the car.';
-  if (!form.pickupDate || !form.dropOffDate) return 'Choose your pick-up and drop-off dates.';
+  if (form.pickupText.trim().length < 2) return t('Type where you pick up the car.');
+  if (!form.pickupDate || !form.dropOffDate) return t('Choose your pick-up and drop-off dates.');
   const days = Math.round(
     (Date.parse(form.dropOffDate) - Date.parse(form.pickupDate)) / 86_400_000,
   );
-  if (days < 1) return 'Drop-off must be after pick-up.';
-  if (days > MAX_DAYS) return `Choose a rental of up to ${String(MAX_DAYS)} days.`;
+  if (days < 1) return t('Drop-off must be after pick-up.');
+  if (days > MAX_DAYS) return t('Choose a rental of up to {0} days.', String(MAX_DAYS));
   return null;
 }
 
@@ -59,7 +60,7 @@ export function RentalSearchPage() {
 
   return (
     <SearchFormLayout
-      title="Rent a Car"
+      title={t('Rent a Car')}
       imageSrc={rentalsImage}
       error={error}
       onSubmit={() => {
@@ -82,8 +83,8 @@ export function RentalSearchPage() {
       }}
     >
       <SuggestField
-        label="Pick-up"
-        placeholder="Pick-up (city or airport)"
+        label={t('Pick-up')}
+        placeholder={t('Pick-up (city or airport)')}
         icon={<Icon name="my_location_sharp" />}
         text={form.pickupText}
         onTextChange={(pickupText) => {
@@ -101,13 +102,13 @@ export function RentalSearchPage() {
 
       <FieldPair
         orientation="horizontal"
-        swapLabel="Swap pick-up and drop-off dates"
+        swapLabel={t('Swap pick-up and drop-off dates')}
         onSwap={() => {
           update({ pickupDate: form.dropOffDate, dropOffDate: form.pickupDate });
         }}
         first={
           <DateField
-            label="Pick-up date"
+            label={t('Pick-up date')}
             value={form.pickupDate}
             onChange={(pickupDate) => {
               update({ pickupDate });
@@ -116,7 +117,7 @@ export function RentalSearchPage() {
         }
         second={
           <DateField
-            label="Drop-off date"
+            label={t('Drop-off date')}
             value={form.dropOffDate}
             onChange={(dropOffDate) => {
               update({ dropOffDate });

@@ -5,6 +5,7 @@ import { Button } from '../Button/Button';
 import { PageHeader } from '../PageHeader/PageHeader';
 import { PageShell } from '../PageShell/PageShell';
 import styles from './SearchFormLayout.module.css';
+import { t } from '@/lib/i18n';
 
 interface SearchFormLayoutProps {
   title: string;
@@ -48,7 +49,7 @@ export function SearchFormLayout({
           </p>
         )}
         <div className={styles.actions}>
-          <Button type="submit">Search</Button>
+          <Button type="submit">{t('Search')}</Button>
         </div>
       </form>
     </PageShell>

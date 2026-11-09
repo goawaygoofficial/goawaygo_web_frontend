@@ -11,6 +11,7 @@ import { track } from '@/lib/analytics';
 import { useCompleteSignIn } from '../hooks/useCompleteSignIn';
 import { signInWithGoogleCode } from '../services/authService';
 import styles from './GoogleSignInButton.module.css';
+import { t } from '@/lib/i18n';
 
 const GOOGLE_SCOPES = 'openid email profile';
 const GENERIC_FAILURE = 'Google sign-in failed. Please try again.';
@@ -54,7 +55,7 @@ function GoogleButton({ clientId, redirectTo }: { clientId: string; redirectTo?:
       try {
         const result = await signInWithGoogleCode({ code });
         track({ name: 'sign_in_completed', props: { method: 'google' } });
-        await completeSignIn(result, 'Welcome');
+        await completeSignIn(result, t('Welcome'));
       } catch (error) {
         await showError(toErrorMessage(error, GENERIC_FAILURE));
       }
@@ -90,7 +91,9 @@ function GoogleButton({ clientId, redirectTo }: { clientId: string; redirectTo?:
           expectedState.current = null;
           if (error.type === 'popup_failed_to_open') {
             void showError(
-              'Your browser blocked the Google sign-in window. Please allow pop-ups for this site and try again.',
+              t(
+                'Your browser blocked the Google sign-in window. Please allow pop-ups for this site and try again.',
+              ),
             );
           }
           // popup_closed: the user closed it on purpose; nothing to report.
@@ -102,7 +105,7 @@ function GoogleButton({ clientId, redirectTo }: { clientId: string; redirectTo?:
   if (loadFailed) {
     return (
       <p className={styles.unavailable} role="status">
-        Google sign-in is unavailable right now.
+        {t('Google sign-in is unavailable right now.')}
       </p>
     );
   }
@@ -116,7 +119,7 @@ function GoogleButton({ clientId, redirectTo }: { clientId: string; redirectTo?:
       disabled={oauth2 === null}
       onClick={openGoogle}
     >
-      Continue with Google
+      {t('Continue with Google')}
     </Button>
   );
 }

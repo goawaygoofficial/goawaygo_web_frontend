@@ -119,7 +119,7 @@
   position: absolute;
   z-index: 2;
   top: var(--space-2);
-  right: var(--space-2);
+  inset-inline-end: var(--space-2);
   display: inline-flex;
   align-items: center;
   justify-content: center;

@@ -10,6 +10,7 @@ import type {
   ReportTarget,
   Uploaded,
 } from '../types';
+import { t } from '@/lib/i18n';
 
 /** The Wanderbook API. Viewing works signed out; everything that changes something needs sign-in. */
 
@@ -47,13 +48,13 @@ export const setProfilePhoto = (kind: 'avatar' | 'cover', photoId: string | null
 export const follow = (publicId: string, on: boolean) =>
   apiRequest<Profile>(`/api/wanderbook/profiles/${publicId}/follow`, {
     method: on ? 'POST' : 'DELETE',
-    fallbackError: on ? 'Could not follow.' : 'Could not unfollow.',
+    fallbackError: on ? t('Could not follow.') : t('Could not unfollow.'),
   });
 
 export const block = (publicId: string, on: boolean) =>
   apiRequest<unknown>(`/api/wanderbook/profiles/${publicId}/block`, {
     method: on ? 'POST' : 'DELETE',
-    fallbackError: on ? 'Could not block.' : 'Could not unblock.',
+    fallbackError: on ? t('Could not block.') : t('Could not unblock.'),
   });
 
 export const getFollows = (

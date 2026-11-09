@@ -11,6 +11,7 @@ import { PHOTO_ACCEPT, uploadOriginal } from '../photoUpload';
 import { createPost } from '../services/wanderbookService';
 import type { Photo, PlaceTag } from '../types';
 import styles from './NewPostPage.module.css';
+import { t } from '@/lib/i18n';
 
 const MAX_PHOTOS = 10;
 const MAX_CAPTION = 2200;
@@ -68,7 +69,7 @@ export function NewPostPage() {
         item: { key: crypto.randomUUID(), name: file.name, preview, status: 'uploading' as const },
       };
     });
-    if (files.length > room) setError(`A post has up to ${String(MAX_PHOTOS)} photos.`);
+    if (files.length > room) setError(t('A post has up to {0} photos.', String(MAX_PHOTOS)));
     setSelected((items) => [...items, ...batch.map((b) => b.item)]);
     // One at a time: originals can be large.
     for (const { file, item } of batch) {
@@ -92,7 +93,7 @@ export function NewPostPage() {
   return (
     <PageShell>
       <PageHeader onBack={goBack}>
-        <h1 className={styles.title}>New post</h1>
+        <h1 className={styles.title}>{t('New post')}</h1>
       </PageHeader>
       <form
         className={styles.form}
@@ -114,19 +115,19 @@ export function NewPostPage() {
             });
         }}
       >
-        <ul className={styles.photos} aria-label="Photos in this post">
+        <ul className={styles.photos} aria-label={t('Photos in this post')}>
           {selected.map((item) => (
             <li key={item.key} className={styles.photo}>
               <img src={item.preview} alt={item.name} />
               {item.status !== 'done' && (
                 <span className={styles.badge}>
-                  {item.status === 'uploading' ? 'Uploading…' : item.error}
+                  {item.status === 'uploading' ? t('Uploading…') : item.error}
                 </span>
               )}
               <button
                 type="button"
                 className={styles.remove}
-                aria-label={`Remove ${item.name}`}
+                aria-label={t('Remove {0}', item.name)}
                 onClick={() => {
                   setSelected((items) => items.filter((i) => i.key !== item.key));
                 }}
@@ -143,7 +144,7 @@ export function NewPostPage() {
                 onClick={() => input.current?.click()}
               >
                 <Icon name="add_a_photo" />
-                {selected.length === 0 ? 'Add photos' : 'Add more'}
+                {selected.length === 0 ? t('Add photos') : t('Add more')}
               </button>
             </li>
           )}
@@ -161,16 +162,17 @@ export function NewPostPage() {
           }}
         />
         <p className={shared.muted}>
-          Photos are kept exactly as they are. Their hidden location data is removed; only the place
-          name below is shown.
+          {t(
+            'Photos are kept exactly as they are. Their hidden location data is removed; only the place name below is shown.',
+          )}
         </p>
 
         <label className={shared.field}>
-          <span className={shared.fieldLabel}>Caption</span>
+          <span className={shared.fieldLabel}>{t('Caption')}</span>
           <textarea
             maxLength={MAX_CAPTION}
             value={caption}
-            placeholder="Write about this trip…"
+            placeholder={t('Write about this trip…')}
             onChange={(event) => {
               setCaption(event.target.value);
             }}
@@ -192,7 +194,7 @@ export function NewPostPage() {
 
         {error && <p className={shared.error}>{error}</p>}
         <Button type="submit" size="sm" disabled={ready.length === 0 || busy || posting}>
-          {posting ? 'Posting…' : busy ? 'Uploading photos…' : 'Share'}
+          {posting ? t('Posting…') : busy ? t('Uploading photos…') : t('Share')}
         </Button>
       </form>
     </PageShell>

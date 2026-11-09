@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useUser } from '@/providers';
 import styles from './SessionGate.module.css';
+import { t } from '@/lib/i18n';
 
 /**
  * Holds rendering until the session has been restored from the refresh cookie (one request on page load), so
@@ -11,7 +12,7 @@ import styles from './SessionGate.module.css';
 export function SessionGate({ children }: { children: ReactNode }) {
   const { status } = useUser();
   if (status === 'restoring') {
-    return <main className={styles.restoring} aria-busy="true" aria-label="Loading" />;
+    return <main className={styles.restoring} aria-busy="true" aria-label={t('Loading')} />;
   }
   return children;
 }

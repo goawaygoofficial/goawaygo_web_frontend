@@ -128,7 +128,7 @@
   position: absolute;
   z-index: 2;
   top: var(--space-3);
-  right: var(--space-3);
+  inset-inline-end: var(--space-3);
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
@@ -159,13 +159,13 @@
 .credit {
   position: absolute;
   z-index: 2;
-  right: var(--space-4);
+  inset-inline-end: var(--space-4);
   bottom: var(--space-1);
-  left: var(--space-5);
+  inset-inline-start: var(--space-5);
   overflow: hidden;
   color: var(--color-white-muted);
   font-size: 0.625rem;
-  text-align: right;
+  text-align: end;
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;

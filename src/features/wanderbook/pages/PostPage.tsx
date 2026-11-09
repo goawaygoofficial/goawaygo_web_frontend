@@ -22,6 +22,7 @@ import {
 import { timeAgo } from '@/lib/timeAgo';
 import type { Comment, Person, PlaceTag, Post, ReportTarget } from '../types';
 import styles from './PostPage.module.css';
+import { t } from '@/lib/i18n';
 
 /** One post with its comments; its author can edit the caption and place here. */
 export function PostPage() {
@@ -73,7 +74,7 @@ export function PostPage() {
     <PageShell>
       <PageHeader onBack={goBack} />
       <div className={styles.column}>
-        {!current && !post && <p className={shared.status}>Loading…</p>}
+        {!current && !post && <p className={shared.status}>{t('Loading…')}</p>}
         {current?.error && <p className={shared.status}>{current.error}</p>}
         {post && editing && (
           <EditPost
@@ -94,7 +95,7 @@ export function PostPage() {
                 void navigate(routes.wanderbook, { replace: true });
               }}
               onReport={() => {
-                setReporting({ type: 'post', id: post.publicId, label: 'this post' });
+                setReporting({ type: 'post', id: post.publicId, label: t('this post') });
               }}
             />
             {post.likes > 0 && (
@@ -109,20 +110,22 @@ export function PostPage() {
                     });
                 }}
               >
-                {likers ? 'Hide likes' : 'See who liked this'}
+                {likers ? t('Hide likes') : t('See who liked this')}
               </button>
             )}
             {likers && (
-              <ul className={shared.list} aria-label="Liked by">
+              <ul className={shared.list} aria-label={t('Liked by')}>
                 {likers.map((person) => (
                   <PersonRow key={person.publicId} person={person} />
                 ))}
               </ul>
             )}
 
-            <section className={styles.comments} aria-label="Comments">
-              <h2 className={styles.heading}>Comments</h2>
-              {comments.items?.length === 0 && <p className={shared.muted}>No comments yet.</p>}
+            <section className={styles.comments} aria-label={t('Comments')}>
+              <h2 className={styles.heading}>{t('Comments')}</h2>
+              {comments.items?.length === 0 && (
+                <p className={shared.muted}>{t('No comments yet.')}</p>
+              )}
               <ul className={shared.list}>
                 {comments.items?.map((comment) => (
                   <CommentRow
@@ -146,7 +149,7 @@ export function PostPage() {
                             setReporting({
                               type: 'comment',
                               id: String(comment.id),
-                              label: 'this comment',
+                              label: t('this comment'),
                             });
                           }
                         : undefined
@@ -156,7 +159,7 @@ export function PostPage() {
               </ul>
               {comments.hasMore && (
                 <button type="button" className={styles.textButton} onClick={comments.loadMore}>
-                  More comments
+                  {t('More comments')}
                 </button>
               )}
               {user ? (
@@ -169,7 +172,7 @@ export function PostPage() {
                 />
               ) : (
                 <ButtonLink to={routes.profile} variant="outline" size="sm">
-                  Sign in to comment
+                  {t('Sign in to comment')}
                 </ButtonLink>
               )}
             </section>
@@ -214,12 +217,12 @@ function CommentRow({
           {timeAgo(comment.createdAt)}
           {comment.canDelete && (
             <button type="button" className={styles.textButton} onClick={onDelete}>
-              Delete
+              {t('Delete')}
             </button>
           )}
           {onReport && (
             <button type="button" className={styles.textButton} onClick={onReport}>
-              Report
+              {t('Report')}
             </button>
           )}
         </p>
@@ -253,12 +256,12 @@ function NewComment({ postId, onAdded }: { postId: string; onAdded: (comment: Co
       }}
     >
       <label className="visually-hidden" htmlFor="new-comment">
-        Add a comment
+        {t('Add a comment')}
       </label>
       <input
         id="new-comment"
         maxLength={500}
-        placeholder="Add a comment…"
+        placeholder={t('Add a comment…')}
         value={text}
         onChange={(event) => {
           setText(event.target.value);
@@ -267,7 +270,7 @@ function NewComment({ postId, onAdded }: { postId: string; onAdded: (comment: Co
       <button
         type="submit"
         className={shared.iconButton}
-        aria-label="Post comment"
+        aria-label={t('Post comment')}
         disabled={sending || text.trim().length === 0}
       >
         <Icon name="check" />
@@ -297,9 +300,9 @@ function EditPost({ post, onDone }: { post: Post; onDone: (saved: Post | null) =
           });
       }}
     >
-      <h1 className={styles.heading}>Edit post</h1>
+      <h1 className={styles.heading}>{t('Edit post')}</h1>
       <label className={shared.field}>
-        <span className={shared.fieldLabel}>Caption</span>
+        <span className={shared.fieldLabel}>{t('Caption')}</span>
         <textarea
           maxLength={2200}
           value={caption}
@@ -319,10 +322,10 @@ function EditPost({ post, onDone }: { post: Post; onDone: (saved: Post | null) =
             onDone(null);
           }}
         >
-          Cancel
+          {t('Cancel')}
         </Button>
         <Button type="submit" size="sm" disabled={saving}>
-          {saving ? 'Saving…' : 'Save'}
+          {saving ? t('Saving…') : t('Save')}
         </Button>
       </div>
     </form>

@@ -7,6 +7,7 @@ import { routes } from '@/lib/routes';
 import { useCollapseOnScroll } from '../hooks/useCollapseOnScroll';
 import type { Profile } from '../types';
 import styles from './ProfileHeader.module.css';
+import { t } from '@/lib/i18n';
 
 /**
  * Cover, profile photo, name, home town, counts and bio, with the actions under it (Follow, Edit profile, ...).
@@ -69,9 +70,9 @@ export function ProfileHeader({
       <h1 className={styles.name}>
         {profile.name}
         {profile.isPrivate && (
-          <span className={styles.lock} title="Private profile">
+          <span className={styles.lock} title={t('Private profile')}>
             <Icon name="lock" />
-            <span className="visually-hidden">(private profile)</span>
+            <span className="visually-hidden">{t('(private profile)')}</span>
           </span>
         )}
       </h1>
@@ -80,9 +81,9 @@ export function ProfileHeader({
       {!placeholder && (
         <div className={styles.details}>
           <dl className={styles.stats}>
-            {stat('Posts', profile.posts)}
-            {stat('Followers', profile.followers, 'followers')}
-            {stat('Following', profile.following, 'following')}
+            {stat(t('Posts'), profile.posts)}
+            {stat(t('Followers'), profile.followers, 'followers')}
+            {stat(t('Following'), profile.following, 'following')}
           </dl>
           {profile.bio && <p className={styles.bio}>{profile.bio}</p>}
           {children && <div className={styles.actionsRow}>{children}</div>}

@@ -98,7 +98,7 @@
 
 .lock {
   display: inline-flex;
-  margin-left: var(--space-1);
+  margin-inline-start: var(--space-1);
   vertical-align: middle;
 }
 

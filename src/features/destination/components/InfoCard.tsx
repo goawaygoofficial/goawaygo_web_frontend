@@ -3,13 +3,14 @@ import { Icon } from '@/components';
 import type { CardItem, InfoCard as InfoCardData } from '@/features/discover';
 import { CARD_META } from '../cardMeta';
 import styles from './InfoCard.module.css';
+import { t } from '@/lib/i18n';
 
 /** "https://www.indianvisaonline.gov.in/evisa" → "indianvisaonline.gov.in" */
 function siteName(link: string): string {
   try {
     return new URL(link).hostname.replace(/^www\./, '');
   } catch {
-    return 'Official site';
+    return t('Official site');
   }
 }
 
@@ -20,7 +21,9 @@ function Item({ item }: { item: CardItem }) {
       <span className={styles.detail}>{item.detail}</span>
       {(item.mayChange || item.link) && (
         <span className={styles.meta}>
-          {item.mayChange && <span className={styles.mayVary}>May vary, check before you go</span>}
+          {item.mayChange && (
+            <span className={styles.mayVary}>{t('May vary, check before you go')}</span>
+          )}
           {item.link && (
             <a href={item.link} target="_blank" rel="noopener noreferrer" className={styles.link}>
               {siteName(item.link)}
@@ -56,9 +59,9 @@ export function InfoCard({ card }: { card: InfoCardData }) {
             <Icon name={meta.icon} />
           </span>
           <span className={styles.text}>
-            <span className={styles.title}>{meta.title}</span>
+            <span className={styles.title}>{t(meta.title)}</span>
             <span className={styles.subtitle}>
-              {card.available ? meta.subtitle : 'Not available right now'}
+              {card.available ? t(meta.subtitle) : t('Not available right now')}
             </span>
           </span>
           {card.available && (
@@ -77,8 +80,8 @@ export function InfoCard({ card }: { card: InfoCardData }) {
           </ul>
           <p className={styles.note}>
             {card.id === 'visa' &&
-              'Rules change: always check official sources before you travel. '}
-            AI-generated, may contain mistakes.
+              `${t('Rules change: always check official sources before you travel.')} `}
+            {t('AI-generated, may contain mistakes.')}
           </p>
         </div>
       )}

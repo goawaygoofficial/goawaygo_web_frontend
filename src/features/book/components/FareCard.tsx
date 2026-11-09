@@ -1,6 +1,7 @@
 import { formatDay, formatDuration, formatPrice, formatTime, stopsLabel } from '../format';
 import type { Fare } from '../types';
 import styles from './BookCards.module.css';
+import { t } from '@/lib/i18n';
 
 interface FareCardProps {
   fare: Fare;
@@ -16,7 +17,7 @@ interface FareCardProps {
 export function FareCard({ fare, currency, roundTrip, onOpen }: FareCardProps) {
   const stops =
     roundTrip && fare.returnStops !== null
-      ? `${stopsLabel(fare.stops)} · back ${stopsLabel(fare.returnStops).toLowerCase()}`
+      ? t('{0} · back {1}', stopsLabel(fare.stops), stopsLabel(fare.returnStops).toLowerCase())
       : stopsLabel(fare.stops);
   return (
     <a
@@ -28,7 +29,9 @@ export function FareCard({ fare, currency, roundTrip, onOpen }: FareCardProps) {
     >
       <span className={styles.side}>
         <span className={styles.price}>{formatPrice(fare.price, currency)}</span>
-        <span className={styles.small}>{roundTrip ? 'Round trip' : 'One way'} per passenger</span>
+        <span className={styles.small}>
+          {roundTrip ? t('Round trip per passenger') : t('One way per passenger')}
+        </span>
         <span className={styles.airline}>
           <img
             className={styles.airlineLogo}
@@ -45,7 +48,7 @@ export function FareCard({ fare, currency, roundTrip, onOpen }: FareCardProps) {
         </span>
         <span className={styles.line}>
           {fare.origin} → {fare.destination}
-          {roundTrip && fare.returnAt ? ` · back ${formatDay(fare.returnAt)}` : ''}
+          {roundTrip && fare.returnAt ? t(' · back {0}', formatDay(fare.returnAt)) : ''}
         </span>
         <span className={styles.line}>
           {!roundTrip && fare.durationMinutes ? `${formatDuration(fare.durationMinutes)} · ` : ''}

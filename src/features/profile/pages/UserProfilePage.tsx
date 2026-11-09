@@ -18,6 +18,7 @@ import {
 } from '../components/AccountEditors';
 import { EditableField } from '../components/EditableField';
 import styles from './UserProfilePage.module.css';
+import { t } from '@/lib/i18n';
 
 const NOT_SET = 'Not set';
 
@@ -26,7 +27,7 @@ type Editing = 'name' | 'email' | 'password' | 'country' | 'currency' | 'delete'
 const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
 function countryName(code: string | null): string {
-  if (!code) return NOT_SET;
+  if (!code) return t(NOT_SET);
   try {
     return regionNames.of(code) ?? code;
   } catch {
@@ -65,10 +66,10 @@ export function UserProfilePage() {
       .then((photoId) => setProfilePhoto('avatar', photoId))
       .then(() => reloadUser())
       .then(() => {
-        setMessage(file ? 'Photo changed. Wanderbook shows it too.' : 'Photo removed.');
+        setMessage(file ? t('Photo changed. Wanderbook shows it too.') : t('Photo removed.'));
       })
       .catch((cause: unknown) => {
-        setMessage(toErrorMessage(cause, 'Could not change the photo.'));
+        setMessage(toErrorMessage(cause, t('Could not change the photo.')));
       })
       .finally(() => {
         setPhotoBusy(false);
@@ -80,7 +81,7 @@ export function UserProfilePage() {
       <PageHeader>
         <h1 className={styles.title}>
           <img src={userProfileIcon} alt="" className={styles.titleIcon} />
-          User Profile
+          {t('User Profile')}
         </h1>
       </PageHeader>
 
@@ -94,7 +95,7 @@ export function UserProfilePage() {
             disabled={photoBusy}
             onClick={() => photoInput.current?.click()}
           >
-            {photoBusy ? 'Uploading…' : 'Change photo'}
+            {photoBusy ? t('Uploading…') : t('Change photo')}
           </Button>
           {user.profilePicture && !photoBusy && (
             <Button
@@ -105,7 +106,7 @@ export function UserProfilePage() {
                 changePhoto(null);
               }}
             >
-              Remove
+              {t('Remove')}
             </Button>
           )}
         </div>
@@ -130,7 +131,7 @@ export function UserProfilePage() {
 
       <div className={styles.fields}>
         <EditableField
-          label="Display Name"
+          label={t('Display Name')}
           value={user.name}
           open={editing === 'name'}
           onToggle={toggle('name')}
@@ -138,32 +139,32 @@ export function UserProfilePage() {
           <NameEditor user={user} onDone={done} />
         </EditableField>
         <EditableField
-          label="Email"
+          label={t('Email')}
           value={user.email}
           note={
             user.pendingEmail
-              ? `Waiting for you to open the link sent to ${user.pendingEmail}.`
+              ? t('Waiting for you to open the link sent to {0}.', user.pendingEmail)
               : undefined
           }
           open={editing === 'email'}
           onToggle={toggle('email')}
-          editLabel="Change"
+          editLabel={t('Change')}
         >
           <EmailEditor user={user} onDone={done} />
         </EditableField>
         <EditableField
-          label="Password"
-          value={user.hasPassword ? '**************' : 'Google sign-in'}
+          label={t('Password')}
+          value={user.hasPassword ? '**************' : t('Google sign-in')}
           isSecret={user.hasPassword}
           open={editing === 'password'}
           onToggle={toggle('password')}
-          editLabel={user.hasPassword ? 'Change' : 'Set'}
+          editLabel={user.hasPassword ? t('Change') : t('Set')}
         >
           <PasswordEditor user={user} onDone={done} />
         </EditableField>
-        <EditableField label="Phone Number" value={user.phone ?? NOT_SET} />
+        <EditableField label={t('Phone Number')} value={user.phone ?? t(NOT_SET)} />
         <EditableField
-          label="Country / Region"
+          label={t('Country / Region')}
           value={countryName(user.country)}
           open={editing === 'country'}
           onToggle={toggle('country')}
@@ -171,8 +172,8 @@ export function UserProfilePage() {
           <CountryEditor user={user} onDone={done} />
         </EditableField>
         <EditableField
-          label="Currency"
-          value={user.currency ?? NOT_SET}
+          label={t('Currency')}
+          value={user.currency ?? t(NOT_SET)}
           open={editing === 'currency'}
           onToggle={toggle('currency')}
         >
@@ -182,24 +183,24 @@ export function UserProfilePage() {
 
       <div className={styles.actions}>
         <ButtonLink fullWidth variant="outline" to={routes.notificationSettings}>
-          Notification settings
+          {t('Notification settings')}
         </ButtonLink>
         <Button fullWidth loading={signingOut} onClick={signOut}>
-          Sign Out
+          {t('Sign Out')}
         </Button>
         <Button variant="link" onClick={goBack}>
-          Back
+          {t('Back')}
         </Button>
       </div>
 
-      <section className={styles.danger} aria-label="Delete account">
+      <section className={styles.danger} aria-label={t('Delete account')}>
         <button
           type="button"
           className={styles.dangerToggle}
           aria-expanded={editing === 'delete'}
           onClick={toggle('delete')}
         >
-          {editing === 'delete' ? 'Keep my account' : 'Delete account'}
+          {editing === 'delete' ? t('Keep my account') : t('Delete account')}
         </button>
         {editing === 'delete' && <DeleteAccountPanel user={user} />}
       </section>

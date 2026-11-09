@@ -2,6 +2,7 @@ import feature01 from '@/assets/images/auth_image_01.png';
 import feature02 from '@/assets/images/auth_image_02.png';
 import feature03 from '@/assets/images/auth_image_03.png';
 import styles from './FeatureList.module.css';
+import { t } from '@/lib/i18n';
 
 const FEATURES = [
   { icon: feature01, text: 'Travel the World in Your Terms' },
@@ -19,7 +20,7 @@ export function FeatureList() {
       {FEATURES.map((feature) => (
         <li key={feature.text} className={styles.item}>
           <img src={feature.icon} alt="" className={styles.icon} />
-          <span>{feature.text}</span>
+          <span>{t(feature.text)}</span>
         </li>
       ))}
     </ul>

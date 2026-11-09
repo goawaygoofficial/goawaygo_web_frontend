@@ -27,6 +27,7 @@ import {
 import { createPlan } from '../services/plansService';
 import type { BudgetLevel, Interest, Pace, Travellers } from '../types';
 import styles from './PlanPages.module.css';
+import { t } from '@/lib/i18n';
 
 /**
  * "Plan a trip": when, how long, who, pace, budget and interests for the place it was opened from (a destination
@@ -52,7 +53,7 @@ export function PlanFormPage() {
 
   const submit = () => {
     if (!startDate) {
-      setError('Choose when your trip starts.');
+      setError(t('Choose when your trip starts.'));
       return;
     }
     setError(undefined);
@@ -64,7 +65,7 @@ export function PlanFormPage() {
       })
       .catch((cause: unknown) => {
         setPlanning(false);
-        setError(cause instanceof Error ? cause.message : 'Could not make your plan.');
+        setError(cause instanceof Error ? cause.message : t('Could not make your plan.'));
       });
   };
 
@@ -73,21 +74,21 @@ export function PlanFormPage() {
       <PageHeader onBack={goBack} />
       <div className={styles.titleRow}>
         <Icon name="travel_explore" className={styles.titleIcon} />
-        <h1 className={styles.title}>Plan a trip</h1>
+        <h1 className={styles.title}>{t('Plan a trip')}</h1>
       </div>
       <p className={styles.heading}>{place.name}</p>
       {where && <p className={styles.subheading}>{where}</p>}
 
       {status !== 'restoring' && !user ? (
         <section className={styles.panel}>
-          <p>Sign in to plan a trip. Your plans are saved in My Trips.</p>
-          <ButtonLink to={routes.profile}>Sign in</ButtonLink>
+          <p>{t('Sign in to plan a trip. Your plans are saved in My Trips.')}</p>
+          <ButtonLink to={routes.profile}>{t('Sign in')}</ButtonLink>
         </section>
       ) : planning ? (
         <section className={styles.panel} role="status">
           <Icon name="travel_explore" className={styles.panelIcon} />
-          <p className={styles.panelTitle}>Planning your trip to {place.name}…</p>
-          <p>Our AI is writing it day by day. This can take up to a minute.</p>
+          <p className={styles.panelTitle}>{t('Planning your trip to {0}…', place.name)}</p>
+          <p>{t('Our AI is writing it day by day. This can take up to a minute.')}</p>
         </section>
       ) : (
         <form
@@ -100,7 +101,7 @@ export function PlanFormPage() {
         >
           <div className={styles.row}>
             <DateField
-              label="Start date"
+              label={t('Start date')}
               value={startDate}
               onChange={(value) => {
                 setStartDate(value);
@@ -108,7 +109,7 @@ export function PlanFormPage() {
               }}
             />
             <CounterField
-              label="Days"
+              label={t('Days')}
               icon={<Icon name="calendar_month" />}
               value={days}
               onChange={(value) => {
@@ -117,28 +118,28 @@ export function PlanFormPage() {
             />
           </div>
 
-          <p className={styles.label}>Who&apos;s going?</p>
+          <p className={styles.label}>{t("Who's going?")}</p>
           <ChoiceChips
-            legend="Who's going"
+            legend={t("Who's going")}
             options={TRAVELLER_OPTIONS}
             value={travellers}
             onChange={setTravellers}
           />
 
-          <p className={styles.label}>Pace</p>
-          <ChoiceChips legend="Pace" options={PACE_OPTIONS} value={pace} onChange={setPace} />
+          <p className={styles.label}>{t('Pace')}</p>
+          <ChoiceChips legend={t('Pace')} options={PACE_OPTIONS} value={pace} onChange={setPace} />
 
-          <p className={styles.label}>Budget</p>
+          <p className={styles.label}>{t('Budget')}</p>
           <ChoiceChips
-            legend="Budget"
+            legend={t('Budget')}
             options={BUDGET_OPTIONS}
             value={budget}
             onChange={setBudget}
           />
 
-          <p className={styles.label}>Interests (up to {MAX_INTERESTS})</p>
+          <p className={styles.label}>{t('Interests (up to {0})', MAX_INTERESTS)}</p>
           <MultiChoiceChips
-            legend="Interests"
+            legend={t('Interests')}
             options={INTEREST_OPTIONS}
             value={interests}
             onChange={setInterests}
@@ -151,10 +152,12 @@ export function PlanFormPage() {
             </p>
           )}
           <div className={styles.actions}>
-            <Button type="submit">Plan my trip</Button>
+            <Button type="submit">{t('Plan my trip')}</Button>
           </div>
           <p className={styles.note}>
-            Plans are written by AI. Check opening times, prices and travel advice before you go.
+            {t(
+              'Plans are written by AI. Check opening times, prices and travel advice before you go.',
+            )}
           </p>
         </form>
       )}

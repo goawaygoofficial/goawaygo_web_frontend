@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { analyticsAvailable, reviewConsent } from '@/lib/analytics';
 import { routes } from '@/lib/routes';
 import styles from './LegalLinks.module.css';
+import { t } from '@/lib/i18n';
 
 /**
  * "Privacy · Terms · Delete my data · Privacy choices": the footer of Home, the sign-in page, Profile and Download.
@@ -9,14 +10,14 @@ import styles from './LegalLinks.module.css';
  */
 export function LegalLinks({ className }: { className?: string }) {
   return (
-    <nav aria-label="Legal" className={[styles.links, className].filter(Boolean).join(' ')}>
-      <Link to={routes.privacy}>Privacy Policy</Link>
-      <Link to={routes.terms}>Terms of Use</Link>
-      <Link to={routes.communityGuidelines}>Community Guidelines</Link>
-      <Link to={routes.deleteMyData}>Delete my data</Link>
+    <nav aria-label={t('Legal')} className={[styles.links, className].filter(Boolean).join(' ')}>
+      <Link to={routes.privacy}>{t('Privacy Policy')}</Link>
+      <Link to={routes.terms}>{t('Terms of Use')}</Link>
+      <Link to={routes.communityGuidelines}>{t('Community Guidelines')}</Link>
+      <Link to={routes.deleteMyData}>{t('Delete my data')}</Link>
       {analyticsAvailable && (
         <button type="button" className={styles.choices} onClick={reviewConsent}>
-          Privacy choices
+          {t('Privacy choices')}
         </button>
       )}
     </nav>
@@ -30,15 +31,15 @@ export function LegalLinks({ className }: { className?: string }) {
 export function SignUpNotice({ className }: { className?: string }) {
   return (
     <p className={[styles.notice, className].filter(Boolean).join(' ')}>
-      By continuing, you agree to our{' '}
+      {t('By continuing, you agree to our')}{' '}
       <a href={routes.terms} target="_blank" rel="noreferrer">
-        Terms of Use
+        {t('Terms of Use')}
       </a>{' '}
-      and confirm you have read our{' '}
+      {t('and confirm you have read our')}{' '}
       <a href={routes.privacy} target="_blank" rel="noreferrer">
-        Privacy Policy
+        {t('Privacy Policy')}
       </a>
-      . You must be 18 or older.
+      {t('. You must be 18 or older.')}
     </p>
   );
 }

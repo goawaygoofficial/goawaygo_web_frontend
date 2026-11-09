@@ -12,6 +12,7 @@ import { AuthOverlay } from '../components/AuthOverlay';
 import { useLinkToken } from '../hooks/useLinkToken';
 import { resetPassword } from '../services/authService';
 import styles from '../components/AuthForms.module.css';
+import { t } from '@/lib/i18n';
 
 const PASSWORD_CHANGED_MESSAGE =
   'Your password has been changed. Please sign in with your new password.';
@@ -39,18 +40,18 @@ function ResetPasswordForm({ token }: { token: string }) {
       return;
     }
     if (password !== confirmation) {
-      await showError('Passwords do not match.');
+      await showError(t('Passwords do not match.'));
       return;
     }
     try {
       await resetPassword({ token, newPassword: password });
     } catch (error) {
-      await showError(toErrorMessage(error, 'Failed to reset password'));
+      await showError(toErrorMessage(error, t('Failed to reset password')));
       return;
     }
     // The backend signed out every session of the account, including one in this browser.
     if (user) await signOut();
-    await showSuccess(PASSWORD_CHANGED_MESSAGE);
+    await showSuccess(t(PASSWORD_CHANGED_MESSAGE));
     void navigate(routes.auth, { replace: true });
   }, [token, password, confirmation, user, signOut, showError, showSuccess, navigate]);
   const [pending, run] = useAsyncAction(submit);
@@ -62,23 +63,23 @@ function ResetPasswordForm({ token }: { token: string }) {
 
   return (
     <AuthOverlay>
-      <h1 className={styles.heading}>Choose a New Password</h1>
+      <h1 className={styles.heading}>{t('Choose a New Password')}</h1>
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         <TextField
-          label="New password"
+          label={t('New password')}
           type="password"
           autoComplete="new-password"
-          placeholder="New password..."
+          placeholder={t('New password...')}
           value={password}
           onChange={(event) => {
             setPassword(event.target.value);
           }}
         />
         <TextField
-          label="Confirm new password"
+          label={t('Confirm new password')}
           type="password"
           autoComplete="new-password"
-          placeholder="Confirm new password..."
+          placeholder={t('Confirm new password...')}
           value={confirmation}
           onChange={(event) => {
             setConfirmation(event.target.value);
@@ -86,10 +87,10 @@ function ResetPasswordForm({ token }: { token: string }) {
         />
         <p className={styles.hint}>{PASSWORD_RULE_MESSAGE}</p>
         <Button type="submit" fullWidth loading={pending} icon={<img src={lockIcon} alt="" />}>
-          RESET PASSWORD
+          {t('RESET PASSWORD')}
         </Button>
         <Link to={routes.auth} className={styles.accentLink}>
-          Back to Sign In
+          {t('Back to Sign In')}
         </Link>
       </form>
     </AuthOverlay>
@@ -99,13 +100,14 @@ function ResetPasswordForm({ token }: { token: string }) {
 function MissingTokenNotice() {
   return (
     <AuthOverlay>
-      <h1 className={styles.heading}>Link Not Valid</h1>
+      <h1 className={styles.heading}>{t('Link Not Valid')}</h1>
       <p className={styles.message}>
-        This reset link is incomplete. Please open the link from the email again, or request a new
-        one.
+        {t(
+          'This reset link is incomplete. Please open the link from the email again, or request a new one.',
+        )}
       </p>
       <Link to={routes.forgotPassword} className={styles.accentLink}>
-        Request a new link
+        {t('Request a new link')}
       </Link>
     </AuthOverlay>
   );
