@@ -30,6 +30,11 @@ export const routes = {
   wanderbookBlocked: '/wanderbook/blocked',
   /** Admins review Wanderbook reports here (the backend's report emails link to it). */
   adminReports: '/admin/reports',
+  /** Admins send an announcement to everyone (4.5). */
+  adminAnnouncements: '/admin/announcements',
+  /** The bell's list and the push switches (4.5). */
+  notifications: '/notifications',
+  notificationSettings: '/notifications/settings',
   communityGuidelines: '/community-guidelines',
   profile: '/profile',
   profileDetails: '/profile/details',

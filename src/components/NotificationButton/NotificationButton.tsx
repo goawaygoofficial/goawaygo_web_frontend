@@ -1,20 +1,24 @@
+import { Link } from 'react-router-dom';
+import { routes } from '@/lib/routes';
 import { Icon } from '../Icon/Icon';
 import styles from './NotificationButton.module.css';
 
-/**
- * The bell shown in the app's headers. Notifications don't exist yet (the app's handler is
- * empty), so it is rendered visibly disabled instead of as a dead button.
- */
-export function NotificationButton() {
+/** The bell in Home's header: opens the notifications, with a badge for the unread ones. */
+export function NotificationButton({ unread = 0 }: { unread?: number }) {
+  const label = unread > 0 ? `Notifications, ${String(unread)} unread` : 'Notifications';
   return (
-    <button
-      type="button"
+    <Link
+      to={routes.notifications}
       className={styles.bell}
-      disabled
-      aria-label="Notifications (coming soon)"
-      title="Notifications — coming soon"
+      aria-label={label}
+      title="Notifications"
     >
       <Icon name="notifications" />
-    </button>
+      {unread > 0 && (
+        <span className={styles.badge} aria-hidden="true">
+          {unread > 99 ? '99+' : unread}
+        </span>
+      )}
+    </Link>
   );
 }

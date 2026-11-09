@@ -116,6 +116,19 @@ export function PrivacyPage() {
               </tr>
               <tr>
                 <td>
+                  Notifications: what happened (for example who liked or commented on your post, or
+                  which trip starts soon), whether you have read it, which kinds of push messages
+                  you turned off, and, in the Android app, a push token for each phone you are
+                  signed in on
+                </td>
+                <td>
+                  To show the bell on Home and, if you allow push notifications, to send them to
+                  your phone.
+                </td>
+                <td>Contract</td>
+              </tr>
+              <tr>
+                <td>
                   Wanderbook: your profile (photo, cover, bio, home town, public or private), posts
                   (photos, captions, place tags), comments, likes, follows and blocks
                 </td>
@@ -276,7 +289,8 @@ export function PrivacyPage() {
                 <td>
                   “Continue with Google” sign-in; beta app delivery (Firebase App Distribution, if
                   you join the beta); our team inbox (Gmail) for emails you send us; Gemini AI,
-                  which writes your trip plans from the details you choose
+                  which writes your trip plans from the details you choose; Firebase Cloud
+                  Messaging, which delivers push notifications to the Android app
                 </td>
                 <td>Worldwide</td>
               </tr>
@@ -300,6 +314,13 @@ export function PrivacyPage() {
           personal details in a wish. Before a plan is shared by link, and when a shared plan
           changes, its text is checked by OpenAI&apos;s moderation service (as for Wanderbook). A
           shared plan can be seen by anyone with its link until you stop sharing or delete it.
+        </p>
+        <p>
+          <strong>Push notifications.</strong> The Android app asks before it sends any, and you can
+          turn each kind off in the app or on the website (Notification settings), or all of them in
+          your phone&apos;s settings. A push goes through Google&apos;s Firebase Cloud Messaging
+          with your phone&apos;s push token and the notification&apos;s text, never your email.
+          Signing out removes the phone&apos;s token. The website has no push notifications.
         </p>
         <p>
           <strong>Flights, stays and car rentals.</strong> To show flight prices and open partner
@@ -358,6 +379,10 @@ export function PrivacyPage() {
             deleted as you search, and all are deleted with your account.{' '}
             <strong>Places in My Trips</strong> and <strong>trip plans</strong>: until you remove
             them or delete your account.
+          </li>
+          <li>
+            <strong>Notifications</strong>: 90 days. <strong>Push tokens</strong>: until you sign
+            out on that phone, uninstall the app, or delete your account.
           </li>
           <li>
             <strong>Emailed links</strong>: they stop working after 30 minutes (password reset) or

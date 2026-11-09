@@ -5,6 +5,7 @@ import { IconTile, PageHeader, PageShell } from '@/components';
 import { useSavedPlaces } from '@/features/discover';
 import { GetAppLink } from '@/features/getApp';
 import { LegalLinks } from '@/features/legal';
+import { useUnreadCount } from '@/features/notifications';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import { DestinationSearch } from '../components/DestinationSearch';
@@ -25,10 +26,11 @@ export function HomePage() {
   const { user } = useUser();
   const ideas = useTripIdeas();
   const saved = useSavedPlaces();
+  const unread = useUnreadCount();
 
   return (
     <PageShell width="wide">
-      <PageHeader showNotifications />
+      <PageHeader showNotifications unreadNotifications={unread} />
       <h1 className="visually-hidden">GoAwayGo home</h1>
 
       <div className={styles.top}>

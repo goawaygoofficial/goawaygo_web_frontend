@@ -5,7 +5,7 @@ import { toErrorMessage } from '@/lib/apiClient';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import { deletePost, likePost } from '../services/wanderbookService';
-import { timeAgo } from '../timeAgo';
+import { timeAgo } from '@/lib/timeAgo';
 import type { Post } from '../types';
 import { Avatar } from './People';
 import { PhotoCarousel } from './PhotoCarousel';

@@ -67,27 +67,29 @@ The backend must allow CORS from the web origin, for example `http://localhost:5
 
 ## Routes
 
-| Route                                    | Screen                 | Notes                                                                                            |
-| ---------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------ |
-| `/`                                      | Splash                 | Logo bounce + wave. After ~3s goes to `/home` if the session was restored, else `/auth`          |
-| `/auth`                                  | Auth                   | Google button / SIGN IN → cross-fades to the email form. SKIP enters as a guest                  |
-| `/auth/register`                         | Register               | Slides in over Auth                                                                              |
-| `/auth/forgot-password`                  | Forgot password        | Slides in over Auth                                                                              |
-| `/home`                                  | Home tab               | Categories, place search with suggestions, recent-searches banner, ideas (new every minute)      |
-| `/trips`                                 | My Trips tab           | Trip plans and places saved from the ideas (sign-in needed)                                      |
-| `/wanderbook`                            | Wanderbook tab         | Your profile, My Wanderposts grid and the shared Feed; signed out: the feed and a sign-in invite |
-| `/wanderbook/u/:id`, `/wanderbook/p/:id` | Profile, post          | Follow or request, block, report; post with comments, likes, edit and delete                     |
-| `/wanderbook/new`, `/wanderbook/edit`    | New post, edit profile | Original photos (HEIC converted to JPEG), place tag from the photo's location                    |
-| `/admin/reports`                         | Wanderbook reports     | Admins only (`users.is_admin`): remove or dismiss                                                |
-| `/community-guidelines`                  | Community Guidelines   | Rules for Wanderbook posts                                                                       |
-| `/profile`                               | Profile tab            | Signed out: features + Google + SIGN IN. Signed in: tile grid, sign-out icon in header           |
-| `/profile/details`                       | User profile           | Account rows + Sign Out (with confirmation)                                                      |
-| `/flights`, `/stays`, `/rentals`         | Book (4.3) forms       | Slides in; tab bar hidden. Airports and places suggested while typing                            |
-| `/flights/results`                       | Flight results         | Recent fares on the date and that month ("may change"), floating "See all flights"               |
-| `/stays/results`, `/rentals/results`     | Partner results        | Partner cards opened on the search; no prices yet. The search lives in the query string          |
-| `/destination/:place`                    | Destination info       | `?id=` picked place or `?q=` text. Travel animation, then spot photos and the 9 AI cards         |
-| `/plans/new`                             | Plan a trip (4.4)      | Place in the query string (from a destination page or a saved place); the AI writes the plan     |
-| `/plans/:id`, `/plans/shared/:id`        | Trip plan              | Days, cost estimate, booking shortcuts; owner: change a day, share by link, delete               |
+| Route                                       | Screen                 | Notes                                                                                            |
+| ------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------ |
+| `/`                                         | Splash                 | Logo bounce + wave. After ~3s goes to `/home` if the session was restored, else `/auth`          |
+| `/auth`                                     | Auth                   | Google button / SIGN IN → cross-fades to the email form. SKIP enters as a guest                  |
+| `/auth/register`                            | Register               | Slides in over Auth                                                                              |
+| `/auth/forgot-password`                     | Forgot password        | Slides in over Auth                                                                              |
+| `/home`                                     | Home tab               | Categories, place search with suggestions, recent-searches banner, ideas (new every minute)      |
+| `/trips`                                    | My Trips tab           | Trip plans and places saved from the ideas (sign-in needed)                                      |
+| `/wanderbook`                               | Wanderbook tab         | Your profile, My Wanderposts grid and the shared Feed; signed out: the feed and a sign-in invite |
+| `/wanderbook/u/:id`, `/wanderbook/p/:id`    | Profile, post          | Follow or request, block, report; post with comments, likes, edit and delete                     |
+| `/wanderbook/new`, `/wanderbook/edit`       | New post, edit profile | Original photos (HEIC converted to JPEG), place tag from the photo's location                    |
+| `/admin/reports`                            | Wanderbook reports     | Admins only (`users.is_admin`): remove or dismiss                                                |
+| `/admin/announcements`                      | Announcement           | Admins only: a message to every bell, pushed to the app                                          |
+| `/notifications`, `/notifications/settings` | Notifications (4.5)    | The bell's list (opened from Home; marks all read) and the push switches                         |
+| `/community-guidelines`                     | Community Guidelines   | Rules for Wanderbook posts                                                                       |
+| `/profile`                                  | Profile tab            | Signed out: features + Google + SIGN IN. Signed in: tile grid, sign-out icon in header           |
+| `/profile/details`                          | User profile           | Account rows + Sign Out (with confirmation)                                                      |
+| `/flights`, `/stays`, `/rentals`            | Book (4.3) forms       | Slides in; tab bar hidden. Airports and places suggested while typing                            |
+| `/flights/results`                          | Flight results         | Recent fares on the date and that month ("may change"), floating "See all flights"               |
+| `/stays/results`, `/rentals/results`        | Partner results        | Partner cards opened on the search; no prices yet. The search lives in the query string          |
+| `/destination/:place`                       | Destination info       | `?id=` picked place or `?q=` text. Travel animation, then spot photos and the 9 AI cards         |
+| `/plans/new`                                | Plan a trip (4.4)      | Place in the query string (from a destination page or a saved place); the AI writes the plan     |
+| `/plans/:id`, `/plans/shared/:id`           | Trip plan              | Days, cost estimate, booking shortcuts; owner: change a day, share by link, delete               |
 
 The 4-tab bar is a bottom tab bar under 768px and a sticky top bar on wider screens.
 

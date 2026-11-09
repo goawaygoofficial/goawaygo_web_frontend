@@ -85,6 +85,9 @@ export function AdminReportsPage() {
       <PageHeader onBack={goBack}>
         <h1 className={styles.title}>Wanderbook reports</h1>
       </PageHeader>
+      <p className={styles.status}>
+        <Link to={routes.adminAnnouncements}>Send an announcement</Link>
+      </p>
       {error && <p className={styles.error}>{error}</p>}
       {!reports && !error && <p className={styles.status}>Loading…</p>}
       {reports?.length === 0 && <p className={styles.status}>No open reports.</p>}

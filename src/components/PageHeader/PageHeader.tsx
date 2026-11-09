@@ -12,6 +12,8 @@ interface PageHeaderProps {
   backLabel?: string;
   /** Shows the notification bell on the right. Only Home has notifications. */
   showNotifications?: boolean;
+  /** The bell's unread badge. */
+  unreadNotifications?: number;
   /** Extra controls on the right, after the bell. */
   actions?: ReactNode;
 }
@@ -22,6 +24,7 @@ export function PageHeader({
   onBack,
   backLabel = 'Back',
   showNotifications = false,
+  unreadNotifications = 0,
   actions,
 }: PageHeaderProps) {
   return (
@@ -29,7 +32,7 @@ export function PageHeader({
       <Logo size="md" />
       <div className={styles.centre}>{children}</div>
       <div className={styles.actions}>
-        {showNotifications && <NotificationButton />}
+        {showNotifications && <NotificationButton unread={unreadNotifications} />}
         {actions}
         {onBack && (
           <button type="button" className={styles.back} aria-label={backLabel} onClick={onBack}>

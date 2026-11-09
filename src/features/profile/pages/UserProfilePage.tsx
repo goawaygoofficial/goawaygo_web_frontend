@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import userProfileIcon from '@/assets/icons/user_profile.png';
-import { Button, PageHeader, PageShell } from '@/components';
+import { Button, ButtonLink, PageHeader, PageShell } from '@/components';
 import { useSignOut } from '@/features/auth';
 import { useBack } from '@/hooks';
 import { routes } from '@/lib/routes';
@@ -46,6 +46,9 @@ export function UserProfilePage() {
         ))}
       </dl>
       <div className={styles.actions}>
+        <ButtonLink fullWidth variant="outline" to={routes.notificationSettings}>
+          Notification settings
+        </ButtonLink>
         <Button fullWidth loading={signingOut} onClick={signOut}>
           Sign Out
         </Button>
