@@ -19,7 +19,7 @@ import {
   getLikes,
   getPost,
 } from '../services/wanderbookService';
-import { timeAgo } from '../timeAgo';
+import { timeAgo } from '@/lib/timeAgo';
 import type { Comment, Person, PlaceTag, Post, ReportTarget } from '../types';
 import styles from './PostPage.module.css';
 

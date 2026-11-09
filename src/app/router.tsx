@@ -6,10 +6,11 @@ import {
   ResetPasswordPage,
   VerifyEmailPage,
 } from '@/features/auth';
-import { AdminReportsPage } from '@/features/admin';
+import { AdminAnnouncementsPage, AdminReportsPage } from '@/features/admin';
 import { DestinationInfoPage } from '@/features/destination';
 import { FlightResultsPage, RentalResultsPage, StayResultsPage } from '@/features/book';
 import { FlightSearchPage } from '@/features/flights';
+import { NotificationSettingsPage, NotificationsPage } from '@/features/notifications';
 import { PlanFormPage, PlanPage } from '@/features/plans';
 import { DownloadPage } from '@/features/getApp';
 import { HomePage } from '@/features/home';
@@ -92,6 +93,9 @@ export const router = createBrowserRouter([
           { path: routes.wanderbookRequests, element: <PeoplePage mode="requests" /> },
           { path: routes.wanderbookBlocked, element: <PeoplePage mode="blocked" /> },
           { path: routes.adminReports, element: <AdminReportsPage /> },
+          { path: routes.adminAnnouncements, element: <AdminAnnouncementsPage /> },
+          { path: routes.notifications, element: <NotificationsPage /> },
+          { path: routes.notificationSettings, element: <NotificationSettingsPage /> },
         ],
       },
       { path: '*', element: <Navigate to={routes.home} replace /> },

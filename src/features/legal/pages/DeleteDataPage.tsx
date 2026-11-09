@@ -46,6 +46,7 @@ export function DeleteDataPage() {
           <li>All your sign-in sessions, on every device (you are signed out everywhere).</li>
           <li>Any unused verification or password-reset links.</li>
           <li>Your recent searches, the places you saved to My Trips and your trip plans.</li>
+          <li>Your notifications, notification settings and the push tokens of your phones.</li>
           <li>
             Your Wanderbook profile, posts and their photos, comments, likes, follows and blocks.
           </li>
