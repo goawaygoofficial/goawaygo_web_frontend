@@ -13,7 +13,11 @@ import type {
 } from '../types';
 
 function toAuthResult(session: SessionDto): AuthResult {
-  return { user: userFromDto(session.user), expiresIn: session.expiresIn };
+  return {
+    user: userFromDto(session.user),
+    expiresIn: session.expiresIn,
+    restored: session.accountRestored === true,
+  };
 }
 
 /** Creates an account (201). The user signs in afterwards. */
@@ -104,6 +108,16 @@ export async function verifyEmail(token: string): Promise<void> {
     body: { token },
     expectedStatus: 204,
     fallbackError: 'Failed to verify email',
+  });
+}
+
+/** Makes a new email the account's, with the token from the link sent to it (4.6). Works signed in or not. */
+export async function confirmEmailChange(token: string): Promise<void> {
+  await apiRequest<unknown>('/api/auth/confirm-email', {
+    method: 'POST',
+    body: { token },
+    expectedStatus: 204,
+    fallbackError: 'Could not confirm your new email.',
   });
 }
 

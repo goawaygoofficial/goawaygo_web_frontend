@@ -21,6 +21,8 @@ export interface SessionDto {
   accessToken: string;
   tokenType: string;
   expiresIn: number;
+  /** This sign-in cancelled the account's pending deletion (4.6). */
+  accountRestored?: boolean;
 }
 
 type SessionListener = (user: UserDto | null) => void;

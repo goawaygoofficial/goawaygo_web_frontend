@@ -1,6 +1,7 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import {
   AuthPage,
+  ConfirmEmailPage,
   ForgotPasswordPage,
   RegisterPage,
   ResetPasswordPage,
@@ -15,7 +16,7 @@ import { PlanFormPage, PlanPage } from '@/features/plans';
 import { DownloadPage } from '@/features/getApp';
 import { HomePage } from '@/features/home';
 import { CommunityGuidelinesPage, DeleteDataPage, PrivacyPage, TermsPage } from '@/features/legal';
-import { ProfilePage, UserProfilePage } from '@/features/profile';
+import { ProfilePage, RecentlyViewedPage, UserProfilePage } from '@/features/profile';
 import { RentalSearchPage } from '@/features/rentals';
 import { SplashPage } from '@/features/splash';
 import { StaySearchPage } from '@/features/stays';
@@ -49,6 +50,7 @@ export const router = createBrowserRouter([
       // Opened from emailed links, signed in or not.
       { path: routes.resetPassword, element: <ResetPasswordPage /> },
       { path: routes.verifyEmail, element: <VerifyEmailPage /> },
+      { path: routes.confirmEmail, element: <ConfirmEmailPage /> },
       {
         element: <ShellLayout />,
         children: [
@@ -82,6 +84,7 @@ export const router = createBrowserRouter([
           { path: routes.sharedPlanPattern, element: <PlanPage shared /> },
           { path: routes.planPattern, element: <PlanPage /> },
           { path: routes.profileDetails, element: <UserProfilePage /> },
+          { path: routes.recentlyViewed, element: <RecentlyViewedPage /> },
           { path: routes.download, element: <DownloadPage /> },
           { path: routes.privacy, element: <PrivacyPage /> },
           { path: routes.terms, element: <TermsPage /> },

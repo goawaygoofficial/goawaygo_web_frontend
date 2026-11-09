@@ -18,7 +18,11 @@ export function useCompleteSignIn(
   return useCallback(
     async (result, greeting) => {
       signIn(result.user);
-      await showSuccess(`${greeting}, ${result.user.name}!`);
+      await showSuccess(
+        result.restored
+          ? `Welcome back, ${result.user.name}! Your account won't be deleted.`
+          : `${greeting}, ${result.user.name}!`,
+      );
       void navigate(redirectTo, { replace: true });
     },
     [signIn, showSuccess, navigate, redirectTo],

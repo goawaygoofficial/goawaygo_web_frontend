@@ -9,6 +9,7 @@ import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import { DayCard } from '../components/DayCard';
 import { BUDGET_OPTIONS, PACE_OPTIONS, TRAVELLER_OPTIONS, bookingShortcuts } from '../options';
+import { rememberPlan } from '../recentPlans';
 import { changeDay, deletePlan, getPlan, getSharedPlan, sharePlan } from '../services/plansService';
 import type { Plan } from '../types';
 import cards from '../components/PlanCards.module.css';
@@ -35,7 +36,8 @@ export function PlanPage({ shared = false }: { shared?: boolean }) {
   const { id = '' } = useParams();
   const navigate = useNavigate();
   const goBack = useBack(shared ? routes.home : routes.trips);
-  const { status } = useUser();
+  const { user, status } = useUser();
+  const signedIn = user !== null;
   const [attempt, setAttempt] = useState(0);
   const requestKey = `${id}|${String(shared)}|${String(attempt)}`;
   const [result, setResult] = useState<{ requestKey: string; state: State } | null>(null);
@@ -45,6 +47,8 @@ export function PlanPage({ shared = false }: { shared?: boolean }) {
     const controller = new AbortController();
     (shared ? getSharedPlan : getPlan)(id, controller.signal)
       .then((plan) => {
+        // Signed in, the backend keeps Recently viewed; signed out, this browser does.
+        if (shared && !signedIn) rememberPlan(plan);
         setResult({ requestKey, state: { kind: 'ready', plan } });
       })
       .catch((cause: unknown) => {
@@ -63,7 +67,7 @@ export function PlanPage({ shared = false }: { shared?: boolean }) {
     return () => {
       controller.abort();
     };
-  }, [id, shared, status, requestKey]);
+  }, [id, shared, status, signedIn, requestKey]);
 
   const setPlan = useCallback(
     (plan: Plan) => {

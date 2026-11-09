@@ -83,7 +83,9 @@ The backend must allow CORS from the web origin, for example `http://localhost:5
 | `/notifications`, `/notifications/settings` | Notifications (4.5)    | The bell's list (opened from Home; marks all read) and the push switches                         |
 | `/community-guidelines`                     | Community Guidelines   | Rules for Wanderbook posts                                                                       |
 | `/profile`                                  | Profile tab            | Signed out: features + Google + SIGN IN. Signed in: tile grid, sign-out icon in header           |
-| `/profile/details`                          | User profile           | Account rows + Sign Out (with confirmation)                                                      |
+| `/profile/details`                          | User profile (4.6)     | Photo, name, email, password, country, currency changed in place; Sign Out; Delete account       |
+| `/profile/recent`                           | Recently viewed (4.6)  | Places and trip plans opened (account, or this browser when signed out); Clear list              |
+| `/confirm-email`                            | Confirm new email      | Opened from the link sent to a new address (`?token=`)                                           |
 | `/flights`, `/stays`, `/rentals`            | Book (4.3) forms       | Slides in; tab bar hidden. Airports and places suggested while typing                            |
 | `/flights/results`                          | Flight results         | Recent fares on the date and that month ("may change"), floating "See all flights"               |
 | `/stays/results`, `/rentals/results`        | Partner results        | Partner cards opened on the search; no prices yet. The search lives in the query string          |

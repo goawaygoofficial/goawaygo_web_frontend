@@ -32,4 +32,6 @@ export interface AuthResult {
   user: User;
   /** Access token lifetime in seconds. */
   expiresIn: number;
+  /** Signing in cancelled the account's pending deletion. */
+  restored: boolean;
 }
