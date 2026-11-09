@@ -4,8 +4,8 @@ import { routes } from '@/lib/routes';
 import { LegalPage, LegalSection, MailLink } from '../components/LegalPage';
 
 /**
- * How to delete a GoAwayGo account and its data. Also the account-deletion URL that Google Play requires for the
- * app's listing. Until the in-app "Delete account" button exists (Phase 4.3), deletion is by email request.
+ * How to delete a GoAwayGo account and its data: the "Delete account" button in the app and on the website (4.6),
+ * or an email. Also the account-deletion URL that Google Play requires for the app's listing.
  */
 export function DeleteDataPage() {
   return (
@@ -15,12 +15,30 @@ export function DeleteDataPage() {
         <>
           Wherever you live, you can delete your GoAwayGo account and personal data at any time,
           free of charge: your “right to erasure” or “right to delete” under privacy laws such as
-          the GDPR, US state laws and India's DPDP Act. Email us from your account's address and we
-          delete everything within {legal.responseDays} days.
+          the GDPR, US state laws and India's DPDP Act. Delete it yourself in the app or on the
+          website, or email us. You then have 30 days to change your mind; after that, everything is
+          deleted for good.
         </>
       }
     >
       <LegalSection id="how" title="How to delete your account">
+        <ol>
+          <li>
+            In the app or on the website, sign in and open <strong>Profile</strong> →{' '}
+            <strong>User Profile</strong> → <strong>Delete account</strong>. Confirm with your
+            password (or with Google, if you sign in with Google).
+          </li>
+          <li>
+            Your account is signed out on every device and hidden from other people at once, and we
+            email you the date it will be deleted: 30 days later. Changed your mind? Sign in before
+            then and your account stays as it was.
+          </li>
+          <li>
+            After the 30 days, everything listed below is deleted for good, and we email you to say
+            it's done.
+          </li>
+        </ol>
+        <p>Can't sign in? Delete your account by email instead:</p>
         <ol>
           <li>
             Send an email to{' '}
@@ -34,18 +52,24 @@ export function DeleteDataPage() {
             deleting your account.
           </li>
           <li>
-            We delete your account within {legal.responseDays} days and email you when it's done.
+            Within {legal.responseDays} days we start the same 30 days (signing in before they end
+            keeps your account), then delete everything and email you when it's done.
           </li>
         </ol>
-        <p>A “Delete account” button in the app and on the website is coming soon.</p>
       </LegalSection>
 
       <LegalSection id="what" title="What is deleted">
         <ul>
-          <li>Your account: name, email address, password hash and Google sign-in link.</li>
+          <li>
+            Your account: name, photo, email address, password hash, Google sign-in link, country
+            and currency.
+          </li>
           <li>All your sign-in sessions, on every device (you are signed out everywhere).</li>
-          <li>Any unused verification or password-reset links.</li>
-          <li>Your recent searches, the places you saved to My Trips and your trip plans.</li>
+          <li>Any unused verification, password-reset or email-change links.</li>
+          <li>
+            The places and trip plans you viewed, the places you saved to My Trips and your trip
+            plans.
+          </li>
           <li>Your notifications, notification settings and the push tokens of your phones.</li>
           <li>
             Your Wanderbook profile, posts and their photos, comments, likes, follows and blocks.

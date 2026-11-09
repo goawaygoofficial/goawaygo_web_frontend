@@ -78,6 +78,14 @@ export function PrivacyPage() {
                 <td>Contract (you choose this way of signing in)</td>
               </tr>
               <tr>
+                <td>Your country and currency, if you choose them in User Profile</td>
+                <td>
+                  To remember your choice and, as GoAwayGo supports it, show prices in your
+                  currency.
+                </td>
+                <td>Contract</td>
+              </tr>
+              <tr>
                 <td>
                   Sign-in sessions: a protected token, your browser or device type, and when you
                   signed in
@@ -86,15 +94,25 @@ export function PrivacyPage() {
                 <td>Contract; legitimate interest in keeping accounts secure</td>
               </tr>
               <tr>
-                <td>Single-use links we email you (verify email, reset password)</td>
-                <td>To confirm your email address and let you reset a forgotten password.</td>
+                <td>
+                  Single-use links we email you (verify email, reset password, confirm a new email),
+                  and a new email address waiting for its link
+                </td>
+                <td>
+                  To confirm your email address, let you reset a forgotten password, and change your
+                  email only once you have confirmed the new one.
+                </td>
                 <td>Contract</td>
               </tr>
               <tr>
                 <td>
-                  Your recent searches, if you are signed in: the last 5 places you opened and when
+                  What you viewed, if you are signed in: the last 30 places and the last 30 trip
+                  plans you opened, and when
                 </td>
-                <td>To show your recent searches on Home, on every device you use.</td>
+                <td>
+                  To show your recent searches on Home and your Recently viewed list, on every
+                  device you use.
+                </td>
                 <td>Contract</td>
               </tr>
               <tr>
@@ -205,9 +223,11 @@ export function PrivacyPage() {
             which uses no cookies and doesn't identify you; we see only totals such as page views.
           </li>
           <li>
-            <strong>Your recent searches, if you are not signed in</strong>: the last 5 places you
-            opened are kept in your browser's storage (or in the app) to show them on Home. They
-            stay on your device; clearing your browser's site data removes them.
+            <strong>What you viewed, if you are not signed in</strong>: on the website, the last 30
+            places and shared trip plans you opened are kept in your browser's storage to show them
+            on Home and in Recently viewed; the app keeps the last 5 places, for Home. They stay on
+            your device; clearing them in Recently viewed, clearing your browser's site data or
+            uninstalling the app removes them.
           </li>
           <li>We don't use advertising, cross-site tracking or social-media cookies.</li>
         </ul>
@@ -367,18 +387,19 @@ export function PrivacyPage() {
         <ul>
           <li>
             <strong>Your account</strong> (name, email, password hash, Google ID, sign-in sessions):
-            while you have an account. When you ask us to delete it, we do so within{' '}
-            {legal.responseDays} days.
+            while you have an account. When you delete it (in the app, on the website, or by email,
+            which we act on within {legal.responseDays} days), it is hidden and signed out at once
+            and deleted 30 days later, unless you sign in again before then to keep it.
           </li>
           <li>
             <strong>Wanderbook</strong> posts, photos, comments and likes: until you delete them or
             your account. Removed photo files are deleted from storage at the same time.
           </li>
           <li>
-            <strong>Recent searches</strong> (signed in): only the last 5 are kept; older ones are
-            deleted as you search, and all are deleted with your account.{' '}
-            <strong>Places in My Trips</strong> and <strong>trip plans</strong>: until you remove
-            them or delete your account.
+            <strong>Places and trip plans you viewed</strong> (signed in): only the last 30 of each
+            are kept; older ones are deleted as you go, you can clear them in Recently viewed, and
+            all are deleted with your account. <strong>Places in My Trips</strong> and{' '}
+            <strong>trip plans</strong>: until you remove them or delete your account.
           </li>
           <li>
             <strong>Notifications</strong>: 90 days. <strong>Push tokens</strong>: until you sign
@@ -386,7 +407,7 @@ export function PrivacyPage() {
           </li>
           <li>
             <strong>Emailed links</strong>: they stop working after 30 minutes (password reset) or
-            24 hours (email verification), and are deleted with your account.
+            24 hours (email verification and a new email), and are deleted with your account.
           </li>
           <li>
             <strong>Server logs</strong> (including IP addresses): deleted automatically after 30

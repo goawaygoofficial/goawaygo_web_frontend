@@ -7,6 +7,8 @@ export const routes = {
   /** Opened from emailed links (`?token=…`); the backend builds these URLs, so keep the paths in sync. */
   resetPassword: '/reset-password',
   verifyEmail: '/verify-email',
+  /** The link sent to a new email address (4.6). */
+  confirmEmail: '/confirm-email',
   /** Get the Android app: APK download, beta sign-up, later the Play Store. */
   download: '/download',
   /** Legal pages, also opened from the Android app (keep the paths in sync with app_frontend). */
@@ -38,6 +40,8 @@ export const routes = {
   communityGuidelines: '/community-guidelines',
   profile: '/profile',
   profileDetails: '/profile/details',
+  /** Places and trip plans opened (4.6). */
+  recentlyViewed: '/profile/recent',
   /** Register / Forgot Password opened from the Profile tab's sign-in panel. */
   profileRegister: '/profile/register',
   profileForgotPassword: '/profile/forgot-password',

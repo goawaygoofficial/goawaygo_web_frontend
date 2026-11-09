@@ -82,6 +82,8 @@ export interface RecentSearch {
   place: Place;
   /** The place's top spot when it was searched; its photo is looked up live. */
   spot: string;
+  /** When it was opened (ISO); absent for places remembered before Recently viewed existed. */
+  viewedAt?: string;
 }
 
 /** "Ideas for your next trip": a real place the backend confirmed on Wikipedia. */

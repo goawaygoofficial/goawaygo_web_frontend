@@ -15,7 +15,7 @@ import styles from './ProfilePage.module.css';
 /** Tiles without a `to` have no screen in the app yet and render as "Coming soon". */
 const PROFILE_TILES = [
   { title: 'My Trips', imageSrc: myTripsIcon, to: routes.trips },
-  { title: 'Recently Viewed', imageSrc: recentlyViewedIcon },
+  { title: 'Recently Viewed', imageSrc: recentlyViewedIcon, to: routes.recentlyViewed },
   { title: 'Saved', imageSrc: savedIcon },
   { title: 'Reviews', imageSrc: reviewIcon },
   { title: 'Rewards', imageSrc: rewardsIcon },
