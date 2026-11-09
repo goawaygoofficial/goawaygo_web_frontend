@@ -10,7 +10,9 @@ import { SignInPanel, VerifyEmailBanner, authFlows } from '@/features/auth';
 import { LegalLinks } from '@/features/legal';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
+import { LocalePickers } from '../components/LocalePickers';
 import styles from './ProfilePage.module.css';
+import { t } from '@/lib/i18n';
 
 /** Tiles without a `to` have no screen in the app yet and render as "Coming soon". */
 const PROFILE_TILES = [
@@ -36,12 +38,13 @@ function SignedInProfile({ name }: { name: string }) {
     <PageShell>
       <PageHeader />
       <VerifyEmailBanner />
-      <h1 className={styles.greeting}>Hi, {name}</h1>
-      <nav aria-label="Profile" className={styles.grid}>
+      <h1 className={styles.greeting}>{t('Hi, {0}', name)}</h1>
+      <nav aria-label={t('Profile')} className={styles.grid}>
         {PROFILE_TILES.map((tile) => (
-          <IconTile key={tile.title} {...tile} />
+          <IconTile key={tile.title} {...tile} title={t(tile.title)} />
         ))}
       </nav>
+      <LocalePickers currency={false} />
       <LegalLinks />
     </PageShell>
   );
@@ -54,11 +57,12 @@ function GuestProfile({ overlayOpen }: { overlayOpen: boolean }) {
       <PageShell className={styles.guest}>
         <div inert={overlayOpen} className={styles.guestContent}>
           <Logo size="lg" />
-          <h1 className="visually-hidden">Sign in to GoAwayGo</h1>
+          <h1 className="visually-hidden">{t('Sign in to GoAwayGo')}</h1>
           <FeatureList />
           <div className={styles.guestActions}>
             <SignInPanel flow={authFlows.profile} />
           </div>
+          <LocalePickers currency />
           <LegalLinks />
         </div>
       </PageShell>

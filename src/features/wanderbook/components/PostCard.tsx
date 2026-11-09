@@ -11,6 +11,7 @@ import { Avatar } from './People';
 import { PhotoCarousel } from './PhotoCarousel';
 import styles from './PostCard.module.css';
 import shared from './Wanderbook.module.css';
+import { t } from '@/lib/i18n';
 
 interface PostCardProps {
   post: Post;
@@ -44,7 +45,7 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
   };
 
   return (
-    <article className={styles.card} aria-label={`Post by ${post.author.name}`}>
+    <article className={styles.card} aria-label={t('Post by {0}', post.author.name)}>
       <header className={styles.head}>
         <Link to={routes.wanderbookProfile(post.author.publicId)} className={shared.personLink}>
           <Avatar url={post.author.photoUrl} size="2.5rem" />
@@ -61,7 +62,7 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
           <button
             type="button"
             className={shared.iconButton}
-            aria-label="More"
+            aria-label={t('More')}
             aria-expanded={menuOpen}
             onClick={() => {
               setMenuOpen((open) => !open);
@@ -78,26 +79,27 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
                     q: [place.name, place.country].filter(Boolean).join(', '),
                   })}
                 >
-                  About {place.name}
+                  {t('About {0}', place.name)}
                 </Link>
               )}
               {post.isYours ? (
                 <>
                   <Link role="menuitem" to={`${routes.wanderbookPost(post.publicId)}?edit=1`}>
-                    Edit
+                    {t('Edit')}
                   </Link>
                   <button
                     type="button"
                     role="menuitem"
                     onClick={() => {
                       setMenuOpen(false);
-                      if (!window.confirm('Delete this post? Its photos are deleted too.')) return;
+                      if (!window.confirm(t('Delete this post? Its photos are deleted too.')))
+                        return;
                       deletePost(post.publicId).then(onDeleted, (cause: unknown) => {
                         setError(toErrorMessage(cause));
                       });
                     }}
                   >
-                    Delete
+                    {t('Delete')}
                   </button>
                 </>
               ) : (
@@ -110,7 +112,7 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
                     else void navigate(routes.profile);
                   }}
                 >
-                  Report
+                  {t('Report')}
                 </button>
               )}
             </div>
@@ -120,7 +122,7 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
 
       <PhotoCarousel
         photos={post.photos}
-        label={`Photos by ${post.author.name}`}
+        label={t('Photos by {0}', post.author.name)}
         morphName={`post-${post.publicId}`}
       />
 
@@ -129,7 +131,7 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
           type="button"
           className={[shared.iconButton, post.likedByYou && styles.liked].filter(Boolean).join(' ')}
           aria-pressed={post.likedByYou}
-          aria-label={post.likedByYou ? 'Unlike' : 'Like'}
+          aria-label={post.likedByYou ? t('Unlike') : t('Like')}
           onClick={toggleLike}
         >
           <Icon name={post.likedByYou ? 'favorite' : 'favorite_border'} />
@@ -139,7 +141,7 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
             state={{ preview: post }}
             to={routes.wanderbookPost(post.publicId)}
             className={shared.iconButton}
-            aria-label="Comments"
+            aria-label={t('Comments')}
           >
             <Icon name="chat_bubble_outline" />
           </MorphLink>
@@ -172,7 +174,7 @@ export function PostCard({ post, onChange, onDeleted, onReport, full = false }: 
         >
           {timeAgo(post.createdAt)}
         </MorphLink>
-        {post.editedAt && ' · edited'}
+        {post.editedAt && t(' · edited')}
       </p>
       {error && <p className={shared.error}>{error}</p>}
     </article>

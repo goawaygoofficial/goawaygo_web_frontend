@@ -3,6 +3,7 @@ import { ApiError } from '@/lib/apiClient';
 import { getDestination, rememberSearch } from '@/features/discover';
 import type { DestinationPage, DestinationQuery } from '@/features/discover';
 import { useUser } from '@/providers';
+import { t } from '@/lib/i18n';
 
 export type DestinationState =
   | { kind: 'loading' }
@@ -49,7 +50,7 @@ export function useDestination(query: DestinationQuery): {
         } else {
           setState({
             kind: 'error',
-            message: cause instanceof Error ? cause.message : 'Could not open this destination.',
+            message: cause instanceof Error ? cause.message : t('Could not open this destination.'),
           });
         }
       });

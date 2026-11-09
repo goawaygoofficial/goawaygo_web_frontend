@@ -6,8 +6,8 @@
   position: absolute;
   z-index: var(--z-overlay);
   top: calc(100% + var(--space-1));
-  right: 0;
-  left: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
   margin: 0;
   padding: var(--space-2) 0;
   overflow: hidden;

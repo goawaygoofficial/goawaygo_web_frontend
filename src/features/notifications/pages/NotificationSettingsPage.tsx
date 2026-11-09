@@ -8,6 +8,7 @@ import { useUser } from '@/providers';
 import { getSettings, saveSettings } from '../services/notificationsService';
 import type { NotificationSettings } from '../types';
 import styles from './NotificationSettingsPage.module.css';
+import { t } from '@/lib/i18n';
 
 const SWITCHES: { key: keyof NotificationSettings; title: string; text: string }[] = [
   {
@@ -85,11 +86,12 @@ export function NotificationSettingsPage() {
       <PageHeader onBack={goBack} />
       <div className={styles.titleRow}>
         <Icon name="notifications" className={styles.titleIcon} />
-        <h1 className={styles.title}>Notification settings</h1>
+        <h1 className={styles.title}>{t('Notification settings')}</h1>
       </div>
       <p className={styles.intro}>
-        Choose which push notifications the GoAwayGo Android app sends you. The bell always lists
-        everything.
+        {t(
+          'Choose which push notifications the GoAwayGo Android app sends you. The bell always lists everything.',
+        )}
       </p>
 
       {current?.error ? (
@@ -100,12 +102,12 @@ export function NotificationSettingsPage() {
               setAttempt((value) => value + 1);
             }}
           >
-            Try again
+            {t('Try again')}
           </Button>
         </section>
       ) : !current?.settings ? (
         <p className={styles.intro} role="status">
-          Loading…
+          {t('Loading…')}
         </p>
       ) : (
         <ul className={styles.list}>
@@ -116,8 +118,8 @@ export function NotificationSettingsPage() {
               <li key={key}>
                 <label className={styles.row}>
                   <span className={styles.text}>
-                    <span className={styles.name}>{title}</span>
-                    <span className={styles.description}>{text}</span>
+                    <span className={styles.name}>{t(title)}</span>
+                    <span className={styles.description}>{t(text)}</span>
                   </span>
                   <input
                     type="checkbox"

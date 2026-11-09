@@ -3,6 +3,7 @@ import { Button } from '@/components';
 import { formatDay, formatPrice } from '@/features/book';
 import type { DayPlan, Slot } from '../types';
 import styles from './PlanCards.module.css';
+import { t } from '@/lib/i18n';
 
 interface DayCardProps {
   day: DayPlan;
@@ -24,12 +25,12 @@ export function DayCard({ day, currency, onChange }: DayCardProps) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>();
 
-  const cost = (value: number) => (value > 0 ? `≈ ${formatPrice(value, currency)}` : 'Free');
+  const cost = (value: number) => (value > 0 ? `≈ ${formatPrice(value, currency)}` : t('Free'));
 
   return (
     <article className={styles.day} aria-labelledby={`day-${String(day.day)}`}>
       <header className={styles.dayHeader}>
-        <span className={styles.dayNumber}>Day {day.day}</span>
+        <span className={styles.dayNumber}>{t('Day {0}', day.day)}</span>
         <span className={styles.dayDate}>{formatDay(day.date)}</span>
         <h3 id={`day-${String(day.day)}`} className={styles.dayTitle}>
           {day.title}
@@ -40,7 +41,7 @@ export function DayCard({ day, currency, onChange }: DayCardProps) {
           const slot: Slot = day[key];
           return (
             <div key={key} className={styles.slot}>
-              <span className={styles.slotLabel}>{label}</span>
+              <span className={styles.slotLabel}>{t(label)}</span>
               <span className={styles.slotPlace}>{slot.place}</span>
               <span className={styles.slotCost}>{cost(slot.cost)}</span>
               <p className={styles.slotText}>{slot.activity}</p>
@@ -49,15 +50,15 @@ export function DayCard({ day, currency, onChange }: DayCardProps) {
         })}
         {day.food.length > 0 && (
           <p className={styles.food}>
-            <strong>Eat:</strong> {day.food.join(' · ')}
+            <strong>{t('Eat:')}</strong> {day.food.join(' · ')}
           </p>
         )}
         {day.tip && (
           <p className={styles.tip}>
-            <strong>Tip:</strong> {day.tip}
+            <strong>{t('Tip:')}</strong> {day.tip}
           </p>
         )}
-        <p className={styles.dayCost}>Day total ≈ {formatPrice(day.cost, currency)}</p>
+        <p className={styles.dayCost}>{t('Day total ≈ {0}', formatPrice(day.cost, currency))}</p>
 
         {onChange &&
           (open ? (
@@ -73,7 +74,9 @@ export function DayCard({ day, currency, onChange }: DayCardProps) {
                     setWish('');
                   })
                   .catch((cause: unknown) => {
-                    setError(cause instanceof Error ? cause.message : 'Could not change this day.');
+                    setError(
+                      cause instanceof Error ? cause.message : t('Could not change this day.'),
+                    );
                   })
                   .finally(() => {
                     setBusy(false);
@@ -81,12 +84,12 @@ export function DayCard({ day, currency, onChange }: DayCardProps) {
               }}
             >
               <label className={styles.changeLabel}>
-                What would you like instead? (optional)
+                {t('What would you like instead? (optional)')}
                 <input
                   className={styles.changeInput}
                   value={wish}
                   maxLength={200}
-                  placeholder="e.g. more street food, fewer museums"
+                  placeholder={t('e.g. more street food, fewer museums')}
                   disabled={busy}
                   onChange={(event) => {
                     setWish(event.target.value);
@@ -100,7 +103,7 @@ export function DayCard({ day, currency, onChange }: DayCardProps) {
               )}
               <div className={styles.changeActions}>
                 <Button type="submit" size="sm" loading={busy}>
-                  Rewrite day
+                  {t('Rewrite day')}
                 </Button>
                 <Button
                   size="sm"
@@ -111,7 +114,7 @@ export function DayCard({ day, currency, onChange }: DayCardProps) {
                     setError(undefined);
                   }}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </div>
             </form>
@@ -124,7 +127,7 @@ export function DayCard({ day, currency, onChange }: DayCardProps) {
                 setOpen(true);
               }}
             >
-              Change this day
+              {t('Change this day')}
             </Button>
           ))}
       </div>

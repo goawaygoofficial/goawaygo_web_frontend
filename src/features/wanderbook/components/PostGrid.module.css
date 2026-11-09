@@ -35,7 +35,7 @@
 .multi {
   position: absolute;
   top: var(--space-1);
-  right: var(--space-1);
+  inset-inline-end: var(--space-1);
   color: var(--color-white);
   filter: drop-shadow(0 1px 2px var(--color-shadow));
 }

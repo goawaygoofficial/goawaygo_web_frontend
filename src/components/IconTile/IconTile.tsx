@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styles from './IconTile.module.css';
+import { t } from '@/lib/i18n';
 
 interface IconTileProps {
   title: string;
@@ -33,7 +34,7 @@ export function IconTile({ title, imageSrc, to, size = 'md' }: IconTileProps) {
     return (
       <span className={[styles.tile, styles.disabled].join(' ')} aria-disabled="true">
         {content}
-        <span className={styles.badge}>Coming soon</span>
+        <span className={styles.badge}>{t('Coming soon')}</span>
       </span>
     );
   }

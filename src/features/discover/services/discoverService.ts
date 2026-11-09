@@ -1,3 +1,4 @@
+import { getCurrency } from '@/lib/i18n';
 import { ApiError, apiRequest } from '@/lib/apiClient';
 import { isRecord } from '@/lib/isRecord';
 import type {
@@ -56,7 +57,9 @@ export async function getDestination(
     'placeId' in query
       ? `placeId=${encodeURIComponent(query.placeId)}`
       : `q=${encodeURIComponent(query.text)}`;
-  const data = await apiRequest<unknown>(`/api/discover/destination?${param}`, {
+  // The exchange rate on the money card is against the traveller's currency.
+  const currency = `currency=${encodeURIComponent(getCurrency())}`;
+  const data = await apiRequest<unknown>(`/api/discover/destination?${param}&${currency}`, {
     fallbackError: 'Could not open this destination.',
     signal,
   });

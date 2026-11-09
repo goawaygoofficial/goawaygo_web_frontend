@@ -11,6 +11,7 @@ import { useAuthFlow } from '../authFlow';
 import { AuthOverlay } from '../components/AuthOverlay';
 import { requestPasswordReset } from '../services/authService';
 import styles from '../components/AuthForms.module.css';
+import { t } from '@/lib/i18n';
 
 /** Same wording whether or not the account exists, so this page can't be used to find out who is registered. */
 const RESET_REQUESTED_MESSAGE =
@@ -34,10 +35,10 @@ export function ForgotPasswordPage() {
     }
     try {
       await requestPasswordReset({ email: trimmedEmail });
-      await showSuccess(RESET_REQUESTED_MESSAGE);
+      await showSuccess(t(RESET_REQUESTED_MESSAGE));
       void navigate(flow.signInPath, { replace: true });
     } catch (error) {
-      await showError(toErrorMessage(error, 'Failed to request password reset'));
+      await showError(toErrorMessage(error, t('Failed to request password reset')));
     }
   }, [email, showError, showSuccess, navigate, flow]);
   const [pending, run] = useAsyncAction(submit);
@@ -49,23 +50,23 @@ export function ForgotPasswordPage() {
 
   return (
     <AuthOverlay>
-      <h1 className={styles.heading}>Forgot Password?</h1>
+      <h1 className={styles.heading}>{t('Forgot Password?')}</h1>
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         <TextField
-          label="Registered email"
+          label={t('Registered email')}
           type="email"
           autoComplete="email"
-          placeholder="Enter your registered email..."
+          placeholder={t('Enter your registered email...')}
           value={email}
           onChange={(event) => {
             setEmail(event.target.value);
           }}
         />
         <Button type="submit" fullWidth loading={pending} icon={<img src={lockIcon} alt="" />}>
-          SEND RESET LINK
+          {t('SEND RESET LINK')}
         </Button>
         <Link to={flow.signInPath} className={styles.accentLink}>
-          Back to Sign In
+          {t('Back to Sign In')}
         </Link>
       </form>
     </AuthOverlay>

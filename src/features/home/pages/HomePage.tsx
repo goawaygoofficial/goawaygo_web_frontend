@@ -15,6 +15,7 @@ import { TripIdeaCarousel } from '../components/TripIdeaCarousel';
 import carouselStyles from '../components/TripIdeaCarousel.module.css';
 import { useTripIdeas } from '../hooks/useTripIdeas';
 import styles from './HomePage.module.css';
+import { t } from '@/lib/i18n';
 
 const CATEGORIES = [
   { title: 'Flights', imageSrc: flightsImage, to: routes.flights },
@@ -31,13 +32,13 @@ export function HomePage() {
   return (
     <PageShell width="wide">
       <PageHeader showNotifications unreadNotifications={unread} />
-      <h1 className="visually-hidden">GoAwayGo home</h1>
+      <h1 className="visually-hidden">{t('GoAwayGo home')}</h1>
 
       <div className={styles.top}>
         <div className={styles.planner}>
-          <nav aria-label="Book travel" className={styles.categories}>
+          <nav aria-label={t('Book travel')} className={styles.categories}>
             {CATEGORIES.map((category) => (
-              <IconTile key={category.title} {...category} size="lg" />
+              <IconTile key={category.title} {...category} title={t(category.title)} size="lg" />
             ))}
           </nav>
           <DestinationSearch />
@@ -45,15 +46,17 @@ export function HomePage() {
         <RecentSearchesBanner />
       </div>
 
-      <h2 className={styles.ideasHeading}>IDEAS FOR YOUR NEXT TRIP ...</h2>
-      {ideas === null && <p className={carouselStyles.status}>Finding ideas…</p>}
+      <h2 className={styles.ideasHeading}>{t('IDEAS FOR YOUR NEXT TRIP ...')}</h2>
+      {ideas === null && <p className={carouselStyles.status}>{t('Finding ideas…')}</p>}
       {ideas?.length === 0 && (
-        <p className={carouselStyles.status}>New ideas are on their way. Check back in a minute.</p>
+        <p className={carouselStyles.status}>
+          {t('New ideas are on their way. Check back in a minute.')}
+        </p>
       )}
       {ideas && ideas.length > 0 && (
         <TripIdeaCarousel
           ideas={ideas}
-          label="Ideas for your next trip"
+          label={t('Ideas for your next trip')}
           renderCard={(idea) => (
             <TripIdeaCard
               idea={idea}

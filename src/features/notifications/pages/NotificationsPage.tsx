@@ -10,6 +10,7 @@ import { useUser } from '@/providers';
 import { listNotifications, markAllRead } from '../services/notificationsService';
 import type { Notification } from '../types';
 import styles from './NotificationsPage.module.css';
+import { t } from '@/lib/i18n';
 
 type State =
   | { kind: 'loading' }
@@ -93,17 +94,17 @@ export function NotificationsPage() {
       <PageHeader onBack={goBack} />
       <div className={styles.titleRow}>
         <Icon name="notifications" className={styles.titleIcon} />
-        <h1 className={styles.title}>Notifications</h1>
+        <h1 className={styles.title}>{t('Notifications')}</h1>
       </div>
 
       {status !== 'restoring' && !user ? (
         <section className={styles.panel}>
-          <p>Sign in to see likes, comments, new followers and trip reminders.</p>
-          <ButtonLink to={routes.profile}>Sign in</ButtonLink>
+          <p>{t('Sign in to see likes, comments, new followers and trip reminders.')}</p>
+          <ButtonLink to={routes.profile}>{t('Sign in')}</ButtonLink>
         </section>
       ) : state.kind === 'loading' ? (
         <p className={styles.status} role="status">
-          Loading…
+          {t('Loading…')}
         </p>
       ) : state.kind === 'error' ? (
         <section className={styles.panel} role="alert">
@@ -113,14 +114,14 @@ export function NotificationsPage() {
               setAttempt((value) => value + 1);
             }}
           >
-            Try again
+            {t('Try again')}
           </Button>
         </section>
       ) : state.items.length === 0 ? (
         <section className={styles.panel}>
           <Icon name="notifications" className={styles.panelIcon} />
-          <p className={styles.panelTitle}>No notifications yet</p>
-          <p>Likes, comments, new followers and trip reminders show up here.</p>
+          <p className={styles.panelTitle}>{t('No notifications yet')}</p>
+          <p>{t('Likes, comments, new followers and trip reminders show up here.')}</p>
         </section>
       ) : (
         <>
@@ -141,7 +142,7 @@ export function NotificationsPage() {
                   if (state.nextCursor !== null) loadMore(state.nextCursor, state.items);
                 }}
               >
-                Show older
+                {t('Show older')}
               </Button>
             </div>
           )}
@@ -150,7 +151,7 @@ export function NotificationsPage() {
 
       {user && (
         <p className={styles.footer}>
-          <Link to={routes.notificationSettings}>Notification settings</Link>
+          <Link to={routes.notificationSettings}>{t('Notification settings')}</Link>
         </p>
       )}
     </PageShell>
@@ -173,7 +174,7 @@ function NotificationRow({ item }: { item: Notification }) {
         {item.detail && <span className={styles.detail}>{item.detail}</span>}
         <span className={styles.time}>{timeAgo(item.createdAt)}</span>
       </span>
-      {!item.read && <span className={styles.dot} aria-label="New" />}
+      {!item.read && <span className={styles.dot} aria-label={t('New')} />}
     </>
   );
   const className = `${styles.row} ${item.read ? '' : styles.unread}`;

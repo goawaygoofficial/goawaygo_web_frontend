@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import type { Photo } from '../types';
 import styles from './PhotoCarousel.module.css';
+import { t } from '@/lib/i18n';
 
 /** Frame shape from the first photo, kept between 4:5 (tall) and 1.91:1 (wide), like Instagram. */
 function frameRatio(photo: Photo | undefined): number {
@@ -42,7 +43,7 @@ export function PhotoCarousel({
             key={photo.id}
             className={styles.slide}
             aria-roledescription="slide"
-            aria-label={`${String(position + 1)} of ${String(photos.length)}`}
+            aria-label={t('{0} of {1}', position + 1, photos.length)}
           >
             <img
               src={photo.url}
@@ -71,12 +72,12 @@ export function PhotoCarousel({
         )}
         {photos.length > 1 && (
           <span className="visually-hidden" aria-live="polite">
-            Photo {index + 1} of {photos.length}
+            {t('Photo {0} of {1}', index + 1, photos.length)}
           </span>
         )}
         {current && (
           <a href={current.url} target="_blank" rel="noopener noreferrer" className={styles.full}>
-            Full size
+            {t('Full size')}
           </a>
         )}
       </div>

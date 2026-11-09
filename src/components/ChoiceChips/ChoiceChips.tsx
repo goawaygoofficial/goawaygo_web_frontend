@@ -1,6 +1,7 @@
 import { useId } from 'react';
 import { Icon } from '../Icon/Icon';
 import styles from './ChoiceChips.module.css';
+import { t } from '@/lib/i18n';
 
 interface ChoiceOption<T extends string> {
   value: T;
@@ -42,7 +43,7 @@ export function ChoiceChips<T extends string>({
           />
           <span>
             {option.value === value && <Icon name="check" className={styles.check} />}
-            {option.label}
+            {t(option.label)}
           </span>
         </label>
       ))}

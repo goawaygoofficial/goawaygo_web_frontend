@@ -6,6 +6,7 @@ import { REPORT_REASONS } from '../types';
 import type { ReportReason, ReportTarget } from '../types';
 import styles from './ReportDialog.module.css';
 import shared from './Wanderbook.module.css';
+import { t } from '@/lib/i18n';
 
 interface ReportDialogProps {
   /** What is reported, or null when the dialog is closed. */
@@ -41,11 +42,13 @@ export function ReportDialog({ target, onClose }: ReportDialogProps) {
       {target && state === 'sent' && (
         <div className={styles.body}>
           <h2 id="report-title" className={styles.title}>
-            Thanks for telling us
+            {t('Thanks for telling us')}
           </h2>
-          <p>Our team will review it. You can also block the person so you don&apos;t see them.</p>
+          <p>
+            {t("Our team will review it. You can also block the person so you don't see them.")}
+          </p>
           <Button type="button" size="sm" onClick={close}>
-            Done
+            {t('Done')}
           </Button>
         </div>
       )}
@@ -68,10 +71,10 @@ export function ReportDialog({ target, onClose }: ReportDialogProps) {
           }}
         >
           <h2 id="report-title" className={styles.title}>
-            Report {target.label}
+            {t('Report {0}', t(target.label))}
           </h2>
           <fieldset className={styles.reasons}>
-            <legend className={shared.fieldLabel}>Why are you reporting it?</legend>
+            <legend className={shared.fieldLabel}>{t('Why are you reporting it?')}</legend>
             {REPORT_REASONS.map((option) => (
               <label key={option.id} className={styles.reason}>
                 <input
@@ -83,12 +86,12 @@ export function ReportDialog({ target, onClose }: ReportDialogProps) {
                     setReason(option.id);
                   }}
                 />
-                {option.label}
+                {t(option.label)}
               </label>
             ))}
           </fieldset>
           <label className={shared.field}>
-            <span className={shared.fieldLabel}>Details (optional)</span>
+            <span className={shared.fieldLabel}>{t('Details (optional)')}</span>
             <textarea
               maxLength={500}
               value={details}
@@ -100,10 +103,10 @@ export function ReportDialog({ target, onClose }: ReportDialogProps) {
           {error && <p className={shared.error}>{error}</p>}
           <div className={styles.buttons}>
             <Button type="button" variant="outline" size="sm" onClick={close}>
-              Cancel
+              {t('Cancel')}
             </Button>
             <Button type="submit" size="sm" disabled={!reason || state === 'sending'}>
-              {state === 'sending' ? 'Sending…' : 'Send report'}
+              {state === 'sending' ? t('Sending…') : t('Send report')}
             </Button>
           </div>
         </form>

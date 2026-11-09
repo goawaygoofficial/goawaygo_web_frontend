@@ -1,5 +1,6 @@
 import { Icon } from '../Icon/Icon';
 import styles from './ChoiceChips.module.css';
+import { t } from '@/lib/i18n';
 
 interface ChoiceOption<T extends string> {
   value: T;
@@ -45,7 +46,7 @@ export function MultiChoiceChips<T extends string>({
             />
             <span>
               {checked && <Icon name="check" className={styles.check} />}
-              {option.label}
+              {t(option.label)}
             </span>
           </label>
         );

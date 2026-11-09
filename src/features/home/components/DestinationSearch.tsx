@@ -6,6 +6,7 @@ import type { Place } from '@/features/discover';
 import { routes } from '@/lib/routes';
 import { track } from '@/lib/analytics';
 import styles from './DestinationSearch.module.css';
+import { t } from '@/lib/i18n';
 
 /** Wait this long after the last key press before asking for suggestions. */
 const DEBOUNCE_MS = 250;
@@ -70,8 +71,8 @@ export function DestinationSearch() {
     >
       <div className={styles.field}>
         <TextField
-          label="Destination"
-          placeholder="Where do you want to be?"
+          label={t('Destination')}
+          placeholder={t('Where do you want to be?')}
           tone="accent"
           icon={<Icon name="public" />}
           value={text}
@@ -110,7 +111,7 @@ export function DestinationSearch() {
         <ul
           id={listId}
           role="listbox"
-          aria-label="Suggested places"
+          aria-label={t('Suggested places')}
           className={styles.list}
           hidden={!showList}
         >
@@ -139,7 +140,7 @@ export function DestinationSearch() {
         </ul>
       </div>
       <Button type="submit" className={styles.submit}>
-        Search
+        {t('Search')}
       </Button>
     </form>
   );

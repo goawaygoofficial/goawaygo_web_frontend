@@ -3,6 +3,7 @@ import { Icon, PageHeader, PageShell } from '@/components';
 import type { IconName } from '@/components';
 import { useBack } from '@/hooks';
 import styles from './ResultsLayout.module.css';
+import { t } from '@/lib/i18n';
 
 interface ResultsLayoutProps {
   icon: IconName;
@@ -61,8 +62,9 @@ export function ResultsLayout({
       <p className={styles.note}>{note}</p>
       <div className={styles.results}>{children}</div>
       <p className={styles.disclosure}>
-        GoAwayGo may earn a commission when you book through these links. You pay the partner&apos;s
-        price; bookings, payments and changes are handled by the partner.
+        {t(
+          "GoAwayGo may earn a commission when you book through these links. You pay the partner's price; bookings, payments and changes are handled by the partner.",
+        )}
       </p>
       {floating && <div className={styles.floating}>{floating}</div>}
     </PageShell>

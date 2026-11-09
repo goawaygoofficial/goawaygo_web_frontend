@@ -8,6 +8,7 @@ import { formatDateRange } from '../format';
 import { useResults } from '../hooks/useResults';
 import { readCarQuery } from '../searchParams';
 import { carPartners } from '../services/bookService';
+import { t } from '@/lib/i18n';
 
 /**
  * Car rental results: rental comparison partners for the pick-up place. No car prices here yet (no free source);
@@ -19,7 +20,7 @@ export function RentalResultsPage() {
   const { state, retry } = useResults(
     params.toString(),
     (signal) => (search ? carPartners(search, signal) : Promise.reject(new Error(''))),
-    'Could not open car rental partners.',
+    t('Could not open car rental partners.'),
   );
   if (!search) return <Navigate to={routes.rentals} replace />;
 
@@ -27,30 +28,37 @@ export function RentalResultsPage() {
   return (
     <ResultsLayout
       icon="directions_car"
-      title="Car Rentals"
+      title={t('Car Rentals')}
       heading={search.place}
       dates={dates}
-      note="Cars and prices open on the partner's site; compare them there"
+      note={t("Cars and prices open on the partner's site; compare them there")}
       backTo={routes.rentals}
     >
-      {state.kind === 'loading' && <ResultsMessage title="Opening rental partners…" />}
+      {state.kind === 'loading' && <ResultsMessage title={t('Opening rental partners…')} />}
       {state.kind === 'error' && (
-        <ResultsMessage title="Rental partners didn't open" text={state.message} onRetry={retry} />
+        <ResultsMessage
+          title={t("Rental partners didn't open")}
+          text={state.message}
+          onRetry={retry}
+        />
       )}
       {state.kind === 'ready' &&
         (state.data.length === 0 ? (
-          <ResultsMessage title="No rental partners here yet" text="Please try again later." />
+          <ResultsMessage
+            title={t('No rental partners here yet')}
+            text={t('Please try again later.')}
+          />
         ) : (
           state.data.map((partner) => (
             <PartnerCardLink
               key={partner.id}
               partner={partner}
               kind="Car rental comparison"
-              title={`Cars in ${search.place}`}
+              title={t('Cars in {0}', search.place)}
               detail={
                 partner.id === 'economybookings' && search.airport
-                  ? `Opens on ${search.airport} airport; add your dates (${dates})`
-                  : `Enter ${search.place} and ${dates} there`
+                  ? t('Opens on {0} airport; add your dates ({1})', search.airport, dates)
+                  : t('Enter {0} and {1} there', search.place, dates)
               }
               onOpen={() => {
                 track({

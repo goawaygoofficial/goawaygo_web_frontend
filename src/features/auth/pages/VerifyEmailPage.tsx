@@ -10,6 +10,7 @@ import { useLinkToken } from '../hooks/useLinkToken';
 import { useResendVerification } from '../hooks/useResendVerification';
 import { verifyEmail } from '../services/authService';
 import styles from '../components/AuthForms.module.css';
+import { t } from '@/lib/i18n';
 
 type VerifyState =
   { kind: 'verifying' } | { kind: 'verified' } | { kind: 'failed'; message: string };
@@ -36,7 +37,7 @@ function verifyOnce(token: string): Promise<void> {
 export function VerifyEmailPage() {
   const token = useLinkToken();
   const [state, setState] = useState<VerifyState>(() =>
-    token ? { kind: 'verifying' } : { kind: 'failed', message: INCOMPLETE_LINK_MESSAGE },
+    token ? { kind: 'verifying' } : { kind: 'failed', message: t(INCOMPLETE_LINK_MESSAGE) },
   );
   const { user, reloadUser } = useUser();
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export function VerifyEmailPage() {
       })
       .catch((error: unknown) => {
         if (active) {
-          setState({ kind: 'failed', message: toErrorMessage(error, 'Failed to verify email') });
+          setState({ kind: 'failed', message: toErrorMessage(error, t('Failed to verify email')) });
         }
       });
     return () => {
@@ -67,33 +68,33 @@ export function VerifyEmailPage() {
     <AuthOverlay>
       {state.kind === 'verifying' && (
         <>
-          <h1 className={styles.heading}>Verifying your email…</h1>
-          <span className={styles.spinner} role="status" aria-label="Verifying" />
+          <h1 className={styles.heading}>{t('Verifying your email…')}</h1>
+          <span className={styles.spinner} role="status" aria-label={t('Verifying')} />
         </>
       )}
       {state.kind === 'verified' && (
         <>
-          <h1 className={styles.heading}>Email Verified</h1>
-          <p className={styles.message}>Thanks! Your email address is confirmed.</p>
+          <h1 className={styles.heading}>{t('Email Verified')}</h1>
+          <p className={styles.message}>{t('Thanks! Your email address is confirmed.')}</p>
           <Button
             fullWidth
             onClick={() => {
               void navigate(user ? routes.home : routes.auth, { replace: true });
             }}
           >
-            {user ? 'CONTINUE' : 'SIGN IN'}
+            {user ? 'CONTINUE' : t('SIGN IN')}
           </Button>
         </>
       )}
       {state.kind === 'failed' && (
         <>
-          <h1 className={styles.heading}>Link Not Valid</h1>
+          <h1 className={styles.heading}>{t('Link Not Valid')}</h1>
           <p className={styles.message}>{state.message}</p>
           {user && !user.emailVerified ? (
             <ResendButton />
           ) : (
             <Link to={user ? routes.home : routes.auth} className={styles.accentLink}>
-              {user ? 'Go to Home' : 'Back to Sign In'}
+              {user ? t('Go to Home') : t('Back to Sign In')}
             </Link>
           )}
         </>
@@ -106,7 +107,7 @@ function ResendButton() {
   const [pending, run] = useAsyncAction(useResendVerification());
   return (
     <Button fullWidth loading={pending} onClick={run}>
-      SEND A NEW LINK
+      {t('SEND A NEW LINK')}
     </Button>
   );
 }

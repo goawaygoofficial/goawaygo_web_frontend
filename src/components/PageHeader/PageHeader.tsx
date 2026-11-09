@@ -3,6 +3,7 @@ import { Icon } from '../Icon/Icon';
 import { Logo } from '../Logo/Logo';
 import { NotificationButton } from '../NotificationButton/NotificationButton';
 import styles from './PageHeader.module.css';
+import { t } from '@/lib/i18n';
 
 interface PageHeaderProps {
   /** Centre slot, e.g. a page title. */
@@ -22,7 +23,7 @@ interface PageHeaderProps {
 export function PageHeader({
   children,
   onBack,
-  backLabel = 'Back',
+  backLabel = t('Back'),
   showNotifications = false,
   unreadNotifications = 0,
   actions,

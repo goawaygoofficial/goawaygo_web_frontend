@@ -37,7 +37,7 @@
 }
 
 .chip input:checked + span {
-  padding-left: var(--space-3);
+  padding-inline-start: var(--space-3);
   border-color: transparent;
   background: var(--color-secondary-light);
 }

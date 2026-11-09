@@ -9,6 +9,7 @@ import {
 } from '@/lib/analytics';
 import { routes } from '@/lib/routes';
 import styles from './ConsentBanner.module.css';
+import { t } from '@/lib/i18n';
 
 /**
  * Asks once whether we may collect anonymous usage statistics, with "Allow" and "No thanks" equally easy. Shown
@@ -23,16 +24,17 @@ export function ConsentBanner() {
   return (
     <section className={styles.banner} aria-labelledby="consent-title" aria-live="polite">
       <h2 id="consent-title" className={styles.title}>
-        Help us improve GoAwayGo?
+        {t('Help us improve GoAwayGo?')}
       </h2>
       <p className={styles.text}>
-        With your permission we collect anonymous usage statistics (which pages and features are
-        used) with PostHog. No ads, no tracking across other sites, and you can change your mind any
-        time under “Privacy choices”. <a href={`${routes.privacy}#cookies`}>Learn more</a>
+        {t(
+          'With your permission we collect anonymous usage statistics (which pages and features are used) with PostHog. No ads, no tracking across other sites, and you can change your mind any time under “Privacy choices”.',
+        )}{' '}
+        <a href={`${routes.privacy}#cookies`}>{t('Learn more')}</a>
       </p>
       {reviewing && consent !== null && (
         <p className={styles.current}>
-          Currently: {consent === 'granted' ? 'allowed' : 'not allowed'}.
+          {consent === 'granted' ? t('Currently: allowed.') : t('Currently: not allowed.')}
         </p>
       )}
       <div className={styles.actions}>
@@ -43,7 +45,7 @@ export function ConsentBanner() {
             setConsent('denied');
           }}
         >
-          No thanks
+          {t('No thanks')}
         </Button>
         <Button
           variant="light"
@@ -52,7 +54,7 @@ export function ConsentBanner() {
             setConsent('granted');
           }}
         >
-          Allow
+          {t('Allow')}
         </Button>
       </div>
     </section>

@@ -11,6 +11,7 @@ import { addDays, toIsoDate } from '@/lib/date';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import styles from './MyTripsPage.module.css';
+import { t } from '@/lib/i18n';
 
 const TONES = [styles.sunset, styles.ember, styles.coral, styles.peach];
 
@@ -45,24 +46,30 @@ export function MyTripsPage() {
   if (!user) {
     return (
       <EmptyState
-        title="Save places you love"
-        text="Sign in to keep places from Ideas and trip plans in My Trips."
-        link={{ to: routes.profile, label: 'Sign in' }}
+        title={t('Save places you love')}
+        text={t('Sign in to keep places from Ideas and trip plans in My Trips.')}
+        link={{ to: routes.profile, label: t('Sign in') }}
       />
     );
   }
   if (saved.error) {
     return (
-      <EmptyState title="My Trips" text={saved.error} link={{ to: routes.home, label: 'Home' }} />
+      <EmptyState
+        title={t('My Trips')}
+        text={saved.error}
+        link={{ to: routes.home, label: t('Home') }}
+      />
     );
   }
   if (saved.places === null || plans === null) return <PageShell>{null}</PageShell>;
   if (saved.places.length === 0 && plans.length === 0) {
     return (
       <EmptyState
-        title="No trips yet"
-        text="Save places from Ideas on Home, or open a destination and plan a trip. They'll show up here."
-        link={{ to: routes.home, label: 'Find ideas' }}
+        title={t('No trips yet')}
+        text={t(
+          "Save places from Ideas on Home, or open a destination and plan a trip. They'll show up here.",
+        )}
+        link={{ to: routes.home, label: t('Find ideas') }}
       />
     );
   }
@@ -70,11 +77,11 @@ export function MyTripsPage() {
   return (
     <PageShell width="wide">
       <PageHeader />
-      <h1 className={styles.heading}>My Trips</h1>
+      <h1 className={styles.heading}>{t('My Trips')}</h1>
       {plans.length > 0 && (
         <section aria-labelledby="plans-heading" className={styles.section}>
           <h2 id="plans-heading" className={styles.subheading}>
-            Trip plans
+            {t('Trip plans')}
           </h2>
           <ul className={styles.plans}>
             {plans.map((plan) => (
@@ -89,7 +96,7 @@ export function MyTripsPage() {
                     <span className={styles.planMeta}>
                       {formatDateRange(plan.startDate, addDaysIso(plan.startDate, plan.days - 1))} ·{' '}
                       {plural(plan.days, 'day')}
-                      {plan.shared ? ' · Shared' : ''}
+                      {plan.shared ? t(' · Shared') : ''}
                     </span>
                   </span>
                 </Link>
@@ -98,7 +105,7 @@ export function MyTripsPage() {
           </ul>
         </section>
       )}
-      {saved.places.length > 0 && <h2 className={styles.subheading}>Saved places</h2>}
+      {saved.places.length > 0 && <h2 className={styles.subheading}>{t('Saved places')}</h2>}
       <ul className={styles.grid}>
         {saved.places.map((place, index) => (
           <SavedPlaceCard
@@ -147,17 +154,17 @@ function SavedPlaceCard({
           lon: place.lon,
         })}`}
       >
-        <Icon name="travel_explore" /> Plan a trip
+        <Icon name="travel_explore" /> {t('Plan a trip')}
       </Link>
       <Link
         to={routes.destination(place.name, { q: `${place.name}, ${place.country}` })}
         className={styles.open}
-        aria-label={`Open ${place.name}, ${place.country}`}
+        aria-label={t('Open {0}, {1}', place.name, place.country)}
       />
       <button
         type="button"
         className={styles.remove}
-        aria-label={`Remove ${place.name} from My Trips`}
+        aria-label={t('Remove {0} from My Trips', place.name)}
         disabled={removing}
         onClick={() => {
           setRemoving(true);

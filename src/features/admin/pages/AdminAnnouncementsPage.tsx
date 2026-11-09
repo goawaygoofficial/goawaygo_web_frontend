@@ -7,6 +7,7 @@ import { toErrorMessage } from '@/lib/apiClient';
 import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
 import styles from './AdminAnnouncementsPage.module.css';
+import { t } from '@/lib/i18n';
 
 /**
  * Admins send a message to everyone (4.5): it appears in every bell and is pushed to the phones of people who left
@@ -25,15 +26,15 @@ export function AdminAnnouncementsPage() {
 
   const send = () => {
     if (!title.trim() || !text.trim()) {
-      setResult({ ok: false, message: 'Write a title and a message.' });
+      setResult({ ok: false, message: t('Write a title and a message.') });
       return;
     }
-    if (!window.confirm(`Send “${title.trim()}” to everyone? It can't be taken back.`)) return;
+    if (!window.confirm(t("Send “{0}” to everyone? It can't be taken back.", title.trim()))) return;
     setSending(true);
     setResult(null);
     sendAnnouncement(title.trim(), text.trim())
       .then((sent) => {
-        setResult({ ok: true, message: `Sent to ${String(sent)} accounts.` });
+        setResult({ ok: true, message: t('Sent to {0} accounts.', String(sent)) });
         setTitle('');
         setText('');
       })
@@ -48,11 +49,10 @@ export function AdminAnnouncementsPage() {
   return (
     <PageShell>
       <PageHeader onBack={goBack}>
-        <h1 className={styles.title}>Announcement</h1>
+        <h1 className={styles.title}>{t('Announcement')}</h1>
       </PageHeader>
       <p className={styles.intro}>
-        Goes to every account&apos;s bell, and as a push to phones with &ldquo;News from
-        GoAwayGo&rdquo; on.
+        {t("Goes to every account's bell, and as a push to phones with “News from GoAwayGo” on.")}
       </p>
       <form
         className={styles.form}
@@ -63,7 +63,7 @@ export function AdminAnnouncementsPage() {
         }}
       >
         <label className={styles.field}>
-          <span className={styles.label}>Title</span>
+          <span className={styles.label}>{t('Title')}</span>
           <input
             maxLength={120}
             value={title}
@@ -73,7 +73,7 @@ export function AdminAnnouncementsPage() {
           />
         </label>
         <label className={styles.field}>
-          <span className={styles.label}>Message</span>
+          <span className={styles.label}>{t('Message')}</span>
           <textarea
             maxLength={500}
             value={text}
@@ -89,11 +89,11 @@ export function AdminAnnouncementsPage() {
           </p>
         )}
         <Button type="submit" loading={sending}>
-          Send to everyone
+          {t('Send to everyone')}
         </Button>
       </form>
       <p className={styles.links}>
-        <Link to={routes.adminReports}>Wanderbook reports</Link>
+        <Link to={routes.adminReports}>{t('Wanderbook reports')}</Link>
       </p>
     </PageShell>
   );

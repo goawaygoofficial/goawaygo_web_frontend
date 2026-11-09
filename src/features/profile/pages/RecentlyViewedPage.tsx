@@ -16,6 +16,7 @@ import { useDialog, useUser } from '@/providers';
 import { clearRecentlyViewed, getRecentlyViewed } from '../services/accountService';
 import type { RecentlyViewed } from '../types';
 import styles from './RecentlyViewedPage.module.css';
+import { t } from '@/lib/i18n';
 
 type State =
   | { kind: 'loading' }
@@ -70,7 +71,7 @@ export function RecentlyViewedPage() {
   else if (result?.requestKey === requestKey) state = result.state;
 
   const clear = async () => {
-    if (!(await showConfirm('Clear everything you viewed?', 'Clear'))) return;
+    if (!(await showConfirm(t('Clear everything you viewed?'), t('Clear')))) return;
     try {
       if (userId === null) {
         forgetRecentSearches();
@@ -81,7 +82,7 @@ export function RecentlyViewedPage() {
         setAttempt((n) => n + 1);
       }
     } catch (cause) {
-      await showError(toErrorMessage(cause, 'Could not clear the list.'));
+      await showError(toErrorMessage(cause, t('Could not clear the list.')));
     }
   };
 
@@ -93,10 +94,10 @@ export function RecentlyViewedPage() {
       <PageHeader onBack={goBack}>
         <h1 className={styles.title}>
           <img src={recentlyViewedIcon} alt="" className={styles.titleIcon} />
-          Recently Viewed
+          {t('Recently Viewed')}
         </h1>
       </PageHeader>
-      {state.kind === 'loading' && <p className={styles.status}>Loading…</p>}
+      {state.kind === 'loading' && <p className={styles.status}>{t('Loading…')}</p>}
       {state.kind === 'error' && (
         <div className={styles.panel}>
           <p>{state.message}</p>
@@ -106,16 +107,16 @@ export function RecentlyViewedPage() {
               setAttempt((n) => n + 1);
             }}
           >
-            Try again
+            {t('Try again')}
           </Button>
         </div>
       )}
       {empty && (
         <div className={styles.panel}>
-          <p className={styles.panelTitle}>Nothing yet</p>
-          <p>Places and trip plans you open show up here, newest first.</p>
+          <p className={styles.panelTitle}>{t('Nothing yet')}</p>
+          <p>{t('Places and trip plans you open show up here, newest first.')}</p>
           <Link to={routes.home} className={styles.link}>
-            Find a place to explore
+            {t('Find a place to explore')}
           </Link>
         </div>
       )}
@@ -123,14 +124,15 @@ export function RecentlyViewedPage() {
         <>
           {userId === null && (
             <p className={styles.note}>
-              Kept in this browser only. Sign in from the Profile tab to keep them with your
-              account.
+              {t(
+                'Kept in this browser only. Sign in from the Profile tab to keep them with your account.',
+              )}
             </p>
           )}
           {viewed.places.length > 0 && (
             <section aria-labelledby="viewed-places" className={styles.section}>
               <h2 id="viewed-places" className={styles.subheading}>
-                Places
+                {t('Places')}
               </h2>
               <ul className={styles.list}>
                 {viewed.places.map(({ place, viewedAt }) => (
@@ -156,7 +158,7 @@ export function RecentlyViewedPage() {
           {viewed.plans.length > 0 && (
             <section aria-labelledby="viewed-plans" className={styles.section}>
               <h2 id="viewed-plans" className={styles.subheading}>
-                Trip plans
+                {t('Trip plans')}
               </h2>
               <ul className={styles.list}>
                 {viewed.plans.map((plan) => (
@@ -169,7 +171,7 @@ export function RecentlyViewedPage() {
                       <span className={styles.main}>
                         <span className={styles.label}>{plan.title}</span>
                         <span className={styles.meta}>
-                          {plan.mine ? 'Your plan' : 'Shared with you'}
+                          {plan.mine ? t('Your plan') : t('Shared with you')}
                           {plan.viewedAt ? ` · ${timeAgo(plan.viewedAt)}` : ''}
                         </span>
                       </span>
@@ -181,7 +183,7 @@ export function RecentlyViewedPage() {
           )}
           <div className={styles.actions}>
             <Button size="sm" variant="outline" onClick={() => void clear()}>
-              Clear list
+              {t('Clear list')}
             </Button>
           </div>
         </>

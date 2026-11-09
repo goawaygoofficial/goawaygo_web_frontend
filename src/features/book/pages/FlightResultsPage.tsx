@@ -9,6 +9,7 @@ import { useResults } from '../hooks/useResults';
 import { readFlightQuery } from '../searchParams';
 import { searchFlights } from '../services/bookService';
 import styles from './ResultsPages.module.css';
+import { t } from '@/lib/i18n';
 
 /**
  * Flight results (the founder's design): recent fares on the date asked and on cheaper dates that month, each opening
@@ -20,7 +21,7 @@ export function FlightResultsPage() {
   const { state, retry } = useResults(
     params.toString(),
     (signal) => (search ? searchFlights(search, signal) : Promise.reject(new Error(''))),
-    'Could not find flight prices.',
+    t('Could not find flight prices.'),
   );
   if (!search) return <Navigate to={routes.flights} replace />;
 
@@ -32,15 +33,15 @@ export function FlightResultsPage() {
   return (
     <ResultsLayout
       icon="flight"
-      title="Flights"
-      heading={`${search.fromName} to ${search.toName}`}
+      title={t('Flights')}
+      heading={t('{0} to {1}', search.fromName, search.toName)}
       dates={
         roundTrip
           ? `${formatDay(search.depart)} – ${formatDay(search.returnDate)}`
           : formatDay(search.depart)
       }
       travellers={plural(search.adults, 'passenger')}
-      note="Recent prices travellers found · they may change until you book"
+      note={t('Recent prices travellers found · they may change until you book')}
       backTo={routes.flights}
       floating={
         state.kind === 'ready' && (
@@ -51,22 +52,22 @@ export function FlightResultsPage() {
             rel="noopener noreferrer sponsored"
             onClick={opened}
           >
-            See all flights
+            {t('See all flights')}
           </a>
         )
       }
     >
-      {state.kind === 'loading' && <ResultsMessage title="Finding fares…" />}
+      {state.kind === 'loading' && <ResultsMessage title={t('Finding fares…')} />}
       {state.kind === 'error' && (
-        <ResultsMessage title="No fares right now" text={state.message} onRetry={retry} />
+        <ResultsMessage title={t('No fares right now')} text={state.message} onRetry={retry} />
       )}
       {state.kind === 'ready' && (
         <>
-          <h2 className={styles.section}>On {formatDay(search.depart)}</h2>
+          <h2 className={styles.section}>{t('On {0}', formatDay(search.depart))}</h2>
           {state.data.onDate.length === 0 ? (
             <ResultsMessage
-              title="No recent price for this date"
-              text="Nobody searched this trip lately. See live prices for it on Aviasales."
+              title={t('No recent price for this date')}
+              text={t('Nobody searched this trip lately. See live prices for it on Aviasales.')}
             >
               <a
                 className={styles.pill}
@@ -75,7 +76,7 @@ export function FlightResultsPage() {
                 rel="noopener noreferrer sponsored"
                 onClick={opened}
               >
-                See live prices
+                {t('See live prices')}
               </a>
             </ResultsMessage>
           ) : (
@@ -91,7 +92,9 @@ export function FlightResultsPage() {
           )}
           {state.data.nearby.length > 0 && (
             <>
-              <h2 className={styles.section}>Other dates in {formatMonth(search.depart)}</h2>
+              <h2 className={styles.section}>
+                {t('Other dates in {0}', formatMonth(search.depart))}
+              </h2>
               {state.data.nearby.map((fare) => (
                 <FareCard
                   key={fare.link}

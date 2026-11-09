@@ -5,6 +5,7 @@ import type { TripIdea } from '@/features/discover';
 import { track } from '@/lib/analytics';
 import { routes } from '@/lib/routes';
 import styles from './TripIdeaCarousel.module.css';
+import { t } from '@/lib/i18n';
 
 interface TripIdeaCardProps {
   idea: TripIdea;
@@ -14,10 +15,10 @@ interface TripIdeaCardProps {
 }
 
 function saveLabel(state: { saved: boolean; saving: boolean; failed: boolean; signedIn: boolean }) {
-  if (state.saved) return 'Saved';
-  if (state.saving) return 'Saving…';
-  if (state.failed) return 'Try again';
-  return state.signedIn ? 'Save to My Trips' : 'Sign in to save';
+  if (state.saved) return t('Saved');
+  if (state.saving) return t('Saving…');
+  if (state.failed) return t('Try again');
+  return state.signedIn ? t('Save to My Trips') : t('Sign in to save');
 }
 
 /** One idea: its photo (with credit), where it is, a short summary, tags, and Save to My Trips. */
@@ -61,14 +62,14 @@ export function TripIdeaCard({ idea, signedIn, saved, onSave }: TripIdeaCardProp
         <span className={styles.cardTagline}>{idea.summary}</span>
         <span className={styles.tags}>
           {idea.category && <span className={styles.tag}>{idea.category}</span>}
-          {idea.kind === 'hidden gem' && <span className={styles.tag}>Hidden gem</span>}
+          {idea.kind === t('hidden gem') && <span className={styles.tag}>{t('Hidden gem')}</span>}
         </span>
       </div>
       {/* The whole card opens the place; Save and the credit sit above this link. */}
       <Link
         to={routes.destination(idea.name, { q: `${idea.name}, ${idea.country}` })}
         className={styles.cardLink}
-        aria-label={`Open ${idea.name}, ${idea.country}`}
+        aria-label={t('Open {0}, {1}', idea.name, idea.country)}
       />
       <button
         type="button"

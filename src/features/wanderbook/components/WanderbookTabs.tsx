@@ -3,6 +3,7 @@ import type { KeyboardEvent } from 'react';
 import type { WanderbookTab } from '../types';
 import { panelId, tabId } from './tabIds';
 import styles from './WanderbookTabs.module.css';
+import { t } from '@/lib/i18n';
 
 const WANDERBOOK_TABS = [
   { id: 'mine', label: 'My Wanderposts' },
@@ -35,7 +36,7 @@ export function WanderbookTabs({ value, onChange }: WanderbookTabsProps) {
       <div
         ref={listRef}
         role="tablist"
-        aria-label="Wanderbook posts"
+        aria-label={t('Wanderbook posts')}
         className={styles.list}
         onKeyDown={onKeyDown}
       >
@@ -55,7 +56,7 @@ export function WanderbookTabs({ value, onChange }: WanderbookTabsProps) {
                 onChange(tab.id);
               }}
             >
-              {tab.label}
+              {t(tab.label)}
             </button>
           );
         })}

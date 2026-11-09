@@ -1,5 +1,6 @@
 import type { PartnerCard } from '../types';
 import styles from './BookCards.module.css';
+import { t } from '@/lib/i18n';
 
 interface PartnerCardLinkProps {
   partner: PartnerCard;
@@ -28,7 +29,7 @@ export function PartnerCardLink({ partner, kind, title, detail, onOpen }: Partne
       <span className={styles.side}>
         <span className={styles.price}>{partner.name}</span>
         <span className={styles.small}>{kind}</span>
-        <span className={styles.small}>Prices on {partner.name}</span>
+        <span className={styles.small}>{t('Prices on {0}', partner.name)}</span>
       </span>
       <span className={styles.main}>
         <span className={styles.title}>{title}</span>

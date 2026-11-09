@@ -11,6 +11,7 @@ import type {
   SignInRequest,
   SignUpRequest,
 } from '../types';
+import { t } from '@/lib/i18n';
 
 function toAuthResult(session: SessionDto): AuthResult {
   return {
@@ -135,6 +136,6 @@ export async function fetchCurrentUser(): Promise<User> {
   const data = await apiRequest<unknown>('/api/users/me', {
     fallbackError: 'Failed to load profile',
   });
-  if (!isUserDto(data)) throw new Error('Unexpected response from server.');
+  if (!isUserDto(data)) throw new Error(t('Unexpected response from server.'));
   return userFromDto(data);
 }

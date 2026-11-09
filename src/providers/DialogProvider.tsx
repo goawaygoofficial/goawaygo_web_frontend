@@ -4,6 +4,7 @@ import { StatusDialog } from '@/components';
 import type { StatusDialogKind } from '@/components';
 import { DialogContext } from './DialogContext';
 import type { DialogContextValue } from './DialogContext';
+import { t } from '@/lib/i18n';
 
 /** Same as the app's `CustomDialogs`: success/error dialogs dismiss themselves after 3 seconds. */
 const AUTO_DISMISS_MS = 3000;
@@ -40,7 +41,13 @@ export function DialogProvider({ children }: { children: ReactNode }) {
       new Promise<boolean>((resolve) => {
         // Only one dialog at a time: settle any dialog that is still open (a pending confirm counts as "no").
         activeRef.current?.resolve(false);
-        const next = { kind, message, confirmLabel, resolve };
+        // Messages may be English keys (translated here) or already translated text (left as is).
+        const next = {
+          kind,
+          message: t(message),
+          confirmLabel: confirmLabel && t(confirmLabel),
+          resolve,
+        };
         activeRef.current = next;
         setActive(next);
       }),

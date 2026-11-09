@@ -2,6 +2,7 @@ import { useEffect, useId, useRef } from 'react';
 import { Icon } from '../Icon/Icon';
 import { Logo } from '../Logo/Logo';
 import styles from './StatusDialog.module.css';
+import { t } from '@/lib/i18n';
 
 export type StatusDialogKind = 'success' | 'error' | 'confirm';
 
@@ -70,7 +71,7 @@ export function StatusDialog({
           <div className={styles.actions}>
             {/* Cancel first and focused by default, so Enter never confirms by accident. */}
             <button type="button" className={styles.secondary} onClick={onClose} autoFocus>
-              Cancel
+              {t('Cancel')}
             </button>
             <button type="button" className={styles.close} onClick={onConfirm}>
               {confirmLabel ?? 'OK'}
@@ -78,7 +79,7 @@ export function StatusDialog({
           </div>
         ) : (
           <button type="button" className={styles.close} onClick={onClose}>
-            OK
+            {t('OK')}
           </button>
         )}
       </div>

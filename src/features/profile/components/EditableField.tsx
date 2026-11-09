@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import styles from './EditableField.module.css';
+import { t } from '@/lib/i18n';
 
 interface EditableFieldProps {
   label: string;
@@ -24,7 +25,7 @@ export function EditableField({
   note,
   open = false,
   onToggle,
-  editLabel = 'Edit',
+  editLabel = t('Edit'),
   children,
 }: EditableFieldProps) {
   return (
@@ -35,7 +36,7 @@ export function EditableField({
           {isSecret ? (
             <>
               <span aria-hidden="true">{value}</span>
-              <span className="visually-hidden">Hidden</span>
+              <span className="visually-hidden">{t('Hidden')}</span>
             </>
           ) : (
             <span className={styles.text}>{value}</span>
@@ -45,10 +46,10 @@ export function EditableField({
               type="button"
               className={styles.edit}
               aria-expanded={open}
-              aria-label={open ? `Cancel changing ${label}` : `${editLabel} ${label}`}
+              aria-label={open ? t('Cancel changing {0}', label) : `${editLabel} ${label}`}
               onClick={onToggle}
             >
-              {open ? 'Cancel' : editLabel}
+              {open ? t('Cancel') : editLabel}
             </button>
           )}
         </dd>

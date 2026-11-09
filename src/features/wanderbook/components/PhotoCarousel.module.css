@@ -63,7 +63,7 @@
 
 .full {
   position: absolute;
-  right: 0;
+  inset-inline-end: 0;
   color: var(--color-white-muted);
   font-size: var(--font-size-xs);
 }

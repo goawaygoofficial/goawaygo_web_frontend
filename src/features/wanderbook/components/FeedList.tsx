@@ -5,13 +5,14 @@ import type { Post } from '../types';
 import { PostCard } from './PostCard';
 import { ReportDialog } from './ReportDialog';
 import shared from './Wanderbook.module.css';
+import { t } from '@/lib/i18n';
 
 /** Posts one under another (the feed), with "Load more" and reporting. */
 export function FeedList({ feed, empty }: { feed: Paged<Post>; empty: string }) {
   const [reporting, setReporting] = useState<Post | null>(null);
 
   if (feed.error) return <p className={shared.status}>{feed.error}</p>;
-  if (!feed.items) return <p className={shared.status}>Loading…</p>;
+  if (!feed.items) return <p className={shared.status}>{t('Loading…')}</p>;
   if (feed.items.length === 0) return <p className={shared.status}>{empty}</p>;
 
   return (
@@ -40,12 +41,12 @@ export function FeedList({ feed, empty }: { feed: Paged<Post>; empty: string }) 
             disabled={feed.loadingMore}
             onClick={feed.loadMore}
           >
-            {feed.loadingMore ? 'Loading…' : 'Load more'}
+            {feed.loadingMore ? t('Loading…') : t('Load more')}
           </Button>
         </div>
       )}
       <ReportDialog
-        target={reporting && { type: 'post', id: reporting.publicId, label: 'this post' }}
+        target={reporting && { type: 'post', id: reporting.publicId, label: t('this post') }}
         onClose={() => {
           setReporting(null);
         }}

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { env } from '@/lib/env';
 import { loadGoogleOAuth2 } from '@/lib/googleIdentity';
 import type { GoogleAccountsOAuth2 } from '@/types/google-identity';
+import { t } from '@/lib/i18n';
 
 const GENERIC_FAILURE = 'Google could not confirm it was you. Please try again.';
 
@@ -34,7 +35,7 @@ export function useGoogleCode(): { ready: boolean; requestCode: () => Promise<st
     () =>
       new Promise<string | null>((resolve, reject) => {
         if (!oauth2) {
-          reject(new Error('Google is unavailable right now. Please try again later.'));
+          reject(new Error(t('Google is unavailable right now. Please try again later.')));
           return;
         }
         const state = crypto.randomUUID();
@@ -55,7 +56,9 @@ export function useGoogleCode(): { ready: boolean; requestCode: () => Promise<st
               if (error.type === 'popup_failed_to_open') {
                 reject(
                   new Error(
-                    'Your browser blocked the Google window. Please allow pop-ups for this site and try again.',
+                    t(
+                      'Your browser blocked the Google window. Please allow pop-ups for this site and try again.',
+                    ),
                   ),
                 );
               } else resolve(null);

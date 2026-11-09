@@ -13,11 +13,12 @@ import { usePaged } from '../hooks/usePaged';
 import { block, follow, getProfile, getProfilePosts } from '../services/wanderbookService';
 import type { Person, Profile } from '../types';
 import styles from './WanderbookPage.module.css';
+import { t } from '@/lib/i18n';
 
 function followLabel(profile: Profile): string {
-  if (profile.relationship === 'following') return 'Following';
-  if (profile.relationship === 'requested') return 'Requested';
-  return profile.followsYou ? 'Follow back' : 'Follow';
+  if (profile.relationship === 'following') return t('Following');
+  if (profile.relationship === 'requested') return t('Requested');
+  return profile.followsYou ? t('Follow back') : t('Follow');
 }
 
 /** Another traveller's profile: Follow (or request), their posts if you may see them, block and report. */
@@ -111,7 +112,9 @@ export function ProfilePage() {
             }}
           />
         )}
-        {!current && preview?.publicId !== publicId && <p className={shared.status}>Loading…</p>}
+        {!current && preview?.publicId !== publicId && (
+          <p className={shared.status}>{t('Loading…')}</p>
+        )}
         {current?.error && <p className={shared.status}>{current.error}</p>}
         {profile && (
           <>
@@ -130,12 +133,12 @@ export function ProfilePage() {
                 </Button>
               )}
               {profile.followsYou && profile.relationship !== 'none' && (
-                <span className={shared.muted}>Follows you</span>
+                <span className={shared.muted}>{t('Follows you')}</span>
               )}
               <button
                 type="button"
                 className={shared.iconButton}
-                aria-label="More"
+                aria-label={t('More')}
                 aria-expanded={menuOpen}
                 onClick={() => {
                   setMenuOpen((open) => !open);
@@ -155,7 +158,7 @@ export function ProfilePage() {
                     if (
                       !profile.blockedByYou &&
                       !window.confirm(
-                        `Block ${profile.name}? You won't see each other, and follows end.`,
+                        t("Block {0}? You won't see each other, and follows end.", profile.name),
                       )
                     ) {
                       return;
@@ -164,7 +167,7 @@ export function ProfilePage() {
                   }}
                 >
                   <Icon name="block" />
-                  {profile.blockedByYou ? 'Unblock' : 'Block'}
+                  {profile.blockedByYou ? t('Unblock') : t('Block')}
                 </Button>
                 <Button
                   type="button"
@@ -177,31 +180,31 @@ export function ProfilePage() {
                   }}
                 >
                   <Icon name="flag_outlined" />
-                  Report
+                  {t('Report')}
                 </Button>
               </div>
             )}
             {error && <p className={shared.error}>{error}</p>}
 
             {profile.blockedByYou ? (
-              <p className={shared.status}>You blocked {profile.name}.</p>
+              <p className={shared.status}>{t('You blocked {0}.', profile.name)}</p>
             ) : !profile.canSeePosts ? (
               <p className={shared.status}>
-                <Icon name="lock" /> This profile is private. Follow to see their photos.
+                <Icon name="lock" /> {t('This profile is private. Follow to see their photos.')}
               </p>
             ) : posts.items ? (
               <>
-                <PostGrid posts={posts.items} empty="No posts yet." />
+                <PostGrid posts={posts.items} empty={t('No posts yet.')} />
                 {posts.hasMore && (
                   <div className={shared.loadMore}>
                     <Button type="button" variant="outline" size="sm" onClick={posts.loadMore}>
-                      Load more
+                      {t('Load more')}
                     </Button>
                   </div>
                 )}
               </>
             ) : (
-              <p className={shared.status}>Loading…</p>
+              <p className={shared.status}>{t('Loading…')}</p>
             )}
             <ReportDialog
               target={reporting ? { type: 'user', id: publicId, label: profile.name } : null}

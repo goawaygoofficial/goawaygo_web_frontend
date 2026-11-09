@@ -7,6 +7,7 @@ import { AuthOverlay } from '../components/AuthOverlay';
 import { useLinkToken } from '../hooks/useLinkToken';
 import { confirmEmailChange } from '../services/authService';
 import styles from '../components/AuthForms.module.css';
+import { t } from '@/lib/i18n';
 
 type ConfirmState =
   { kind: 'confirming' } | { kind: 'confirmed' } | { kind: 'failed'; message: string };
@@ -30,7 +31,7 @@ function confirmOnce(token: string): Promise<void> {
 export function ConfirmEmailPage() {
   const token = useLinkToken();
   const [state, setState] = useState<ConfirmState>(() =>
-    token ? { kind: 'confirming' } : { kind: 'failed', message: INCOMPLETE_LINK_MESSAGE },
+    token ? { kind: 'confirming' } : { kind: 'failed', message: t(INCOMPLETE_LINK_MESSAGE) },
   );
   const { user, reloadUser } = useUser();
 
@@ -45,7 +46,7 @@ export function ConfirmEmailPage() {
         if (active) {
           setState({
             kind: 'failed',
-            message: toErrorMessage(error, 'Could not confirm your new email.'),
+            message: toErrorMessage(error, t('Could not confirm your new email.')),
           });
         }
       });
@@ -64,27 +65,27 @@ export function ConfirmEmailPage() {
     <AuthOverlay>
       {state.kind === 'confirming' && (
         <>
-          <h1 className={styles.heading}>Confirming your new email…</h1>
-          <span className={styles.spinner} role="status" aria-label="Confirming" />
+          <h1 className={styles.heading}>{t('Confirming your new email…')}</h1>
+          <span className={styles.spinner} role="status" aria-label={t('Confirming')} />
         </>
       )}
       {state.kind === 'confirmed' && (
         <>
-          <h1 className={styles.heading}>Email Changed</h1>
+          <h1 className={styles.heading}>{t('Email Changed')}</h1>
           <p className={styles.message}>
-            Your account now uses this address. Sign in with it from now on.
+            {t('Your account now uses this address. Sign in with it from now on.')}
           </p>
           <Link to={next} className={styles.accentLink}>
-            {user ? 'Back to User Profile' : 'Sign in'}
+            {user ? t('Back to User Profile') : t('Sign in')}
           </Link>
         </>
       )}
       {state.kind === 'failed' && (
         <>
-          <h1 className={styles.heading}>Link Not Valid</h1>
+          <h1 className={styles.heading}>{t('Link Not Valid')}</h1>
           <p className={styles.message}>{state.message}</p>
           <Link to={next} className={styles.accentLink}>
-            {user ? 'Back to User Profile' : 'Back to Sign In'}
+            {user ? t('Back to User Profile') : t('Back to Sign In')}
           </Link>
         </>
       )}

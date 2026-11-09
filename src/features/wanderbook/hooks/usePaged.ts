@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { Page } from '../types';
+import { t } from '@/lib/i18n';
 
 export interface Paged<T> {
   /** Null while the first page loads. */
@@ -36,7 +37,7 @@ export function usePaged<T>(
       })
       .catch((cause: unknown) => {
         if (controller.signal.aborted) return;
-        const error = cause instanceof Error ? cause.message : 'Could not load.';
+        const error = cause instanceof Error ? cause.message : t('Could not load.');
         setState({ key, items: null, cursor: null, error });
       });
     return () => {

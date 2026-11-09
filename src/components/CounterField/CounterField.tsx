@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Icon } from '../Icon/Icon';
 import { FieldShell } from '../FieldShell/FieldShell';
 import styles from './CounterField.module.css';
+import { t } from '@/lib/i18n';
 
 interface CounterFieldProps {
   label: string;
@@ -28,7 +29,7 @@ export function CounterField({ label, icon, value, onChange }: CounterFieldProps
       <button
         type="button"
         className={styles.step}
-        aria-label={`Decrease ${label.toLowerCase()}`}
+        aria-label={t('Decrease {0}', label.toLowerCase())}
         disabled={value <= 0}
         onClick={() => {
           set(value - 1);
@@ -50,7 +51,7 @@ export function CounterField({ label, icon, value, onChange }: CounterFieldProps
       <button
         type="button"
         className={styles.step}
-        aria-label={`Increase ${label.toLowerCase()}`}
+        aria-label={t('Increase {0}', label.toLowerCase())}
         onClick={() => {
           set(value + 1);
         }}

@@ -8,6 +8,7 @@ import { useUser } from '@/providers';
 import { authFlows } from '../authFlow';
 import { SignInPanel } from '../components/SignInPanel';
 import styles from './AuthPage.module.css';
+import { t } from '@/lib/i18n';
 
 export function AuthPage() {
   const { user } = useUser();
@@ -27,10 +28,10 @@ export function AuthPage() {
           <header className={styles.header}>
             <Logo size="lg" />
             <Link to={routes.home} className={styles.skip}>
-              SKIP
+              {t('SKIP')}
             </Link>
           </header>
-          <h1 className="visually-hidden">Sign in to GoAwayGo</h1>
+          <h1 className="visually-hidden">{t('Sign in to GoAwayGo')}</h1>
           <FeatureList />
 
           <SignInPanel flow={authFlows.signInPage} />

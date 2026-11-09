@@ -1,4 +1,5 @@
 import type { GoogleAccountsOAuth2 } from '@/types/google-identity';
+import { t } from '@/lib/i18n';
 
 const SCRIPT_SRC = 'https://accounts.google.com/gsi/client';
 
@@ -14,12 +15,12 @@ export function loadGoogleOAuth2(): Promise<GoogleAccountsOAuth2> {
     script.defer = true;
     script.onload = () => {
       if (window.google) resolve(window.google.accounts.oauth2);
-      else reject(new Error('Google Sign-In failed to initialise.'));
+      else reject(new Error(t('Google Sign-In failed to initialise.')));
     };
     script.onerror = () => {
       loading = null;
       script.remove();
-      reject(new Error('Could not load Google Sign-In.'));
+      reject(new Error(t('Could not load Google Sign-In.')));
     };
     document.head.append(script);
   });

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useUser } from '@/providers';
 import { listSavedPlaces, removeSavedPlace, saveIdea } from '../services/discoverService';
 import type { SavedPlace, TripIdea } from '../types';
+import { t } from '@/lib/i18n';
 
 export interface SavedPlacesState {
   /** Null while loading (or signed out). */
@@ -34,7 +35,7 @@ export function useSavedPlaces(): SavedPlacesState {
       })
       .catch((cause: unknown) => {
         if (controller.signal.aborted) return;
-        const error = cause instanceof Error ? cause.message : 'Could not load My Trips.';
+        const error = cause instanceof Error ? cause.message : t('Could not load My Trips.');
         setLoaded({ userId, places: null, error });
       });
     return () => {

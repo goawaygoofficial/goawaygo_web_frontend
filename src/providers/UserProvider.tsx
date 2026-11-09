@@ -5,6 +5,7 @@ import {
   restoreSession,
   signOut as endServerSession,
 } from '@/features/auth/services/authService';
+import { setAccountCurrency } from '@/lib/i18n';
 import { getAccessToken, onSessionChange } from '@/lib/session';
 import { userFromDto } from '@/types';
 import type { User } from '@/types';
@@ -56,6 +57,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
       }),
     [],
   );
+
+  // Prices follow the account's currency while signed in.
+  useEffect(() => {
+    setAccountCurrency(user?.currency ?? null);
+  }, [user]);
 
   const signIn = useCallback((next: User) => {
     setUser(next);

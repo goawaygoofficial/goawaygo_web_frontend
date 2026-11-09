@@ -2,6 +2,7 @@ import { useEffect, useId, useState } from 'react';
 import type { ReactNode } from 'react';
 import { TextField } from '@/components';
 import styles from './SuggestField.module.css';
+import { t } from '@/lib/i18n';
 
 /** Wait this long after the last key press before asking for suggestions. */
 const DEBOUNCE_MS = 250;
@@ -115,7 +116,7 @@ export function SuggestField<T>({
       <ul
         id={listId}
         role="listbox"
-        aria-label={`Suggestions for ${label}`}
+        aria-label={t('Suggestions for {0}', label)}
         className={styles.list}
         hidden={!showList}
       >

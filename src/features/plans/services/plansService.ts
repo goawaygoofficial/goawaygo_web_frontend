@@ -1,6 +1,7 @@
 import { ApiError, apiRequest } from '@/lib/apiClient';
 import { isRecord } from '@/lib/isRecord';
 import type { DayPlan, Plan, PlanRequest, PlanSummary, Slot } from '../types';
+import { getCurrency, t } from '@/lib/i18n';
 
 const UNEXPECTED = 'Unexpected response from the server.';
 
@@ -60,7 +61,8 @@ function isSummary(value: unknown): value is PlanSummary {
 export async function createPlan(request: PlanRequest): Promise<Plan> {
   const data = await apiRequest<unknown>('/api/plans', {
     method: 'POST',
-    body: request,
+    // Costs in the traveller's currency.
+    body: { ...request, currency: getCurrency() },
     expectedStatus: 201,
     fallbackError: 'Could not make your plan.',
     signal: AbortSignal.timeout(CREATE_TIMEOUT_MS),
@@ -122,7 +124,7 @@ export async function sharePlan(id: string, shared: boolean): Promise<Plan> {
     await apiRequest<unknown>(`/api/plans/${encodeURIComponent(id)}/share`, {
       method: 'PUT',
       body: { shared },
-      fallbackError: shared ? 'Could not share this plan.' : 'Could not stop sharing.',
+      fallbackError: shared ? t('Could not share this plan.') : t('Could not stop sharing.'),
     }),
   );
 }

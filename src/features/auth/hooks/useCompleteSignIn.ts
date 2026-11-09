@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { routes } from '@/lib/routes';
 import { useDialog, useUser } from '@/providers';
 import type { AuthResult } from '../types';
+import { t } from '@/lib/i18n';
 
 /**
  * Stores the signed-in user, shows the welcome dialog, then opens `redirectTo` (Home by default) — shared by
@@ -20,8 +21,8 @@ export function useCompleteSignIn(
       signIn(result.user);
       await showSuccess(
         result.restored
-          ? `Welcome back, ${result.user.name}! Your account won't be deleted.`
-          : `${greeting}, ${result.user.name}!`,
+          ? t("Welcome back, {0}! Your account won't be deleted.", result.user.name)
+          : t('{0}, {1}!', t(greeting), result.user.name),
       );
       void navigate(redirectTo, { replace: true });
     },

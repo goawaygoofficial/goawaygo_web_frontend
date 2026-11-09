@@ -1,9 +1,9 @@
 /* Bottom card above the mobile tab bar (on desktop the tab bar is at the top). */
 .banner {
   position: fixed;
-  right: var(--space-4);
+  inset-inline-end: var(--space-4);
   bottom: calc(var(--shell-bottom-offset) + env(safe-area-inset-bottom) + var(--space-4));
-  left: var(--space-4);
+  inset-inline-start: var(--space-4);
   z-index: var(--z-dialog);
   display: flex;
   flex-direction: column;

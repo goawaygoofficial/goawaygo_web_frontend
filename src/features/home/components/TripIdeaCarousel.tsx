@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { usePrefersReducedMotion } from '@/hooks';
 import type { TripIdea } from '@/features/discover';
 import styles from './TripIdeaCarousel.module.css';
+import { t } from '@/lib/i18n';
 
 /** How much a card shrinks/fades per card-width away from the centre (same as the app's 0.3). */
 const FALLOFF_PER_CARD = 0.3;
@@ -78,7 +79,7 @@ export function TripIdeaCarousel({ ideas, label, renderCard }: TripIdeaCarouselP
             key={idea.id}
             className={styles.slide}
             aria-roledescription="slide"
-            aria-label={`${String(index + 1)} of ${String(ideas.length)}`}
+            aria-label={t('{0} of {1}', index + 1, ideas.length)}
           >
             {renderCard(idea)}
           </li>
@@ -88,7 +89,7 @@ export function TripIdeaCarousel({ ideas, label, renderCard }: TripIdeaCarouselP
         <button
           type="button"
           className={styles.control}
-          aria-label="Previous idea"
+          aria-label={t('Previous idea')}
           onClick={() => {
             step(-1);
           }}
@@ -98,7 +99,7 @@ export function TripIdeaCarousel({ ideas, label, renderCard }: TripIdeaCarouselP
         <button
           type="button"
           className={styles.control}
-          aria-label="Next idea"
+          aria-label={t('Next idea')}
           onClick={() => {
             step(1);
           }}

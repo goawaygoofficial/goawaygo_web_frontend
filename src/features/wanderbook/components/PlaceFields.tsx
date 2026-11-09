@@ -4,6 +4,7 @@ import type { Place } from '@/features/discover';
 import type { PlaceTag } from '../types';
 import shared from './Wanderbook.module.css';
 import styles from './PlaceFields.module.css';
+import { t } from '@/lib/i18n';
 
 interface PlaceFieldsProps {
   value: PlaceTag | null;
@@ -46,17 +47,17 @@ export function PlaceFields({ value, onChange, fromPhoto = false }: PlaceFieldsP
 
   return (
     <fieldset className={styles.fieldset}>
-      <legend className={shared.fieldLabel}>Place</legend>
+      <legend className={shared.fieldLabel}>{t('Place')}</legend>
       {fromPhoto && value && (
         <p className={shared.muted}>
-          From your photo&apos;s location. Change it if it isn&apos;t right.
+          {t("From your photo's location. Change it if it isn't right.")}
         </p>
       )}
       <label className={shared.field}>
-        <span className="visually-hidden">Find a place</span>
+        <span className="visually-hidden">{t('Find a place')}</span>
         <input
           type="search"
-          placeholder="Find a place"
+          placeholder={t('Find a place')}
           maxLength={100}
           value={search}
           onChange={(event) => {
@@ -88,9 +89,9 @@ export function PlaceFields({ value, onChange, fromPhoto = false }: PlaceFieldsP
       <div className={styles.row}>
         {(
           [
-            ['name', 'Place', 200],
-            ['region', 'State or region', 200],
-            ['country', 'Country', 100],
+            ['name', t('Place'), 200],
+            ['region', t('State or region'), 200],
+            ['country', t('Country'), 100],
           ] as const
         ).map(([field, label, max]) => (
           <label key={field} className={shared.field}>
@@ -113,7 +114,7 @@ export function PlaceFields({ value, onChange, fromPhoto = false }: PlaceFieldsP
             onChange(null);
           }}
         >
-          Remove place
+          {t('Remove place')}
         </button>
       )}
     </fieldset>
