@@ -223,10 +223,11 @@ export function PrivacyPage() {
             which uses no cookies and doesn't identify you; we see only totals such as page views.
           </li>
           <li>
-            <strong>What you viewed, if you are not signed in</strong>: the last 30 places and
-            shared trip plans you opened are kept in your browser's storage (or in the app) to show
-            them on Home and in Recently viewed. They stay on your device; clearing them in Recently
-            viewed or clearing your browser's site data removes them.
+            <strong>What you viewed, if you are not signed in</strong>: on the website, the last 30
+            places and shared trip plans you opened are kept in your browser's storage to show them
+            on Home and in Recently viewed; the app keeps the last 5 places, for Home. They stay on
+            your device; clearing them in Recently viewed, clearing your browser's site data or
+            uninstalling the app removes them.
           </li>
           <li>We don't use advertising, cross-site tracking or social-media cookies.</li>
         </ul>
