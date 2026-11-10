@@ -54,7 +54,7 @@ function SignedInProfile({ name }: { name: string }) {
 function GuestProfile({ overlayOpen }: { overlayOpen: boolean }) {
   return (
     <>
-      <PageShell className={styles.guest}>
+      <PageShell className={styles.guest} as={overlayOpen ? 'div' : 'main'}>
         <div inert={overlayOpen} className={styles.guestContent}>
           <Logo size="lg" />
           <h1 className="visually-hidden">{t('Sign in to GoAwayGo')}</h1>

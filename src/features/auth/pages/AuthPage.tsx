@@ -23,7 +23,7 @@ export function AuthPage() {
 
   return (
     <>
-      <PageShell className={styles.page}>
+      <PageShell className={styles.page} as={overlayOpen ? 'div' : 'main'}>
         <div inert={overlayOpen} className={styles.screen}>
           <header className={styles.header}>
             <Logo size="lg" />

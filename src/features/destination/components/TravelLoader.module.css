@@ -24,7 +24,7 @@
 }
 
 .land {
-  fill: var(--color-secondary-light);
+  fill: var(--color-brand-orange-light);
   animation: turn 6s linear infinite;
 }
 

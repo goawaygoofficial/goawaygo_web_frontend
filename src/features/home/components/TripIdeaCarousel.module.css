@@ -165,6 +165,8 @@
   overflow: hidden;
   color: var(--color-white-muted);
   font-size: 0.625rem;
+  /* A 24px-high target (WCAG 2.5.8). */
+  line-height: 1.5rem;
   text-align: end;
   text-decoration: none;
   text-overflow: ellipsis;
