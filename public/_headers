@@ -8,6 +8,12 @@
   Referrer-Policy: strict-origin-when-cross-origin
   # Features the site doesn't use stay off.
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  # Browsers only ever use https for this site (a year; subdomains not included, they are separate services).
+  Strict-Transport-Security: max-age=31536000
+  # What the page may load and talk to (security review, 4.7). Images may come from any https host (partner logos,
+  # Wikimedia, Wanderbook photos); scripts only from here, Google Sign-In, PostHog and Cloudflare Web Analytics.
+  # Inline styles are allowed (React style attributes); inline scripts are not.
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://accounts.google.com/gsi/client https://static.cloudflareinsights.com https://eu-assets.i.posthog.com; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://api.goawaygo.com https://*.ingest.de.sentry.io https://eu.i.posthog.com https://eu-assets.i.posthog.com https://cloudflareinsights.com https://accounts.google.com https://downloads.goawaygo.com; frame-src https://accounts.google.com; worker-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
 
 # Vite puts a content hash in every asset file name, so these can be cached forever.
 /assets/*
