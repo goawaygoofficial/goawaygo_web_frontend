@@ -1,8 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import * as Sentry from '@sentry/react';
 import { App } from '@/app/App';
 import { CrashFallback } from '@/app/CrashFallback';
+import { ErrorBoundary } from '@/app/ErrorBoundary';
+import { prefetchTabs } from '@/app/router';
 import { initAnalytics } from '@/lib/analytics';
 import { detectLanguage, loadLanguage } from '@/lib/i18n';
 import { initMonitoring } from '@/lib/monitoring';
@@ -26,9 +27,10 @@ void loadLanguage(detectLanguage())
   .finally(() => {
     createRoot(container).render(
       <StrictMode>
-        <Sentry.ErrorBoundary fallback={<CrashFallback />}>
+        <ErrorBoundary fallback={<CrashFallback />}>
           <LanguageRoot>{(language) => <App key={language} />}</LanguageRoot>
-        </Sentry.ErrorBoundary>
+        </ErrorBoundary>
       </StrictMode>,
     );
+    prefetchTabs();
   });

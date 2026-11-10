@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react';
+import type * as SentryModule from '@sentry/react';
 import type { Breadcrumb, ErrorEvent } from '@sentry/react';
 
 /** Sentry project goawaygo-web (EU region). A DSN is a public identifier, not a secret. */
@@ -36,6 +36,9 @@ function scrubBreadcrumb(breadcrumb: Breadcrumb): Breadcrumb {
   return breadcrumb;
 }
 
+/** Sentry, loaded on its own after the page starts (staging and production only), not in the first download. */
+let sentry: Promise<typeof SentryModule> | null = null;
+
 /**
  * Error tracking for the deployed website: crashes and unhandled errors go to Sentry with the release (commit) and
  * environment. No personal data (see `dataCollection`); tokens are also cut out of URLs as a second safeguard.
@@ -43,6 +46,20 @@ function scrubBreadcrumb(breadcrumb: Breadcrumb): Breadcrumb {
 export function initMonitoring(): void {
   const env = environment(window.location.hostname);
   if (!env) return;
+  sentry = import('@sentry/react');
+  void sentry.then((Sentry) => {
+    init(Sentry, env);
+  });
+}
+
+/** A crash caught by the app's error boundary. */
+export function reportCrash(error: unknown, componentStack: string | null | undefined): void {
+  void sentry?.then((Sentry) => {
+    Sentry.captureException(error, { contexts: { react: { componentStack } } });
+  });
+}
+
+function init(Sentry: typeof SentryModule, env: string): void {
   Sentry.init({
     dsn: SENTRY_DSN,
     environment: env,
