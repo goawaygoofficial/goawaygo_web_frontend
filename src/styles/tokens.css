@@ -7,10 +7,21 @@
   /* ---- Brand colours ---- */
   --color-primary: #004aad;
   --color-primary-light: #7aaeeb;
-  --color-secondary: #f26c32;
-  --color-secondary-light: #ff8f5e;
-  --color-secondary-lighter: rgb(255 160 119);
-  --color-secondary-dark: rgb(236 84 29);
+  /* The brand oranges: the logo, icons, gradients and decoration. Text uses the colours below. */
+  --color-brand-orange: #f26c32;
+  --color-brand-orange-light: #ff8f5e;
+  --color-brand-orange-lighter: rgb(255 160 119);
+  --color-brand-orange-dark: rgb(236 84 29);
+
+  /* ---- Text colours that meet WCAG 2.2 AA (4.5:1) ---- */
+  /* Orange text on white, and orange behind white text (4.55:1). */
+  --color-secondary: #d0480d;
+  --color-secondary-dark: #a83a0b;
+  /* Orange text and icons on the blue background (4.8:1 or more on every blue surface). */
+  --color-secondary-light: #ffd0ba;
+  --color-secondary-lighter: #ffd0ba;
+  /* Fields and chips on the blue background, behind white text (4.6:1). */
+  --color-field: #2074d7;
   --color-white: #ffffff;
   --color-white-light: #f5f5f5;
   --color-error: #f44336; /* Material red 500 */
@@ -18,16 +29,18 @@
   --color-success: #4caf50; /* Material green 500 */
 
   /* ---- Derived / translucent colours ---- */
-  --color-white-muted: rgb(255 255 255 / 0.75);
+  /* 0.85, not less: still 4.5:1 on the blue and the dark orange (WCAG 1.4.3). */
+  --color-white-muted: rgb(255 255 255 / 0.85);
   --color-white-subtle: rgb(255 255 255 / 0.3);
   --color-white-faint: rgb(255 255 255 / 0.08);
   --color-white-glass: rgb(255 255 255 / 0.9);
   --color-backdrop: rgb(0 20 50 / 0.6);
   --color-shadow: rgb(0 0 0 / 0.26);
   --color-shadow-soft: rgb(0 0 0 / 0.14);
-  --color-focus-ring: var(--color-secondary-lighter);
+  --color-focus-ring: var(--color-brand-orange-lighter);
 
   /* ---- Gradients ---- */
+  /* Pills with blue or orange text on them: a soft peach keeps the text readable. */
   --gradient-orange-white: linear-gradient(
     to right,
     var(--color-white),
@@ -35,14 +48,18 @@
   );
   --gradient-sunset: linear-gradient(
     160deg,
-    var(--color-secondary-light),
-    var(--color-secondary-dark)
+    var(--color-brand-orange-light),
+    var(--color-brand-orange-dark)
   );
   --gradient-ember: linear-gradient(160deg, var(--color-secondary), var(--color-secondary-dark));
-  --gradient-coral: linear-gradient(160deg, var(--color-secondary-lighter), var(--color-secondary));
+  --gradient-coral: linear-gradient(
+    160deg,
+    var(--color-brand-orange-lighter),
+    var(--color-brand-orange)
+  );
   --gradient-peach: linear-gradient(
     160deg,
-    var(--color-secondary-light),
+    var(--color-brand-orange-light),
     var(--color-primary-light)
   );
   --gradient-image-scrim: linear-gradient(to top, rgb(0 0 0 / 0.55), transparent 60%);

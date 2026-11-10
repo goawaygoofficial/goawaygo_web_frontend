@@ -94,7 +94,7 @@
 }
 
 .linkAccent {
-  color: var(--color-secondary);
+  color: var(--color-secondary-light);
 }
 
 .link:not(:disabled):hover,

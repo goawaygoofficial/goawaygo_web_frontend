@@ -4,7 +4,7 @@
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   overflow: hidden;
   border-radius: var(--radius-lg);
-  background: var(--color-secondary);
+  background: var(--color-secondary-dark);
   box-shadow: var(--shadow-card);
 }
 
@@ -19,7 +19,7 @@
 }
 
 .estimateSide {
-  background: var(--color-secondary-light);
+  background: var(--color-secondary);
 }
 
 .big {
@@ -29,7 +29,7 @@
 }
 
 .small {
-  color: var(--color-white-muted);
+  color: var(--color-white);
   font-size: var(--font-size-xs);
 }
 

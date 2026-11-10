@@ -82,7 +82,7 @@
   min-width: 0;
   padding: var(--space-3) var(--space-4);
   overflow-wrap: anywhere;
-  background: var(--color-secondary);
+  background: var(--color-secondary-dark);
   font-weight: var(--font-weight-bold);
 }
 
@@ -94,7 +94,7 @@
   gap: var(--space-1);
   min-width: 0;
   padding: var(--space-3) var(--space-4);
-  background: var(--color-secondary-light);
+  background: var(--color-secondary);
 }
 
 .label {
@@ -106,7 +106,7 @@
 }
 
 .meta {
-  color: var(--color-white-muted);
+  color: var(--color-white);
   font-size: var(--font-size-xs);
 }
 
