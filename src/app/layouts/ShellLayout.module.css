@@ -4,8 +4,27 @@
   min-height: 100dvh;
 }
 
+.skip {
+  position: fixed;
+  z-index: var(--z-overlay);
+  top: var(--space-2);
+  inset-inline-start: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip:focus {
+  transform: none;
+}
+
 .content {
   flex: 1;
+  outline: none;
   /* Keep content clear of the fixed mobile tab bar. */
   padding-bottom: calc(var(--shell-bottom-offset) + env(safe-area-inset-bottom));
 }

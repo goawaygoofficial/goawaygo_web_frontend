@@ -8,6 +8,9 @@
 
 html {
   overflow-x: clip;
+  /* Whatever gets keyboard focus scrolls clear of the fixed tab bar (WCAG 2.4.11). */
+  scroll-padding-top: calc(var(--shell-top-offset) + var(--space-4));
+  scroll-padding-bottom: calc(var(--shell-bottom-offset) + var(--space-4));
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
