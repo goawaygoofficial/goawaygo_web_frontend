@@ -1,53 +1,87 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
-  clearStoredUser,
-  loadStoredUser,
-  saveStoredUser,
-  verifyUser,
-} from '@/features/auth/services/userService';
+  fetchCurrentUser,
+  restoreSession,
+  signOut as endServerSession,
+} from '@/features/auth/services/authService';
+import { setAccountCurrency } from '@/lib/i18n';
+import { getAccessToken, onSessionChange } from '@/lib/session';
+import { userFromDto } from '@/types';
 import type { User } from '@/types';
 import { UserContext } from './UserContext';
 import type { UserContextValue, UserStatus } from './UserContext';
 
-/** Web counterpart of the Flutter `UserProvider`: holds the signed-in user and persists it. */
+/** Key used by older versions, which stored the user object in localStorage. Removed on load. */
+const LEGACY_STORAGE_KEY = 'user';
+
+function removeLegacyStoredUser(): void {
+  try {
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
+  } catch {
+    // Storage unavailable (private mode): nothing to remove.
+  }
+}
+
+/**
+ * Holds the signed-in user. Nothing about the user is persisted in the browser: on load the session is restored
+ * from the HttpOnly refresh cookie, which also proves the user is still allowed in.
+ */
 export function UserProvider({ children }: { children: ReactNode }) {
-  const [initialUser] = useState(loadStoredUser);
-  const [user, setUserState] = useState<User | null>(initialUser);
-  const [status, setStatus] = useState<UserStatus>(initialUser ? 'restoring' : 'ready');
+  const [user, setUser] = useState<User | null>(null);
+  const [status, setStatus] = useState<UserStatus>('restoring');
 
   useEffect(() => {
-    if (!initialUser) return;
-    const controller = new AbortController();
-    verifyUser(initialUser.id, controller.signal)
-      .then((result) => {
-        if (result === 'invalid') {
-          clearStoredUser();
-          setUserState(null);
-        }
-        setStatus('ready');
+    removeLegacyStoredUser();
+    let active = true;
+    restoreSession()
+      .then((restored) => {
+        if (active) setUser(restored);
       })
       .catch(() => {
-        // Aborted on unmount — nothing to update.
+        // Server unreachable: continue signed out. The user can sign in once it is back.
+      })
+      .finally(() => {
+        if (active) setStatus('ready');
       });
     return () => {
-      controller.abort();
+      active = false;
     };
-  }, [initialUser]);
-
-  const setUser = useCallback((next: User) => {
-    saveStoredUser(next);
-    setUserState(next);
   }, []);
 
-  const clearUser = useCallback(() => {
-    clearStoredUser();
-    setUserState(null);
+  // Background refreshes update the user; an expired session (refresh rejected) signs out.
+  useEffect(
+    () =>
+      onSessionChange((dto) => {
+        setUser(dto ? userFromDto(dto) : null);
+      }),
+    [],
+  );
+
+  // Prices follow the account's currency while signed in.
+  useEffect(() => {
+    setAccountCurrency(user?.currency ?? null);
+  }, [user]);
+
+  const signIn = useCallback((next: User) => {
+    setUser(next);
+  }, []);
+
+  const signOut = useCallback(async () => {
+    await endServerSession();
+    setUser(null);
+  }, []);
+
+  const reloadUser = useCallback(async () => {
+    if (getAccessToken() === null) return;
+    const fresh = await fetchCurrentUser();
+    // Ignore the answer if the user signed out while it was loading.
+    if (getAccessToken() !== null) setUser(fresh);
   }, []);
 
   const value = useMemo<UserContextValue>(
-    () => ({ user, status, setUser, clearUser }),
-    [user, status, setUser, clearUser],
+    () => ({ user, status, signIn, signOut, reloadUser }),
+    [user, status, signIn, signOut, reloadUser],
   );
 
   return <UserContext value={value}>{children}</UserContext>;

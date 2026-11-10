@@ -1,0 +1,103 @@
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-10);
+  text-align: center;
+}
+
+.scene {
+  position: relative;
+  width: 12rem;
+  height: 12rem;
+}
+
+.globe {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.sea {
+  fill: var(--color-primary-light);
+}
+
+.land {
+  fill: var(--color-brand-orange-light);
+  animation: turn 6s linear infinite;
+}
+
+.orbit {
+  fill: none;
+  stroke: var(--color-white-subtle);
+  stroke-dasharray: 3 5;
+  stroke-width: 1;
+}
+
+/* The plane rides a ring the size of the dashed orbit (104 of the 120 units wide, so 6.67% in on each side). */
+.planeTrack {
+  position: absolute;
+  inset: 6.67%;
+  animation: circle 3.2s linear infinite;
+}
+
+.plane {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: inline-flex;
+  color: var(--color-white);
+  filter: drop-shadow(0 2px 3px var(--color-shadow));
+  /* Centred on the ring, nose pointing along the way it flies (clockwise). */
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.plane svg {
+  width: var(--size-icon-lg);
+  height: var(--size-icon-lg);
+}
+
+.place {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.message {
+  min-height: 1.5em;
+  color: var(--color-white-muted);
+  animation: fade-in var(--duration-slow) var(--ease-out);
+}
+
+@keyframes turn {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-76px);
+  }
+}
+
+@keyframes circle {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .land,
+  .planeTrack,
+  .message {
+    animation: none;
+  }
+}

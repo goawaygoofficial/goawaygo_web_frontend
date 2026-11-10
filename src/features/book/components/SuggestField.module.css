@@ -1,0 +1,62 @@
+.field {
+  position: relative;
+}
+
+.list {
+  position: absolute;
+  z-index: var(--z-overlay);
+  top: calc(100% + var(--space-1));
+  inset-inline-end: 0;
+  inset-inline-start: 0;
+  margin: 0;
+  padding: var(--space-2) 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  box-shadow: var(--shadow-card);
+  color: var(--color-primary);
+  list-style: none;
+}
+
+.list[hidden] {
+  display: none;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--size-touch);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+}
+
+.option svg {
+  flex-shrink: 0;
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+  color: var(--color-secondary);
+}
+
+.option:hover,
+.optionActive {
+  background: var(--color-white-light);
+}
+
+.optionText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.optionName {
+  font-weight: var(--font-weight-bold);
+}
+
+.optionContext {
+  overflow: hidden;
+  font-size: var(--font-size-sm);
+  opacity: 0.75;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

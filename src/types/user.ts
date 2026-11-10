@@ -5,6 +5,19 @@ export interface UserDto {
   email: string;
   profile_picture?: string | null;
   phone?: string | null;
+  email_verified?: boolean;
+  /** Reviews Wanderbook reports (set by hand in the database). */
+  is_admin?: boolean;
+  /** ISO 3166 country and ISO 4217 currency the user picked (4.6). */
+  country?: string | null;
+  currency?: string | null;
+  /** Whether the account has a password; otherwise "confirm it's you" uses Google. */
+  has_password?: boolean;
+  google_linked?: boolean;
+  /** A new email waiting for its confirmation link. */
+  pending_email?: string | null;
+  /** The language the account's pushes and emails use. */
+  language?: string;
 }
 
 /** User as the web app uses it. */
@@ -14,6 +27,13 @@ export interface User {
   email: string;
   profilePicture: string | null;
   phone: string | null;
+  emailVerified: boolean;
+  isAdmin: boolean;
+  country: string | null;
+  currency: string | null;
+  hasPassword: boolean;
+  googleLinked: boolean;
+  pendingEmail: string | null;
 }
 
 export function userFromDto(dto: UserDto): User {
@@ -23,20 +43,18 @@ export function userFromDto(dto: UserDto): User {
     email: dto.email,
     profilePicture: dto.profile_picture ?? null,
     phone: dto.phone ?? null,
+    emailVerified: dto.email_verified ?? false,
+    isAdmin: dto.is_admin ?? false,
+    country: dto.country ?? null,
+    currency: dto.currency ?? null,
+    // Older backends don't say: assume a password, which is what "confirm it's you" asked for before.
+    hasPassword: dto.has_password ?? true,
+    googleLinked: dto.google_linked ?? false,
+    pendingEmail: dto.pending_email ?? null,
   };
 }
 
-export function userToDto(user: User): UserDto {
-  return {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    profile_picture: user.profilePicture,
-    phone: user.phone,
-  };
-}
-
-/** Narrowing guard for untrusted JSON (localStorage, API responses). */
+/** Narrowing guard for untrusted JSON (API responses). */
 export function isUserDto(value: unknown): value is UserDto {
   if (typeof value !== 'object' || value === null) return false;
   const candidate = value as Record<string, unknown>;

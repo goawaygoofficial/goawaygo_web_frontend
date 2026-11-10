@@ -1,0 +1,30 @@
+.placeholder,
+.empty {
+  height: var(--size-hero-height);
+  border-radius: var(--radius-md);
+}
+
+.placeholder {
+  background: var(--color-white-faint);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border: 1px dashed var(--color-white-subtle);
+  text-align: center;
+}
+
+.emptyTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.emptyText {
+  color: var(--color-white-muted);
+  font-size: var(--font-size-sm);
+}

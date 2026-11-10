@@ -1,13 +1,21 @@
 import flightsImage from '@/assets/images/flights.png';
-import heroImage from '@/assets/images/home_image_01.png';
 import rentalsImage from '@/assets/images/rentals.png';
 import staysImage from '@/assets/images/stays.png';
 import { IconTile, PageHeader, PageShell } from '@/components';
+import { useSavedPlaces } from '@/features/discover';
+import { GetAppLink } from '@/features/getApp';
+import { LegalLinks } from '@/features/legal';
+import { useUnreadCount } from '@/features/notifications';
 import { routes } from '@/lib/routes';
+import { useUser } from '@/providers';
 import { DestinationSearch } from '../components/DestinationSearch';
+import { RecentSearchesBanner } from '../components/RecentSearchesBanner';
+import { TripIdeaCard } from '../components/TripIdeaCard';
 import { TripIdeaCarousel } from '../components/TripIdeaCarousel';
-import { PLACEHOLDER_TRIP_IDEAS } from '../data/tripIdeas';
+import carouselStyles from '../components/TripIdeaCarousel.module.css';
+import { useTripIdeas } from '../hooks/useTripIdeas';
 import styles from './HomePage.module.css';
+import { t } from '@/lib/i18n';
 
 const CATEGORIES = [
   { title: 'Flights', imageSrc: flightsImage, to: routes.flights },
@@ -16,25 +24,53 @@ const CATEGORIES = [
 ] as const;
 
 export function HomePage() {
+  const { user } = useUser();
+  const ideas = useTripIdeas();
+  const saved = useSavedPlaces();
+  const unread = useUnreadCount();
+
   return (
     <PageShell width="wide">
-      <PageHeader showNotifications />
-      <h1 className="visually-hidden">Goaway home</h1>
+      <PageHeader showNotifications unreadNotifications={unread} />
+      <h1 className="visually-hidden">{t('GoAwayGo home')}</h1>
 
       <div className={styles.top}>
         <div className={styles.planner}>
-          <nav aria-label="Book travel" className={styles.categories}>
+          <nav aria-label={t('Book travel')} className={styles.categories}>
             {CATEGORIES.map((category) => (
-              <IconTile key={category.title} {...category} />
+              <IconTile key={category.title} {...category} title={t(category.title)} size="lg" />
             ))}
           </nav>
           <DestinationSearch />
         </div>
-        <img src={heroImage} alt="" className={styles.hero} />
+        <RecentSearchesBanner />
       </div>
 
-      <h2 className={styles.ideasHeading}>IDEAS FOR YOUR NEXT TRIP ...</h2>
-      <TripIdeaCarousel ideas={PLACEHOLDER_TRIP_IDEAS} label="Ideas for your next trip" />
+      <h2 className={styles.ideasHeading}>{t('IDEAS FOR YOUR NEXT TRIP ...')}</h2>
+      {ideas === null && <p className={carouselStyles.status}>{t('Finding ideas…')}</p>}
+      {ideas?.length === 0 && (
+        <p className={carouselStyles.status}>
+          {t('New ideas are on their way. Check back in a minute.')}
+        </p>
+      )}
+      {ideas && ideas.length > 0 && (
+        <TripIdeaCarousel
+          ideas={ideas}
+          label={t('Ideas for your next trip')}
+          renderCard={(idea) => (
+            <TripIdeaCard
+              idea={idea}
+              signedIn={user !== null}
+              saved={saved.isSaved(idea.id)}
+              onSave={saved.save}
+            />
+          )}
+        />
+      )}
+      <div className={styles.getApp}>
+        <GetAppLink />
+      </div>
+      <LegalLinks />
     </PageShell>
   );
 }

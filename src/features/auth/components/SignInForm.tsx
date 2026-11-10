@@ -1,39 +1,43 @@
 import { useCallback, useState } from 'react';
 import type { SubmitEvent } from 'react';
-import { X } from 'lucide-react';
+
 import { Link } from 'react-router-dom';
 import emailIcon from '@/assets/icons/email.png';
-import { Button, TextField } from '@/components';
+import { Button, Icon, TextField } from '@/components';
 import { useAsyncAction } from '@/hooks';
+import { track } from '@/lib/analytics';
 import { toErrorMessage } from '@/lib/apiClient';
-import { routes } from '@/lib/routes';
 import { useDialog } from '@/providers';
+import type { AuthFlow } from '../authFlow';
 import { useCompleteSignIn } from '../hooks/useCompleteSignIn';
 import { signIn } from '../services/authService';
 import styles from './AuthForms.module.css';
+import { t } from '@/lib/i18n';
 
 interface SignInFormProps {
+  flow: AuthFlow;
   onClose: () => void;
 }
 
-/** Email + password sign-in (state B of the auth screen). */
-export function SignInForm({ onClose }: SignInFormProps) {
+/** Email + password sign-in (state B of the sign-in panel). */
+export function SignInForm({ flow, onClose }: SignInFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { showError } = useDialog();
-  const completeSignIn = useCompleteSignIn();
+  const completeSignIn = useCompleteSignIn(flow.redirectTo);
 
   const submit = useCallback(async () => {
     const trimmedEmail = email.trim();
     if (trimmedEmail.length === 0 || password.length === 0) {
-      await showError('Please enter both email and password.');
+      await showError(t('Please enter both email and password.'));
       return;
     }
     try {
       const result = await signIn({ email: trimmedEmail, password });
-      await completeSignIn(result, 'Welcome back');
+      track({ name: 'sign_in_completed', props: { method: 'email' } });
+      await completeSignIn(result, t('Welcome back'));
     } catch (error) {
-      await showError(toErrorMessage(error, 'Signin failed'));
+      await showError(toErrorMessage(error, t('Signin failed')));
       setEmail('');
       setPassword('');
     }
@@ -46,43 +50,48 @@ export function SignInForm({ onClose }: SignInFormProps) {
   };
 
   return (
-    <form className={styles.form} onSubmit={onSubmit} noValidate aria-label="Sign in with email">
+    <form
+      className={styles.form}
+      onSubmit={onSubmit}
+      noValidate
+      aria-label={t('Sign in with email')}
+    >
       <button
         type="button"
         className={styles.close}
-        aria-label="Close sign-in form"
+        aria-label={t('Close sign-in form')}
         onClick={onClose}
       >
-        <X aria-hidden="true" />
+        <Icon name="close_rounded" />
       </button>
       <TextField
-        label="Email address"
+        label={t('Email address')}
         type="email"
         autoComplete="email"
-        placeholder="Enter your Email address..."
+        placeholder={t('Enter your Email address...')}
         value={email}
         onChange={(event) => {
           setEmail(event.target.value);
         }}
       />
       <TextField
-        label="Password"
+        label={t('Password')}
         type="password"
         autoComplete="current-password"
-        placeholder="Password..."
+        placeholder={t('Password...')}
         value={password}
         onChange={(event) => {
           setPassword(event.target.value);
         }}
       />
-      <Link to={routes.forgotPassword} className={styles.forgot}>
-        Forgot Password?
+      <Link to={flow.forgotPasswordPath} className={styles.forgot}>
+        {t('Forgot Password?')}
       </Link>
       <Button type="submit" fullWidth loading={pending} icon={<img src={emailIcon} alt="" />}>
-        SIGN IN
+        {t('SIGN IN')}
       </Button>
-      <Link to={routes.register} className={styles.accentLink}>
-        Not Registered? Register
+      <Link to={flow.registerPath} className={styles.accentLink}>
+        {t('Not Registered? Register')}
       </Link>
     </form>
   );

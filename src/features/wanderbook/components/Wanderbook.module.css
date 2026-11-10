@@ -1,0 +1,134 @@
+/* Small pieces shared by the Wanderbook screens. */
+
+.avatar {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-round);
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar svg {
+  width: 60%;
+  height: 60%;
+}
+
+.personRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+.personLink {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.personText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.personName {
+  font-weight: var(--font-weight-bold);
+}
+
+.muted {
+  color: var(--color-white-muted);
+  font-size: var(--font-size-sm);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-touch);
+  height: var(--size-touch);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: transparent;
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.iconButton:hover:not(:disabled) {
+  background: var(--color-white-faint);
+}
+
+.iconButton svg {
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
+}
+
+.status {
+  margin: var(--space-6) 0;
+  color: var(--color-white-muted);
+  text-align: center;
+}
+
+.error {
+  color: var(--color-secondary-lighter);
+  font-size: var(--font-size-sm);
+}
+
+.loadMore {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-5) 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.field input,
+.field textarea,
+.field select {
+  padding: var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  color: var(--color-primary);
+  font: inherit;
+}
+
+.field textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.fieldLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.counter {
+  align-self: flex-end;
+  color: var(--color-white-muted);
+  font-size: var(--font-size-xs);
+}

@@ -1,4 +1,5 @@
 .bell {
+  position: relative;
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
@@ -9,14 +10,35 @@
   border: 0;
   border-radius: var(--radius-round);
   background: transparent;
-  color: var(--color-secondary-light);
+  color: var(--color-brand-orange-light);
+  text-decoration: none;
 }
 
-.bell:disabled {
-  opacity: 0.85;
-}
-
+/* Same size as the app's bell (7.5% of a phone's width). */
 .bell svg {
-  width: var(--size-icon-md);
-  height: var(--size-icon-md);
+  width: 2rem;
+  height: 2rem;
+}
+
+.bell:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Unread count, on the bell's top right. */
+.badge {
+  position: absolute;
+  top: 0.15rem;
+  inset-inline-end: 0.1rem;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.3rem;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  background: var(--color-secondary);
+  color: var(--color-white);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 0.85rem;
+  text-align: center;
 }

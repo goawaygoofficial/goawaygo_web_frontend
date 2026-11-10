@@ -1,21 +1,23 @@
 .heading {
-  margin-block: var(--space-2) var(--space-4);
+  margin-top: var(--space-2);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wide);
 }
 
+.context {
+  margin-bottom: var(--space-3);
+  color: var(--color-white-muted);
+}
+
+.plan {
+  margin-bottom: var(--space-4);
+}
+
 .layout {
   display: grid;
   gap: var(--space-5);
-}
-
-.hero {
-  width: 100%;
-  height: var(--size-hero-height);
-  border-radius: var(--radius-lg);
-  object-fit: cover;
 }
 
 .list {
@@ -26,21 +28,65 @@
   list-style: none;
 }
 
-/* Desktop: sticky image beside a two-column card list. */
+.busy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-white-faint);
+  text-align: center;
+}
+
+.busyTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.retry {
+  margin-top: var(--space-2);
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 32rem;
+  margin: var(--space-12) auto 0;
+  text-align: center;
+}
+
+.messageIcon {
+  width: var(--size-icon-lg);
+  height: var(--size-icon-lg);
+  color: var(--color-secondary-light);
+}
+
+.messageTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.messageText {
+  color: var(--color-white-muted);
+}
+
+/* Desktop: the photos stay in view beside the cards. */
 @media (min-width: 1024px) {
   .layout {
     grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
     align-items: start;
   }
 
-  .hero {
+  .photos {
     position: sticky;
     top: calc(var(--shell-top-offset) + var(--space-4));
-    height: auto;
-    aspect-ratio: 3 / 4;
   }
 
-  .list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .photos > ul {
+    height: auto;
+    aspect-ratio: 4 / 5;
   }
 }

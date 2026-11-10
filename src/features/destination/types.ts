@@ -1,9 +1,8 @@
-import type { LucideIcon } from 'lucide-react';
+import type { IconName } from '@/components';
 
-/** One row of the destination info list. */
-export interface DestinationInfoItem {
-  id: string;
-  icon: LucideIcon;
+/** How an info card is labelled on the page. */
+export interface CardMeta {
+  icon: IconName;
   title: string;
   subtitle: string;
 }

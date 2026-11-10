@@ -1,9 +1,10 @@
+import { Icon } from '@/components';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { usePrefersReducedMotion } from '@/hooks';
-import type { TripIdea } from '../types';
-import { TripIdeaCard } from './TripIdeaCard';
+import type { TripIdea } from '@/features/discover';
 import styles from './TripIdeaCarousel.module.css';
+import { t } from '@/lib/i18n';
 
 /** How much a card shrinks/fades per card-width away from the centre (same as the app's 0.3). */
 const FALLOFF_PER_CARD = 0.3;
@@ -13,13 +14,14 @@ const easeOut = (t: number) => 1 - (1 - t) * (1 - t);
 interface TripIdeaCarouselProps {
   ideas: readonly TripIdea[];
   label: string;
+  renderCard: (idea: TripIdea) => ReactNode;
 }
 
 /**
  * Horizontally scrolling, snap-to-centre carousel. The centred card is full size; neighbours
  * scale and fade with distance, like the app's `StackedCardCarousel`.
  */
-export function TripIdeaCarousel({ ideas, label }: TripIdeaCarouselProps) {
+export function TripIdeaCarousel({ ideas, label, renderCard }: TripIdeaCarouselProps) {
   const trackRef = useRef<HTMLUListElement>(null);
   const frameRef = useRef(0);
   const reducedMotion = usePrefersReducedMotion();
@@ -77,9 +79,9 @@ export function TripIdeaCarousel({ ideas, label }: TripIdeaCarouselProps) {
             key={idea.id}
             className={styles.slide}
             aria-roledescription="slide"
-            aria-label={`${String(index + 1)} of ${String(ideas.length)}`}
+            aria-label={t('{0} of {1}', index + 1, ideas.length)}
           >
-            <TripIdeaCard idea={idea} />
+            {renderCard(idea)}
           </li>
         ))}
       </ul>
@@ -87,22 +89,22 @@ export function TripIdeaCarousel({ ideas, label }: TripIdeaCarouselProps) {
         <button
           type="button"
           className={styles.control}
-          aria-label="Previous idea"
+          aria-label={t('Previous idea')}
           onClick={() => {
             step(-1);
           }}
         >
-          <ChevronLeft aria-hidden="true" />
+          <Icon name="arrow_back_ios_rounded" />
         </button>
         <button
           type="button"
           className={styles.control}
-          aria-label="Next idea"
+          aria-label={t('Next idea')}
           onClick={() => {
             step(1);
           }}
         >
-          <ChevronRight aria-hidden="true" />
+          <Icon name="arrow_forward_ios_rounded" />
         </button>
       </div>
     </section>

@@ -9,6 +9,8 @@
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-wide);
+  text-decoration: none;
+  cursor: pointer;
   transition:
     transform var(--duration-fast) var(--ease-standard),
     filter var(--duration-fast) var(--ease-standard),
@@ -24,9 +26,36 @@
 }
 
 .primary,
-.light {
+.light,
+.google {
   padding: var(--space-3) var(--space-10);
   box-shadow: var(--shadow-soft);
+}
+
+/* Secondary actions on the blue background (Edit profile, Cancel, Load more, ...). */
+.outline {
+  padding: var(--space-3) var(--space-10);
+  border: 1px solid var(--color-white-subtle);
+  background: transparent;
+  color: var(--color-white);
+}
+
+.outline:not(:disabled):hover {
+  background: var(--color-white-faint);
+}
+
+/* Compact actions in lists, headers and cards. */
+.sm {
+  gap: var(--space-1);
+  min-height: 2.25rem;
+  padding: var(--space-1) var(--space-4);
+  font-size: var(--font-size-sm);
+  letter-spacing: normal;
+}
+
+.sm .icon svg {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
 }
 
 .primary {
@@ -39,8 +68,16 @@
   color: var(--color-secondary);
 }
 
+/* "Continue with Google": as in the app, white with orange text and the G logo, in normal case. */
+.google {
+  background: var(--color-white);
+  color: var(--color-secondary);
+  letter-spacing: normal;
+}
+
 .primary:not(:disabled):hover,
-.light:not(:disabled):hover {
+.light:not(:disabled):hover,
+.google:not(:disabled):hover {
   filter: brightness(1.06);
 }
 
@@ -57,7 +94,7 @@
 }
 
 .linkAccent {
-  color: var(--color-secondary);
+  color: var(--color-secondary-light);
 }
 
 .link:not(:disabled):hover,
@@ -84,7 +121,7 @@
   width: var(--size-icon-sm);
   height: var(--size-icon-sm);
   border: var(--size-focus-ring) solid currentColor;
-  border-right-color: transparent;
+  border-inline-end-color: transparent;
   border-radius: var(--radius-round);
   animation: spin 0.8s linear infinite;
 }

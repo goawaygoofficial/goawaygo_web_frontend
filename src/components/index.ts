@@ -1,13 +1,17 @@
-export { Button } from './Button/Button';
+export { Button, ButtonLink } from './Button/Button';
 export { ChoiceChips } from './ChoiceChips/ChoiceChips';
+export { MultiChoiceChips } from './ChoiceChips/MultiChoiceChips';
 export { CounterField } from './CounterField/CounterField';
 export { DateField } from './DateField/DateField';
 export { FeatureList } from './FeatureList/FeatureList';
 export { FieldPair } from './FieldPair/FieldPair';
 export { FormRow } from './FormRow/FormRow';
+export { Icon } from './Icon/Icon';
+export type { IconName } from './Icon/Icon';
 export { IconTile } from './IconTile/IconTile';
 export { Logo } from './Logo/Logo';
 export { MaskIcon } from './MaskIcon/MaskIcon';
+export { MorphLink } from './MorphLink/MorphLink';
 export { NotificationButton } from './NotificationButton/NotificationButton';
 export { PageHeader } from './PageHeader/PageHeader';
 export { PageShell } from './PageShell/PageShell';

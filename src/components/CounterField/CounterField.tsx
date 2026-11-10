@@ -1,8 +1,9 @@
 import { useId } from 'react';
 import type { ReactNode } from 'react';
-import { Minus, Plus } from 'lucide-react';
+import { Icon } from '../Icon/Icon';
 import { FieldShell } from '../FieldShell/FieldShell';
 import styles from './CounterField.module.css';
+import { t } from '@/lib/i18n';
 
 interface CounterFieldProps {
   label: string;
@@ -28,13 +29,13 @@ export function CounterField({ label, icon, value, onChange }: CounterFieldProps
       <button
         type="button"
         className={styles.step}
-        aria-label={`Decrease ${label.toLowerCase()}`}
+        aria-label={t('Decrease {0}', label.toLowerCase())}
         disabled={value <= 0}
         onClick={() => {
           set(value - 1);
         }}
       >
-        <Minus aria-hidden="true" />
+        <Icon name="remove" />
       </button>
       <input
         id={id}
@@ -50,12 +51,12 @@ export function CounterField({ label, icon, value, onChange }: CounterFieldProps
       <button
         type="button"
         className={styles.step}
-        aria-label={`Increase ${label.toLowerCase()}`}
+        aria-label={t('Increase {0}', label.toLowerCase())}
         onClick={() => {
           set(value + 1);
         }}
       >
-        <Plus aria-hidden="true" />
+        <Icon name="add" />
       </button>
     </FieldShell>
   );

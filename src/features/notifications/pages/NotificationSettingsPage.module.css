@@ -1,0 +1,130 @@
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.titleIcon {
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
+  color: var(--color-secondary-light);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+}
+
+.intro {
+  margin-top: var(--space-3);
+  color: var(--color-white-muted);
+  text-align: center;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  padding: var(--space-5) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-white-faint);
+  text-align: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-white-faint);
+  cursor: pointer;
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.name {
+  font-weight: var(--font-weight-bold);
+}
+
+.description {
+  color: var(--color-white-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* A pill switch: grey track, orange when on. */
+.switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 1.75rem;
+  margin: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-white-subtle);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  appearance: none;
+}
+
+.switch::after {
+  position: absolute;
+  top: 0.2rem;
+  inset-inline-start: 0.2rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: var(--radius-round);
+  background: var(--color-white);
+  box-shadow: var(--shadow-soft);
+  content: '';
+  transition: transform 0.2s ease;
+}
+
+.switch:checked {
+  background: var(--color-secondary);
+}
+
+.switch:checked::after {
+  transform: translateX(1.25rem);
+}
+
+.switch:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.switch:disabled {
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch,
+  .switch::after {
+    transition: none;
+  }
+}
+
+.error {
+  margin-top: var(--space-3);
+  color: var(--color-secondary-lighter);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+}

@@ -43,5 +43,14 @@
 }
 
 .input::placeholder {
-  color: var(--color-secondary);
+  color: var(--color-secondary-dark);
+}
+
+.results {
+  max-width: var(--layout-content-max);
+  margin: var(--space-2) auto 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  box-shadow: var(--shadow-card);
 }

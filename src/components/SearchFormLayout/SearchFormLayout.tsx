@@ -5,11 +5,14 @@ import { Button } from '../Button/Button';
 import { PageHeader } from '../PageHeader/PageHeader';
 import { PageShell } from '../PageShell/PageShell';
 import styles from './SearchFormLayout.module.css';
+import { t } from '@/lib/i18n';
 
 interface SearchFormLayoutProps {
   title: string;
   imageSrc: string;
   onSubmit: () => void;
+  /** Shown above the Search button when the form can't be searched yet ("Pick a destination"). */
+  error?: string;
   children: ReactNode;
 }
 
@@ -17,7 +20,13 @@ interface SearchFormLayoutProps {
  * Shared chrome for the Flights / Stays / Rentals booking forms:
  * logo + back arrow, title row with the category image, the form body and the orange Search button.
  */
-export function SearchFormLayout({ title, imageSrc, onSubmit, children }: SearchFormLayoutProps) {
+export function SearchFormLayout({
+  title,
+  imageSrc,
+  onSubmit,
+  error,
+  children,
+}: SearchFormLayoutProps) {
   const goBack = useBack(routes.home);
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
@@ -34,8 +43,13 @@ export function SearchFormLayout({ title, imageSrc, onSubmit, children }: Search
       </div>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         {children}
+        {error && (
+          <p className={styles.error} role="alert">
+            {error}
+          </p>
+        )}
         <div className={styles.actions}>
-          <Button type="submit">Search</Button>
+          <Button type="submit">{t('Search')}</Button>
         </div>
       </form>
     </PageShell>
