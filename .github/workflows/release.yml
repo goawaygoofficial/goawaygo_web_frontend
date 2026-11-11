@@ -1,7 +1,8 @@
 # Release (MVP 2, 5.2): every merge into develop whose CI passes becomes a version, vMAJOR.MINOR.PATCH, with a GitHub
 # Release (.github/scripts/next-version.sh: feat → minor, fix and the rest → patch, "!" or BREAKING CHANGE → major).
-# The website is built once, for that version, and the build is attached to the release; every environment
-# serves that same build (the API address comes from the address the site is served at, src/lib/env.ts).
+# The website is built once, for that version, and the build is attached to the release, then deployed to dev
+# (deploy.yml). test and prod serve that same build later, through controller.yaml (5.4): the API address comes from
+# the address the site is served at (src/lib/env.ts).
 name: Release
 
 on:
@@ -96,3 +97,13 @@ jobs:
         run: |
           (cd dist && zip -qr "../goawaygo-web-$VERSION.zip" .)
           gh release upload "$VERSION" "goawaygo-web-$VERSION.zip" --clobber
+
+  dev:
+    name: Deploy to dev
+    needs: [version, build]
+    if: vars.CLOUDFLARE_ACCOUNT_ID != ''
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+    with:
+      environment: dev
+      version: ${{ needs.version.outputs.version }}
