@@ -1,0 +1,79 @@
+name: Deploy
+
+# Deploys one version of the website to one environment (MVP 2, 5.3): the build attached to that version's GitHub
+# Release, so dev, test and prod serve exactly the same files. Called by Release (every version → dev) and by
+# controller.yaml (a tested version → test → prod, 5.4).
+#
+# Each environment is a GitHub environment (dev, test, prod) whose variable PAGES_PROJECT names its Cloudflare Pages
+# project (goawaygo-web-dev, -test, -prod; Direct Upload). Repository secret CLOUDFLARE_API_TOKEN (Pages: Edit only) and
+# variable CLOUDFLARE_ACCOUNT_ID let wrangler upload. test and prod need the owner's approval before a deploy starts.
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: dev, test or prod
+        required: true
+        type: string
+      version:
+        description: A released version, e.g. v1.6.0
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.version }} to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ vars.WEB_URL }}
+    concurrency:
+      group: deploy-${{ inputs.environment }}
+      cancel-in-progress: false
+    steps:
+      - name: Check the environment is set up
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+          VERSION: ${{ inputs.version }}
+          PAGES_PROJECT: ${{ vars.PAGES_PROJECT }}
+        run: |
+          [[ "$ENVIRONMENT" =~ ^(dev|test|prod)$ ]] || { echo "::error::Unknown environment $ENVIRONMENT"; exit 1; }
+          [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "::error::Not a version: $VERSION"; exit 1; }
+          [ -n "$PAGES_PROJECT" ] || { echo "::error::The GitHub environment $ENVIRONMENT has no PAGES_PROJECT yet"; exit 1; }
+
+      - name: Download the version's build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          gh release download "$VERSION" --repo "${{ github.repository }}" --pattern "goawaygo-web-$VERSION.zip"
+          mkdir dist && unzip -q "goawaygo-web-$VERSION.zip" -d dist
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 24
+
+      - name: Upload to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          PAGES_PROJECT: ${{ vars.PAGES_PROJECT }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          npx --yes wrangler@4.145.0 pages deploy dist --project-name "$PAGES_PROJECT" --branch main \
+            --commit-message "$VERSION" --commit-dirty=true
+
+      - name: Smoke test
+        env:
+          WEB_URL: ${{ vars.WEB_URL }}
+        run: |
+          [ -n "$WEB_URL" ] || { echo "No WEB_URL for this environment yet: skipped."; exit 0; }
+          for attempt in 1 2 3 4 5 6; do
+            status="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$WEB_URL/" || true)"
+            [ "$status" = "200" ] && { echo "Website ${{ inputs.version }} is up in ${{ inputs.environment }} ($WEB_URL)"; exit 0; }
+            echo "Attempt $attempt: HTTP $status, retrying"; sleep 10
+          done
+          echo "Website did not answer" >&2; exit 1
