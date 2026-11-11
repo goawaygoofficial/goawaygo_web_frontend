@@ -1,5 +1,6 @@
 import type * as SentryModule from '@sentry/react';
 import type { Breadcrumb, ErrorEvent } from '@sentry/react';
+import { deploymentFor } from './env';
 
 /** Sentry project goawaygo-web (EU region). A DSN is a public identifier, not a secret. */
 const SENTRY_DSN =
@@ -7,9 +8,7 @@ const SENTRY_DSN =
 
 /** Which deployment this is, by address. Local development and PR previews send nothing (Sentry, analytics). */
 export function environment(hostname: string): string | null {
-  if (hostname === 'staging.goawaygo.com') return 'staging';
-  if (hostname === 'goawaygo.com' || hostname === 'www.goawaygo.com') return 'production';
-  return null;
+  return deploymentFor(hostname)?.environment ?? null;
 }
 
 /** Single-use tokens and OAuth values in URLs (emailed links, Google's popup) never leave the browser. */

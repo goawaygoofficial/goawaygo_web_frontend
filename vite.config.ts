@@ -33,9 +33,12 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
-    // The commit Cloudflare Pages is building, so errors in Sentry show which release they came from.
+    // The version (built once by the Release workflow) or the commit Cloudflare Pages is building, so errors in
+    // Sentry show which release they came from.
     define: {
-      __APP_RELEASE__: JSON.stringify(process.env.CF_PAGES_COMMIT_SHA ?? 'local'),
+      __APP_RELEASE__: JSON.stringify(
+        process.env.APP_VERSION ?? process.env.CF_PAGES_COMMIT_SHA ?? 'local',
+      ),
     },
     resolve: {
       alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
