@@ -127,7 +127,7 @@ jobs:
           K6_BROWSER_HEADLESS: 'true'
         run: |
           mkdir -p reports
-          k6 run --summary-export reports/summary.json k6/web/pages.js
+          k6 run --include-system-env-vars --summary-export reports/summary.json k6/web/pages.js
 
       - name: Keep the report
         if: always()
