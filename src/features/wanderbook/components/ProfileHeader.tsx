@@ -1,68 +1,94 @@
+import type { ReactNode } from 'react';
 import { useRef } from 'react';
-import { Camera, Pencil, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import backdropImage from '@/assets/images/home_image_01.png';
+import { Icon } from '@/components';
+import { routes } from '@/lib/routes';
 import { useCollapseOnScroll } from '../hooks/useCollapseOnScroll';
-import type { WanderbookProfile } from '../types';
+import type { Profile } from '../types';
 import styles from './ProfileHeader.module.css';
+import { t } from '@/lib/i18n';
 
-/** Backdrop, avatar, name, stats and bio. Scales, fades and slides away as the page scrolls. */
-export function ProfileHeader({ profile }: { profile: WanderbookProfile }) {
+/**
+ * Cover, profile photo, name, home town, counts and bio, with the actions under it (Follow, Edit profile, ...).
+ * Scales, fades and slides away as the page scrolls.
+ */
+export function ProfileHeader({
+  profile,
+  children,
+  morphAvatar = false,
+  placeholder = false,
+}: {
+  profile: Profile;
+  children?: ReactNode;
+  /** The photo is where a person's photo in a list morphs to (not on your own tab, where it could appear twice). */
+  morphAvatar?: boolean;
+  /** Only the photo, cover and name (drawn at once from a preview while the profile loads). */
+  placeholder?: boolean;
+}) {
   const ref = useRef<HTMLElement>(null);
   useCollapseOnScroll(ref);
+  const listsVisible = profile.canSeePosts;
 
-  const stats = [
-    { label: 'Posts', count: profile.stats.posts },
-    { label: 'Followers', count: profile.stats.followers },
-    { label: 'Following', count: profile.stats.following },
-  ];
+  const stat = (label: string, count: number, list?: 'followers' | 'following') => {
+    const content = (
+      <>
+        <dt className={styles.statLabel}>{label}</dt>
+        <dd className={styles.statCount}>{count}</dd>
+      </>
+    );
+    return (
+      <div key={label} className={styles.stat}>
+        {list && listsVisible ? (
+          <Link to={routes.wanderbookPeople(profile.publicId, list)} className={styles.statLink}>
+            {content}
+          </Link>
+        ) : (
+          content
+        )}
+      </div>
+    );
+  };
 
   return (
     <header ref={ref} className={styles.header}>
       <div className={styles.backdrop}>
-        <img src={backdropImage} alt="" className={styles.backdropImage} />
-        <button
-          type="button"
-          className={styles.camera}
-          disabled
-          aria-label="Change cover photo (coming soon)"
-          title="Coming soon"
+        <img src={profile.coverUrl ?? backdropImage} alt="" className={styles.backdropImage} />
+        <span
+          className={styles.avatar}
+          style={morphAvatar ? { viewTransitionName: `avatar-${profile.publicId}` } : undefined}
+          aria-hidden="true"
         >
-          <Camera aria-hidden="true" />
-        </button>
-        <span className={styles.avatar} aria-hidden="true">
-          <User />
+          {profile.photoUrl ? (
+            <img src={profile.photoUrl} alt="" className={styles.avatarImage} />
+          ) : (
+            <Icon name="person" />
+          )}
         </span>
       </div>
 
-      <h1 className={styles.name}>{profile.name}</h1>
-      <p className={styles.location}>{profile.location}</p>
+      <h1 className={styles.name}>
+        {profile.name}
+        {profile.isPrivate && (
+          <span className={styles.lock} title={t('Private profile')}>
+            <Icon name="lock" />
+            <span className="visually-hidden">{t('(private profile)')}</span>
+          </span>
+        )}
+      </h1>
+      {profile.homeTown && <p className={styles.location}>{profile.homeTown}</p>}
 
-      <div className={styles.details}>
-        <dl className={styles.stats}>
-          {stats.map((stat) => (
-            <div key={stat.label} className={styles.stat}>
-              <dt className={styles.statLabel}>{stat.label}</dt>
-              <dd className={styles.statCount}>{stat.count}</dd>
-            </div>
-          ))}
-        </dl>
-        <div className={styles.bioRow}>
-          <p className={styles.bio}>
-            {profile.bio.map((line) => (
-              <span key={line}>{line}</span>
-            ))}
-          </p>
-          <button
-            type="button"
-            className={styles.edit}
-            disabled
-            aria-label="Edit bio (coming soon)"
-            title="Coming soon"
-          >
-            <Pencil aria-hidden="true" />
-          </button>
+      {!placeholder && (
+        <div className={styles.details}>
+          <dl className={styles.stats}>
+            {stat(t('Posts'), profile.posts)}
+            {stat(t('Followers'), profile.followers, 'followers')}
+            {stat(t('Following'), profile.following, 'following')}
+          </dl>
+          {profile.bio && <p className={styles.bio}>{profile.bio}</p>}
+          {children && <div className={styles.actionsRow}>{children}</div>}
         </div>
-      </div>
+      )}
     </header>
   );
 }

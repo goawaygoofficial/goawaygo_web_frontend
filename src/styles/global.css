@@ -8,6 +8,9 @@
 
 html {
   overflow-x: clip;
+  /* Whatever gets keyboard focus scrolls clear of the fixed tab bar (WCAG 2.4.11). */
+  scroll-padding-top: calc(var(--shell-top-offset) + var(--space-4));
+  scroll-padding-bottom: calc(var(--shell-bottom-offset) + var(--space-4));
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -77,7 +80,27 @@ a {
   border: 0;
 }
 
+/*
+ * Photo morphs between pages (MorphLink + matching view-transition-name): the photo flies to its place on the next
+ * page while the rest cross-fades.
+ */
+::view-transition-group(*) {
+  animation-duration: var(--duration-slow);
+  animation-timing-function: var(--ease-standard);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-base);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+
   *,
   *::before,
   *::after {

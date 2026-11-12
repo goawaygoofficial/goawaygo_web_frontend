@@ -22,14 +22,15 @@ export function SplashPage() {
     };
   }, []);
 
-  // Wait for both the splash timer and the stored-user check before deciding where to go.
+  // Wait for both the splash timer and the session restore before deciding where to go.
+  // (SessionGate already waits for the restore; the status check keeps this page correct on its own.)
   if (elapsed && status === 'ready') {
     return <Navigate to={user ? routes.home : routes.auth} replace />;
   }
 
   return (
     <main className={styles.splash} aria-busy="true">
-      <h1 className="visually-hidden">Goaway</h1>
+      <h1 className="visually-hidden">GoAwayGo</h1>
       <Logo size="splash" className={styles.logo} />
       <WaveBackground />
     </main>

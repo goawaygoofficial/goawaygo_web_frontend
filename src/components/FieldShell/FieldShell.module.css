@@ -27,12 +27,13 @@
 }
 
 .tinted {
-  background: var(--color-primary-light);
+  background: var(--color-field);
+  box-shadow: inset 0 0 0 1px var(--color-white-muted);
   color: var(--color-white);
 }
 
 .accent {
-  background: var(--color-secondary-light);
+  background: var(--color-secondary);
   color: var(--color-white);
 }
 
@@ -42,8 +43,8 @@
 }
 
 .icon svg {
-  width: var(--size-icon-md);
-  height: var(--size-icon-md);
+  width: var(--size-icon-lg);
+  height: var(--size-icon-lg);
 }
 
 .body {
@@ -84,6 +85,14 @@
 .control input::placeholder {
   color: currentColor;
   opacity: 0.8;
+}
+
+/* On the coloured fields, faded text would be too faint to read (WCAG 1.4.3). */
+.tinted .caption,
+.accent .caption,
+.tinted .control input::placeholder,
+.accent .control input::placeholder {
+  opacity: 1;
 }
 
 .tinted input,

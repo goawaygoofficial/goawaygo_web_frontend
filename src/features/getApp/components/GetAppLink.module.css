@@ -1,0 +1,22 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch);
+  padding: var(--space-2) var(--space-5);
+  border: 2px solid var(--color-white-subtle);
+  border-radius: var(--radius-pill);
+  color: var(--color-white);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.link:hover {
+  border-color: var(--color-white);
+}
+
+.icon {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+  color: var(--color-success);
+}

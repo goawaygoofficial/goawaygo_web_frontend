@@ -1,42 +1,113 @@
-import { useState } from 'react';
-import { PageShell } from '@/components';
+import { useEffect, useState } from 'react';
+import { Button, ButtonLink, Icon, PageShell } from '@/components';
+import { routes } from '@/lib/routes';
 import { useUser } from '@/providers';
+import { FeedList } from '../components/FeedList';
 import { PostGrid } from '../components/PostGrid';
 import { ProfileHeader } from '../components/ProfileHeader';
-import { WanderbookSearchBar } from '../components/WanderbookSearchBar';
 import { panelId, tabId } from '../components/tabIds';
+import shared from '../components/Wanderbook.module.css';
+import { WanderbookSearchBar } from '../components/WanderbookSearchBar';
 import { WanderbookTabs } from '../components/WanderbookTabs';
-import { MOCK_FEED_POSTS, MOCK_MY_POSTS, MOCK_WANDERBOOK_PROFILE } from '../data/mockWanderbook';
-import type { WanderbookProfile, WanderbookTab } from '../types';
+import { usePaged } from '../hooks/usePaged';
+import { getFeed, getMyProfile, getProfilePosts } from '../services/wanderbookService';
+import type { Profile, WanderbookTab } from '../types';
 import styles from './WanderbookPage.module.css';
+import { t } from '@/lib/i18n';
 
+/**
+ * The Wanderbook tab. Signed in: your profile, "My Wanderposts" (your grid) and "Feed" (everyone's newest posts).
+ * Signed out: the feed (anyone can view) and an invitation to sign in and post.
+ */
 export function WanderbookPage() {
-  const { user } = useUser();
+  const { user, status } = useUser();
   const [tab, setTab] = useState<WanderbookTab>('mine');
-  const [query, setQuery] = useState('');
+  const [me, setMe] = useState<{ userId: number; profile: Profile } | null>(null);
+  const userId = user?.id ?? null;
 
-  const profile: WanderbookProfile = user
-    ? { ...MOCK_WANDERBOOK_PROFILE, name: user.name }
-    : MOCK_WANDERBOOK_PROFILE;
+  useEffect(() => {
+    if (userId === null) return;
+    const controller = new AbortController();
+    getMyProfile(controller.signal)
+      .then((profile) => {
+        setMe({ userId, profile });
+      })
+      .catch(() => {
+        // The feed still works; the header just doesn't show.
+      });
+    return () => {
+      controller.abort();
+    };
+  }, [userId]);
 
-  const needle = query.trim().toLowerCase();
-  const posts = (tab === 'mine' ? MOCK_MY_POSTS : MOCK_FEED_POSTS).filter((post) =>
-    post.location.toLowerCase().includes(needle),
+  const profile = me?.userId === userId ? me.profile : null;
+  const shownTab: WanderbookTab = user ? tab : 'feed';
+  const feed = usePaged(`feed|${String(userId)}|${status}`, getFeed);
+  const mine = usePaged(`mine|${profile?.publicId ?? ''}`, (cursor, signal) =>
+    profile
+      ? getProfilePosts(profile.publicId, cursor, signal)
+      : Promise.resolve({ items: [], nextCursor: null }),
   );
 
   return (
     <PageShell width="wide" className={styles.page}>
-      <WanderbookSearchBar value={query} onChange={setQuery} />
-      <div className={styles.headerColumn}>
-        <ProfileHeader profile={profile} />
+      <WanderbookSearchBar />
+      <div className={styles.column}>
+        {user && profile && (
+          <ProfileHeader profile={profile}>
+            <ButtonLink to={routes.wanderbookNewPost} size="sm">
+              <Icon name="add_a_photo" />
+              {t('New post')}
+            </ButtonLink>
+            <ButtonLink to={routes.wanderbookEditProfile} variant="outline" size="sm">
+              {t('Edit profile')}
+            </ButtonLink>
+            {profile.followRequests !== null && profile.followRequests > 0 && (
+              <ButtonLink to={routes.wanderbookRequests} variant="outline" size="sm">
+                {t('Requests ({0})', profile.followRequests)}
+              </ButtonLink>
+            )}
+          </ProfileHeader>
+        )}
+        {!user && status !== 'restoring' && (
+          <section className={styles.invite}>
+            <h1 className={styles.inviteTitle}>{t('Your travel scrapbook')}</h1>
+            <p className={shared.muted}>
+              {t('Keep your trip photos as they are, tag the places, and follow other travellers.')}
+            </p>
+            <ButtonLink to={routes.profile} size="sm">
+              {t('Sign in to post')}
+            </ButtonLink>
+          </section>
+        )}
+
+        {user && <WanderbookTabs value={shownTab} onChange={setTab} />}
+        <section
+          id={user ? panelId(shownTab) : undefined}
+          role={user ? 'tabpanel' : undefined}
+          aria-labelledby={user ? tabId(shownTab) : undefined}
+          aria-label={user ? undefined : t('Feed')}
+        >
+          {shownTab === 'mine' ? (
+            mine.items ? (
+              <>
+                <PostGrid posts={mine.items} empty={t('Share your first trip: tap New post.')} />
+                {mine.hasMore && (
+                  <div className={shared.loadMore}>
+                    <Button type="button" variant="outline" size="sm" onClick={mine.loadMore}>
+                      {t('Load more')}
+                    </Button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <p className={shared.status}>{mine.error ?? t('Loading…')}</p>
+            )
+          ) : (
+            <FeedList feed={feed} empty={t('No posts yet. Be the first to share a trip!')} />
+          )}
+        </section>
       </div>
-      <WanderbookTabs value={tab} onChange={setTab} />
-      <section id={panelId(tab)} role="tabpanel" aria-labelledby={tabId(tab)}>
-        <p className={styles.sampleNote}>
-          Sample posts — Wanderbook isn’t connected to the backend yet.
-        </p>
-        <PostGrid posts={posts} />
-      </section>
     </PageShell>
   );
 }

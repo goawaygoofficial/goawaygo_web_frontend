@@ -1,32 +1,26 @@
+import { ApiError } from './apiError';
 import { env } from './env';
+import { endSession, getAccessToken, refreshSession } from './session';
+import { getLanguage } from './i18n';
+import { isRecord } from './isRecord';
+import { t } from '@/lib/i18n';
+
+export { ApiError } from './apiError';
 
 const NETWORK_ERROR_MESSAGE = 'Unable to connect to server.';
-
-/** Error thrown for any failed API call. `status` is 0 when the server could not be reached. */
-export class ApiError extends Error {
-  readonly status: number;
-
-  constructor(message: string, status: number) {
-    super(message);
-    this.name = 'ApiError';
-    this.status = status;
-  }
-}
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 interface RequestOptions {
   method?: HttpMethod;
   body?: unknown;
+  /** A file upload (multipart); sent instead of a JSON `body`. */
+  form?: FormData;
   /** Status that counts as success. Defaults to any 2xx. */
   expectedStatus?: number;
   /** Message used when the server gives no `message` / `error` in its error body. */
   fallbackError: string;
   signal?: AbortSignal;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
 }
 
 /** The single place error messages are pulled out of a response body: message → error → fallback. */
@@ -39,6 +33,10 @@ function extractErrorMessage(body: unknown, fallback: string): string {
   return fallback;
 }
 
+function extractErrorCode(body: unknown): string | null {
+  return isRecord(body) && typeof body.error === 'string' ? body.error : null;
+}
+
 async function parseBody(response: Response): Promise<unknown> {
   const text = await response.text();
   if (text.length === 0) return null;
@@ -49,36 +47,68 @@ async function parseBody(response: Response): Promise<unknown> {
   }
 }
 
-/**
- * Performs a JSON request against the Goaway backend and returns the parsed body.
- * The caller supplies the expected response type; validate/map it at the service boundary.
- */
-export async function apiRequest<T>(path: string, options: RequestOptions): Promise<T> {
-  const { method = 'GET', body, expectedStatus, fallbackError, signal } = options;
-
-  let response: Response;
+async function send(
+  path: string,
+  options: RequestOptions,
+  token: string | null,
+): Promise<Response> {
+  const { method = 'GET', body, form, signal } = options;
+  const headers: Record<string, string> = {};
+  // A multipart body sets its own Content-Type (with the boundary).
+  if (body !== undefined && form === undefined) headers['Content-Type'] = 'application/json';
+  if (token) headers.Authorization = `Bearer ${token}`;
+  // The backend answers in this language (errors, AI content, the bell).
+  headers['Accept-Language'] = getLanguage();
   try {
-    response = await fetch(`${env.apiBaseUrl}${path}`, {
+    return await fetch(`${env.apiBaseUrl}${path}`, {
       method,
-      headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
-      body: body === undefined ? undefined : JSON.stringify(body),
+      headers,
+      body: form ?? (body === undefined ? undefined : JSON.stringify(body)),
+      // Sends the HttpOnly refresh cookie to /api/auth/*; the browser never exposes it to this code.
+      credentials: 'include',
       signal,
     });
   } catch (cause) {
     if (cause instanceof DOMException && cause.name === 'AbortError') throw cause;
-    throw new ApiError(NETWORK_ERROR_MESSAGE, 0);
+    throw new ApiError(t(NETWORK_ERROR_MESSAGE), 0);
+  }
+}
+
+/**
+ * Performs a JSON request against the GoAwayGo backend and returns the parsed body.
+ * Sends the access token when signed in. If the server answers 401 to an authenticated request (the 20-minute
+ * token expired), it refreshes the session once and retries; if that fails the user is signed out.
+ * The caller supplies the expected response type; validate/map it at the service boundary.
+ */
+export async function apiRequest<T>(path: string, options: RequestOptions): Promise<T> {
+  const token = getAccessToken();
+  let response = await send(path, options, token);
+
+  if (response.status === 401 && token !== null) {
+    const refreshed = await refreshSession().catch(() => null);
+    if (refreshed) {
+      response = await send(path, options, refreshed.accessToken);
+    } else {
+      endSession();
+    }
   }
 
   const data = await parseBody(response);
-  const ok = expectedStatus === undefined ? response.ok : response.status === expectedStatus;
+  const ok =
+    options.expectedStatus === undefined ? response.ok : response.status === options.expectedStatus;
   if (!ok) {
-    throw new ApiError(extractErrorMessage(data, fallbackError), response.status);
+    throw new ApiError(
+      extractErrorMessage(data, t(options.fallbackError)),
+      response.status,
+      extractErrorCode(data),
+    );
   }
   return data as T;
 }
 
 /** Turns any thrown value into a message that is safe to show to the user. */
-export function toErrorMessage(error: unknown, fallback = 'Something went wrong.'): string {
-  if (error instanceof Error && error.message.length > 0) return error.message;
+export function toErrorMessage(error: unknown, fallback = t('Something went wrong.')): string {
+  // Messages made here are English keys; the backend's are already translated (t leaves them as they are).
+  if (error instanceof Error && error.message.length > 0) return t(error.message);
   return fallback;
 }

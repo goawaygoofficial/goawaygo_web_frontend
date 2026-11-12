@@ -11,9 +11,18 @@
 }
 
 .guest {
+  padding-top: var(--space-8);
+}
+
+.guestContent {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-6);
-  padding-top: var(--space-8);
+}
+
+/* Same panel as the sign-in page (Google + SIGN IN, or the email form), at the sign-in page's width. */
+.guestActions {
+  width: 100%;
+  max-width: calc(var(--layout-content-max) * 0.75);
 }

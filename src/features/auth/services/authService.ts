@@ -1,20 +1,27 @@
-import { ApiError, apiRequest } from '@/lib/apiClient';
+import { apiRequest } from '@/lib/apiClient';
+import { endSession, refreshSession, startSession } from '@/lib/session';
+import type { SessionDto } from '@/lib/session';
 import { isUserDto, userFromDto } from '@/types';
+import type { User } from '@/types';
 import type {
-  AuthResponseDto,
   AuthResult,
   ForgotPasswordRequest,
-  GoogleSignInRequest,
+  GoogleCodeSignInRequest,
+  ResetPasswordRequest,
   SignInRequest,
   SignUpRequest,
 } from '../types';
+import { t } from '@/lib/i18n';
 
-function toAuthResult(data: AuthResponseDto, fallbackError: string): AuthResult {
-  if (!isUserDto(data.user)) throw new ApiError(fallbackError, 200);
-  return { user: userFromDto(data.user), token: data.token };
+function toAuthResult(session: SessionDto): AuthResult {
+  return {
+    user: userFromDto(session.user),
+    expiresIn: session.expiresIn,
+    restored: session.accountRestored === true,
+  };
 }
 
-/** Manual sign-up. The backend answers 201 and sends a verification email. */
+/** Creates an account (201). The user signs in afterwards. */
 export async function signUp(request: SignUpRequest): Promise<void> {
   await apiRequest<unknown>('/api/auth/signup', {
     method: 'POST',
@@ -24,33 +31,111 @@ export async function signUp(request: SignUpRequest): Promise<void> {
   });
 }
 
+/** Email + password. The refresh token arrives as an HttpOnly cookie; the access token stays in memory. */
 export async function signIn(request: SignInRequest): Promise<AuthResult> {
-  const fallbackError = 'Signin failed';
-  const data = await apiRequest<AuthResponseDto>('/api/auth/signin', {
+  const data = await apiRequest<unknown>('/api/auth/signin', {
     method: 'POST',
     body: request,
     expectedStatus: 200,
-    fallbackError,
+    fallbackError: 'Signin failed',
   });
-  return toAuthResult(data, fallbackError);
+  return toAuthResult(startSession(data));
 }
 
-export async function signInWithGoogle(request: GoogleSignInRequest): Promise<AuthResult> {
-  const fallbackError = 'Google Signin failed';
-  const data = await apiRequest<AuthResponseDto>('/api/auth/google-signin', {
+/**
+ * Google sign-in with the one-time authorization code from Google's popup. The backend exchanges it with Google
+ * (using the client secret, which never reaches the browser) and verifies the resulting ID token.
+ */
+export async function signInWithGoogleCode(request: GoogleCodeSignInRequest): Promise<AuthResult> {
+  const data = await apiRequest<unknown>('/api/auth/google-signin/code', {
     method: 'POST',
     body: request,
     expectedStatus: 200,
-    fallbackError,
+    fallbackError: 'Google Signin failed',
   });
-  return toAuthResult(data, fallbackError);
+  return toAuthResult(startSession(data));
 }
 
-export async function resetPassword(request: ForgotPasswordRequest): Promise<void> {
+/**
+ * Restores the session after a page load from the refresh cookie.
+ * Resolves `null` when signed out; rejects only if the server is unreachable.
+ */
+export async function restoreSession(): Promise<User | null> {
+  const session = await refreshSession();
+  return session ? userFromDto(session.user) : null;
+}
+
+/** Revokes the refresh token on the server and clears the local session, even if the server is unreachable. */
+export async function signOut(): Promise<void> {
+  try {
+    await apiRequest<unknown>('/api/auth/logout', {
+      method: 'POST',
+      expectedStatus: 204,
+      fallbackError: 'Sign out failed',
+    });
+  } catch {
+    // Still sign out locally; the server-side token expires on its own.
+  } finally {
+    endSession();
+  }
+}
+
+/** Asks for a password-reset link by email. The answer never reveals whether the account exists. */
+export async function requestPasswordReset(request: ForgotPasswordRequest): Promise<void> {
   await apiRequest<unknown>('/api/auth/forgot-password', {
     method: 'POST',
     body: request,
-    expectedStatus: 200,
     fallbackError: 'Failed to request password reset',
   });
+}
+
+/**
+ * Sets a new password with the token from the emailed link. The backend signs out every session of the account,
+ * so the user signs in again afterwards.
+ */
+export async function resetPassword(request: ResetPasswordRequest): Promise<void> {
+  await apiRequest<unknown>('/api/auth/reset-password', {
+    method: 'POST',
+    body: request,
+    expectedStatus: 204,
+    fallbackError: 'Failed to reset password',
+  });
+}
+
+/** Confirms the email address with the token from the emailed link. Works signed in or not. */
+export async function verifyEmail(token: string): Promise<void> {
+  await apiRequest<unknown>('/api/auth/verify-email', {
+    method: 'POST',
+    body: { token },
+    expectedStatus: 204,
+    fallbackError: 'Failed to verify email',
+  });
+}
+
+/** Makes a new email the account's, with the token from the link sent to it (4.6). Works signed in or not. */
+export async function confirmEmailChange(token: string): Promise<void> {
+  await apiRequest<unknown>('/api/auth/confirm-email', {
+    method: 'POST',
+    body: { token },
+    expectedStatus: 204,
+    fallbackError: 'Could not confirm your new email.',
+  });
+}
+
+/** Emails a new verification link to the signed-in user. */
+export async function resendVerificationEmail(): Promise<void> {
+  await apiRequest<unknown>('/api/auth/resend-verification', {
+    method: 'POST',
+    expectedStatus: 202,
+    fallbackError: 'Failed to send verification email',
+  });
+}
+
+/** The signed-in user, fresh from the server (e.g. after the email was verified in another tab). */
+export async function fetchCurrentUser(): Promise<User> {
+  const data = await apiRequest<unknown>('/api/users/me', {
+    fallbackError: 'Failed to load profile',
+  });
+  if (!isUserDto(data)) throw new Error(t('Unexpected response from server.'));
+  return userFromDto(data);
 }

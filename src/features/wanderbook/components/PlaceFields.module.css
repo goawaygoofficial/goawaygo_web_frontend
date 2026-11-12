@@ -1,0 +1,56 @@
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+}
+
+@media (min-width: 640px) {
+  .row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.suggestions {
+  margin: 0;
+  padding: var(--space-1) 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  list-style: none;
+}
+
+.suggestions button {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  background: transparent;
+  color: var(--color-primary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.suggestions button:hover {
+  background: var(--color-white-light);
+}
+
+.remove {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-white-muted);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  text-decoration: underline;
+  cursor: pointer;
+}
