@@ -1,3 +1,4 @@
+import { usePageMeta } from '@/lib/pageMeta';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { Button, ButtonLink, Icon, PageHeader, PageShell } from '@/components';
 import { PhotoSlider, placeContext } from '@/features/discover';
@@ -27,6 +28,13 @@ export function DestinationInfoPage() {
   const [search] = useSearchParams();
   const goBack = useBack(routes.home);
   const placeName = place.trim();
+  usePageMeta(
+    t('{0} travel guide', placeName),
+    t(
+      '{0}: visa and entry rules, the best time to visit, top attractions, where to stay, food and getting around.',
+      placeName,
+    ),
+  );
   const id = search.get('id');
   const query: DestinationQuery = id ? { placeId: id } : { text: search.get('q') ?? placeName };
   const { state, retry } = useDestination(query);

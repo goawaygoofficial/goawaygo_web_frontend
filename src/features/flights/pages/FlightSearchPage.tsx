@@ -1,3 +1,4 @@
+import { usePageMeta } from '@/lib/pageMeta';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import flightsImage from '@/assets/images/flights.png';
@@ -84,6 +85,10 @@ function problem(form: FlightSearchRequest): string | null {
 }
 
 export function FlightSearchPage() {
+  usePageMeta(
+    t('Book Your Flights'),
+    t('Compare flight prices for your dates and book with trusted partners.'),
+  );
   useEffect(() => {
     track({ name: 'travel_category_opened', props: { category: 'flights' } });
   }, []);

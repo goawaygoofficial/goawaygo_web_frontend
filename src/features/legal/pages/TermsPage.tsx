@@ -1,3 +1,5 @@
+import { usePageMeta } from '@/lib/pageMeta';
+import { t } from '@/lib/i18n';
 import { Link } from 'react-router-dom';
 import { legal } from '@/lib/legal';
 import { routes } from '@/lib/routes';
@@ -9,6 +11,7 @@ import { LegalPage, LegalSection, MailLink } from '../components/LegalPage';
  * "Law and disputes").
  */
 export function TermsPage() {
+  usePageMeta(t('Terms of Use'), t('The terms for using the GoAwayGo website and app.'));
   return (
     <LegalPage
       title="Terms of Use"

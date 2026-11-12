@@ -1,3 +1,4 @@
+import { usePageMeta } from '@/lib/pageMeta';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import rentalsImage from '@/assets/images/rentals.png';
@@ -47,6 +48,7 @@ function problem(form: RentalSearchRequest): string | null {
  * age are chosen on the partner's site).
  */
 export function RentalSearchPage() {
+  usePageMeta(t('Rentals'), t('Find car rentals for your trip with trusted partners.'));
   useEffect(() => {
     track({ name: 'travel_category_opened', props: { category: 'rentals' } });
   }, []);
