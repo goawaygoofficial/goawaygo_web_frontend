@@ -10,8 +10,8 @@ environment, uploaded by GitHub Actions (Direct Upload: Cloudflare doesn't build
 | test        | a version from dev (Controller, owner)  | `goawaygo-web-test` | `test.goawaygo.com`            | `https://api-test.goawaygo.com` |
 | prod        | a version from test (Controller, owner) | `goawaygo-web-prod` | `goawaygo.com` (+ `www` → 301) | `https://api.goawaygo.com`      |
 
-`staging.goawaygo.com` (the pre-launch site) is a Cloudflare Redirect Rule to `goawaygo.com` with the path kept, on a
-placeholder DNS record, so old links and the first beta app builds keep working. It has no project behind it.
+These three are the only website addresses (`www.goawaygo.com` is a Redirect Rule to `goawaygo.com`). The pre-launch
+`staging.goawaygo.com` was deleted on 14 Nov 2026.
 
 The website and API must stay on the same registrable domain (`goawaygo.com`): the login refresh cookie is
 `SameSite=Strict`.
