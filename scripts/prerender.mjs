@@ -77,9 +77,24 @@ function serve(shell) {
 
 /**
  * Renders `pages` (paths) with the app shell and saves each as dist/<path>.html.
- * @param {(page: import('playwright').Page) => Promise<void>} [prepare] e.g. to route API calls
+ * @param {object} [options]
+ * @param {(page: import('playwright').Page) => Promise<void>} [options.prepare] e.g. to route API calls (default: block)
+ * @param {(page: import('playwright').Page) => Promise<void>} [options.ready] waits until the page's content is there
+ * @param {number} [options.pauseMs] wait between pages (rate limits)
+ * @param {boolean} [options.skipFailures] a page that doesn't render is left out instead of stopping the run
+ * @param {'networkidle' | 'load'} [options.waitUntil] pages that keep loading photos use 'load' and `ready`
  */
-export async function render(pages, { prepare, timeout = 30_000 } = {}) {
+export async function render(
+  pages,
+  {
+    prepare,
+    ready,
+    pauseMs = 0,
+    skipFailures = false,
+    timeout = 30_000,
+    waitUntil = 'networkidle',
+  } = {},
+) {
   const shell = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
   const server = serve(shell);
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
@@ -87,34 +102,53 @@ export async function render(pages, { prepare, timeout = 30_000 } = {}) {
   const browser = await chromium.launch();
   const done = [];
   try {
-    const context = await browser.newContext({ locale: 'en-GB' });
+    // English, India: prices and exchange rates in rupees, like most of GoAwayGo's travellers see them.
+    const context = await browser.newContext({ locale: 'en-IN' });
     // A visitor who answered the analytics question and reads English: no banner in the captured HTML.
     await context.addInitScript(() => {
       window.localStorage.setItem('goawaygo.analyticsConsent', 'denied');
       window.localStorage.setItem('goawaygo.language', 'en');
     });
-    for (const pagePath of pages) {
-      const page = await context.newPage();
-      if (prepare) {
-        await prepare(page);
-      } else {
-        await page.route(
-          (url) => url.pathname.startsWith('/api/'),
-          (route) => route.abort(),
-        );
+    for (const [index, pagePath] of pages.entries()) {
+      if (index > 0 && pauseMs > 0) {
+        await new Promise((resolve) => setTimeout(resolve, pauseMs));
       }
-      await page.goto(base + pagePath, { waitUntil: 'networkidle', timeout });
-      // pageMeta.ts has run once the title carries the site name after the page's own title.
-      await page.waitForFunction(() => document.title.includes(' · '), null, { timeout });
-      const html = (await page.content()).replaceAll(base, '');
-      const target = path.join(DIST, `${pagePath.replace(/^\/+/, '')}.html`);
-      fs.mkdirSync(path.dirname(target), { recursive: true });
-      fs.writeFileSync(target, html);
-      done.push(pagePath);
-      console.log(
-        `rendered ${pagePath} (${Math.round(html.length / 1024)} KB): ${await page.title()}`,
-      );
-      await page.close();
+      const page = await context.newPage();
+      try {
+        if (prepare) {
+          await prepare(page);
+        } else {
+          await page.route(
+            (url) => url.pathname.startsWith('/api/'),
+            (route) => route.abort(),
+          );
+        }
+        await page.goto(base + pagePath, { waitUntil, timeout });
+        // pageMeta.ts has run once the title carries the site name after the page's own title.
+        await page.waitForFunction(() => document.title.includes(' · '), null, { timeout });
+        if (ready) {
+          await ready(page);
+        }
+        const html = (await page.content()).replaceAll(base, '');
+        // The file is named after the path alone (Cloudflare Pages serves /destination/Paris from destination/Paris.html).
+        const target = path.join(
+          DIST,
+          `${decodeURIComponent(pagePath.split('?')[0]).replace(/^\/+/, '')}.html`,
+        );
+        fs.mkdirSync(path.dirname(target), { recursive: true });
+        fs.writeFileSync(target, html);
+        done.push(pagePath);
+        console.log(
+          `rendered ${pagePath} (${Math.round(html.length / 1024)} KB): ${await page.title()}`,
+        );
+      } catch (error) {
+        if (!skipFailures) {
+          throw error;
+        }
+        console.log(`skipped ${pagePath}: ${String(error).split('\n')[0]}`);
+      } finally {
+        await page.close();
+      }
     }
   } finally {
     await browser.close();
@@ -128,7 +162,7 @@ export function writeSitemap(extra = []) {
   const today = new Date().toISOString().slice(0, 10);
   const entries = [...PAGES, ...extra].map(
     ([pagePath, changefreq]) =>
-      `  <url><loc>${SITE}${encodeURI(pagePath)}</loc><lastmod>${today}</lastmod><changefreq>${changefreq}</changefreq></url>`,
+      `  <url><loc>${SITE}${pagePath.replaceAll('&', '&amp;')}</loc><lastmod>${today}</lastmod><changefreq>${changefreq}</changefreq></url>`,
   );
   fs.writeFileSync(
     path.join(DIST, 'sitemap.xml'),
