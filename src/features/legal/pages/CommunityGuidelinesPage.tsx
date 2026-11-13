@@ -1,3 +1,5 @@
+import { usePageMeta } from '@/lib/pageMeta';
+import { t } from '@/lib/i18n';
 import { Link } from 'react-router-dom';
 import { legal } from '@/lib/legal';
 import { routes } from '@/lib/routes';
@@ -8,6 +10,10 @@ import { LegalPage, LegalSection, MailLink } from '../components/LegalPage';
  * part of the Terms of Use. To be reviewed by a lawyer with the other legal pages before the public launch.
  */
 export function CommunityGuidelinesPage() {
+  usePageMeta(
+    t('Community Guidelines'),
+    t('The rules for sharing in Wanderbook, the GoAwayGo travel community.'),
+  );
   return (
     <LegalPage
       title="Community Guidelines"

@@ -1,3 +1,5 @@
+import { usePageMeta } from '@/lib/pageMeta';
+import { t } from '@/lib/i18n';
 import { Link } from 'react-router-dom';
 import { legal } from '@/lib/legal';
 import { routes } from '@/lib/routes';
@@ -12,6 +14,10 @@ import styles from '../components/LegalPage.module.css';
  * public launch.
  */
 export function PrivacyPage() {
+  usePageMeta(
+    t('Privacy Policy'),
+    t('How GoAwayGo collects, uses and protects your personal data, and your rights.'),
+  );
   return (
     <LegalPage
       title="Privacy Policy"

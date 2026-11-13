@@ -1,3 +1,4 @@
+import { usePageMeta } from '@/lib/pageMeta';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import staysImage from '@/assets/images/stays.png';
@@ -45,6 +46,10 @@ function problem(form: StaySearchRequest): string | null {
 }
 
 export function StaySearchPage() {
+  usePageMeta(
+    t('Stays'),
+    t('Find hotels and places to stay for your dates with trusted booking partners.'),
+  );
   useEffect(() => {
     track({ name: 'travel_category_opened', props: { category: 'stays' } });
   }, []);

@@ -1,3 +1,4 @@
+import { usePageMeta } from '@/lib/pageMeta';
 import { Icon, PageHeader, PageShell } from '@/components';
 import { LegalLinks } from '@/features/legal';
 import { useBack } from '@/hooks';
@@ -18,6 +19,10 @@ function megabytes(bytes: number): string {
  * `appLinks.playStoreUrl` is set, only the Play Store.
  */
 export function DownloadPage() {
+  usePageMeta(
+    t('Get the Android app'),
+    t('Get the GoAwayGo Android app: travel guides, trip plans and bookings in your pocket.'),
+  );
   const goBack = useBack(routes.home);
 
   return (
