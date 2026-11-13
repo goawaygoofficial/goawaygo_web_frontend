@@ -31,3 +31,9 @@ jobs:
 
       - name: Typecheck, lint, format check, build
         run: npm run check
+
+      # The release pre-renders the public pages (5.7): a page that can't render fails here first.
+      - name: Pre-render the public pages
+        run: |
+          npx playwright install --with-deps chromium
+          node scripts/prerender.mjs

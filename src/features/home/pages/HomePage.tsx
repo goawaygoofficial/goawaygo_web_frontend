@@ -1,3 +1,4 @@
+import { usePageMeta } from '@/lib/pageMeta';
 import flightsImage from '@/assets/images/flights.png';
 import rentalsImage from '@/assets/images/rentals.png';
 import staysImage from '@/assets/images/stays.png';
@@ -24,6 +25,12 @@ const CATEGORIES = [
 ] as const;
 
 export function HomePage() {
+  usePageMeta(
+    t('Home'),
+    t(
+      'Plan trips anywhere in the world: AI travel guides, day-by-day trip plans, flight prices, stays and car rentals.',
+    ),
+  );
   const { user } = useUser();
   const ideas = useTripIdeas();
   const saved = useSavedPlaces();
