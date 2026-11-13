@@ -47,11 +47,19 @@ const rendered = await render(paths, {
       (url) => url.pathname.startsWith('/api/'),
       async (route) => {
         const url = new URL(route.request().url());
-        const response = await route.fetch({
-          url: `${API_URL}${url.pathname}${url.search}`,
-          headers: proxyHeaders(route.request().headers()),
-        });
-        await route.fulfill({ response });
+        try {
+          const response = await route.fetch({
+            url: `${API_URL}${url.pathname}${url.search}`,
+            headers: proxyHeaders(route.request().headers()),
+            // AI cards can take a while (the lite models answer when the day's best-model quota is used up).
+            timeout: 120_000,
+          });
+          await route.fulfill({ response });
+        } catch (error) {
+          // A slow or failed answer fails this page only (it is skipped), never the whole run.
+          console.log(`  API call for ${url.pathname} failed: ${String(error).split('\n')[0]}`);
+          await route.abort().catch(() => {});
+        }
       },
     );
   },
