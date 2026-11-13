@@ -40,16 +40,16 @@ npm install
 npm run dev               # http://localhost:5173
 ```
 
-| Script                            | What it does                                                         |
-| --------------------------------- | -------------------------------------------------------------------- |
-| `npm run dev`                     | Dev server with HMR                                                  |
-| `npm run dev:dev-api`             | Dev server using the dev API (no local backend; signed out only)     |
-| `npm run build`                   | Type-check (`tsc -b`) and production build into `dist/`              |
-| `npm run preview`                 | Serve the production build locally                                   |
-| `npm run typecheck`               | TypeScript only                                                      |
-| `npm run lint`                    | ESLint                                                               |
-| `npm run format` / `format:check` | Prettier                                                             |
-| `npm run check`                   | typecheck + lint + format check + build (run before every PR)        |
+| Script                            | What it does                                                     |
+| --------------------------------- | ---------------------------------------------------------------- |
+| `npm run dev`                     | Dev server with HMR                                              |
+| `npm run dev:dev-api`             | Dev server using the dev API (no local backend; signed out only) |
+| `npm run build`                   | Type-check (`tsc -b`) and production build into `dist/`          |
+| `npm run preview`                 | Serve the production build locally                               |
+| `npm run typecheck`               | TypeScript only                                                  |
+| `npm run lint`                    | ESLint                                                           |
+| `npm run format` / `format:check` | Prettier                                                         |
+| `npm run check`                   | typecheck + lint + format check + build (run before every PR)    |
 
 ### Environment variables
 
