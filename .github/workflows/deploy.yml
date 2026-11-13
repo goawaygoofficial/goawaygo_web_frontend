@@ -90,6 +90,9 @@ jobs:
 
       - name: Render the destination pages
         if: inputs.environment == 'prod'
+        # The site is already live with this version: a problem here leaves the destination pages for the next deploy,
+        # it never fails the deploy.
+        continue-on-error: true
         working-directory: site-source
         run: |
           npm ci --no-audit --no-fund
@@ -100,7 +103,7 @@ jobs:
           cp -r dist/destination dist/sitemap.xml ../dist/ 2>/dev/null || echo "No destination page rendered this time"
 
       - name: Upload again with the destination pages
-        if: inputs.environment == 'prod'
+        if: inputs.environment == 'prod' && hashFiles('dist/destination/*.html') != ''
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
