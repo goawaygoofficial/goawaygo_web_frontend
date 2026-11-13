@@ -1,43 +1,55 @@
 # Deployment
 
-The website is a static build (`npm run build` → `dist/`) hosted on **Cloudflare Pages**, which builds and deploys
-it from GitHub on every push. The backend's setup is in `goawaygo_backend/docs/deployment.md`.
+The website is a static build (`npm run build` → `dist/`) hosted on **Cloudflare Pages**, one project per
+environment, uploaded by GitHub Actions (Direct Upload: Cloudflare doesn't build anything). The backend's setup is in
+`goawaygo_backend/docs/deployment.md`; how a version moves up is in `RELEASING.md`.
 
-| Environment | Branch    | Pages project           | Address                | API                        |
-| ----------- | --------- | ----------------------- | ---------------------- | -------------------------- |
-| Staging     | `develop` | `goawaygo-web-frontend` | `staging.goawaygo.com` | `https://api.goawaygo.com` |
-| Production  | `main`    | `goawaygo` (later)      | `goawaygo.com`         | decided at launch          |
+| Environment | Gets                                    | Pages project       | Address                        | API                             |
+| ----------- | --------------------------------------- | ------------------- | ------------------------------ | ------------------------------- |
+| dev         | every version (Release)                 | `goawaygo-web-dev`  | `dev.goawaygo.com`             | `https://api-dev.goawaygo.com`  |
+| test        | a version from dev (Controller, owner)  | `goawaygo-web-test` | `test.goawaygo.com`            | `https://api-test.goawaygo.com` |
+| prod        | a version from test (Controller, owner) | `goawaygo-web-prod` | `goawaygo.com` (+ `www` → 301) | `https://api.goawaygo.com`      |
+
+`staging.goawaygo.com` (the pre-launch site) is a Cloudflare Redirect Rule to `goawaygo.com` with the path kept, on a
+placeholder DNS record, so old links and the first beta app builds keep working. It has no project behind it.
 
 The website and API must stay on the same registrable domain (`goawaygo.com`): the login refresh cookie is
 `SameSite=Strict`.
 
 ## How it works
 
-- Cloudflare's GitHub app watches this repository. A push to `develop` builds and deploys staging; every PR also
-  gets its own preview address (`<hash>.goawaygo-web-frontend.pages.dev`).
+- **One build for every environment.** Release (`release.yml`) builds each version once and attaches the zip to its
+  GitHub Release; `deploy.yml` uploads that same zip to the environment's Pages project. The API address and the
+  environment's name come from the address the site is served at (`src/lib/env.ts`), so nothing is baked in per
+  environment.
+- **prod only:** the deploy also pre-renders the 50 destination pages from prod's data
+  (`scripts/prerender-destinations.mjs`, about 50 minutes) and uploads again with them and the full sitemap.
 - Pages serves `index.html` for any unknown path (there is no `404.html`), so React Router handles deep links such
   as `/reset-password?token=…`.
-- [`public/_headers`](../public/_headers) adds security headers and long-term caching for hashed assets.
+- [`public/_headers`](../public/_headers) adds security headers, long-term caching for hashed assets and
+  `X-Robots-Tag: noindex` everywhere except `goawaygo.com`.
 - Node version comes from `.nvmrc`.
-- `VITE_*` settings are baked in at build time. They are public values (the API address and the Google client
-  ID): never put a secret in a `VITE_` variable.
 
-## One-time setup (staging)
+## GitHub settings
 
-1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**. Authorise the Cloudflare GitHub
-   app for the `goawaygoofficial` account, **only for the `goawaygo_web_frontend` repository**.
-2. Project name `goawaygo-web-frontend` (staging), production branch **`develop`**.
-3. Build settings: framework preset **None**, build command `npm run build`, output directory `dist`.
-4. Environment variables (Production):
-   - `VITE_API_BASE_URL` = `https://api.goawaygo.com`
-   - `VITE_GOOGLE_CLIENT_ID` = the Web client ID (same value as in `.env.example`)
-5. **Save and Deploy**. Then **Custom domains → Set up a custom domain** → `staging.goawaygo.com` (Cloudflare adds
-   the DNS record itself).
-6. Google sign-in: Google Cloud project `goaway-483709` → Google Auth Platform → Clients → **GoAwayGo Web** → add
-   `https://staging.goawaygo.com` to **Authorised JavaScript origins**.
-7. Preview deployments (PRs) can't sign in with Google or reach the API (different origin); test those flows on
-   staging after merge.
+- Repository secret `CLOUDFLARE_API_TOKEN` (Cloudflare token "GitHub Pages deploy": Account → Cloudflare Pages →
+  Edit, nothing else) and variable `CLOUDFLARE_ACCOUNT_ID`.
+- Environments `dev`, `test`, `prod`, each with `PAGES_PROJECT` and `WEB_URL` (the table above). test and prod need
+  the owner's approval.
+- Repository variable `PROD_WEB_URL` = `https://goawaygo.com` (the prod smoke tests).
+
+## Setting up an environment (once)
+
+1. Cloudflare → **Workers & Pages → Create → Pages → Upload assets** (Direct Upload), project name from the table.
+   Upload anything once (the first deploy replaces it).
+2. **Custom domains → Set up a custom domain** → the address from the table (Cloudflare adds the DNS record).
+3. Google sign-in: Google Cloud project `goaway-483709` → Google Auth Platform → Clients → **Goaway Web** → add the
+   address to **Authorised JavaScript origins**.
+4. The GitHub environment with `PAGES_PROJECT` and `WEB_URL`; the backend's `CORS_ALLOWED_ORIGINS` for that
+   environment includes the address.
 
 ## Rollback
 
-Workers & Pages → `goawaygo-web-frontend` → Deployments → pick an earlier deployment → **Rollback to this deployment**.
+Actions → **Controller** → Run workflow on `main` (prod) or `test`, with an earlier version that passed there
+(`RELEASING.md`). In an emergency: Workers & Pages → the environment's project → Deployments → an earlier deployment →
+**Rollback to this deployment**.

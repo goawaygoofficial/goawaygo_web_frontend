@@ -46,7 +46,7 @@ export type AnalyticsEvent =
 
 const env = environment(window.location.hostname);
 
-/** Analytics runs only on staging/production with a key; everywhere else there is nothing to ask about. */
+/** Analytics runs only on the deployed sites (dev, test, production) with a key; elsewhere there is nothing to ask. */
 export const analyticsAvailable = POSTHOG.key !== '' && env !== null;
 
 // ---- consent store (read by React with useSyncExternalStore) ----
