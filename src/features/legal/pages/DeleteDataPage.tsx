@@ -1,3 +1,5 @@
+import { usePageMeta } from '@/lib/pageMeta';
+import { t } from '@/lib/i18n';
 import { Link } from 'react-router-dom';
 import { legal } from '@/lib/legal';
 import { routes } from '@/lib/routes';
@@ -8,6 +10,10 @@ import { LegalPage, LegalSection, MailLink } from '../components/LegalPage';
  * or an email. Also the account-deletion URL that Google Play requires for the app's listing.
  */
 export function DeleteDataPage() {
+  usePageMeta(
+    t('Delete my data'),
+    t('How to delete your GoAwayGo account and your personal data.'),
+  );
   return (
     <LegalPage
       title="Delete my data"

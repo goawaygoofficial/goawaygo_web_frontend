@@ -90,6 +90,12 @@ jobs:
           APP_VERSION: ${{ needs.version.outputs.version }}
         run: npm run build
 
+      # Public pages as finished HTML for search engines and partners, plus sitemap.xml and robots.txt (5.7).
+      - name: Pre-render the public pages
+        run: |
+          npx playwright install --with-deps chromium
+          node scripts/prerender.mjs
+
       - name: Attach the build to the release
         env:
           GH_TOKEN: ${{ github.token }}
