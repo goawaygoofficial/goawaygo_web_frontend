@@ -283,6 +283,24 @@ The website and API must stay on the same registrable domain (`goawaygo.com`): t
 - Environments `dev`, `test`, `prod`, each with `PAGES_PROJECT` and `WEB_URL` (the table above). test and prod need
   the owner's approval.
 - Repository variable `PROD_WEB_URL` = `https://goawaygo.com` (the prod smoke tests).
+- Repository secrets `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET`: the Cloudflare Access service token for the
+  team-only dev and test websites (below). Used by the deploy smoke test and the website tests in dev and test only.
+
+### Team-only dev and test (Cloudflare Access)
+
+The dev and test websites are **team only** (Cloudflare Access, MVP 2): a browser must enter a one-time code sent to
+the team Gmail. Test runs get through with the Access service token "goawaygo-tests (dev and test websites)"
+(Cloudflare Zero Trust → Access controls → Service credentials; valid 1 year, until 2027-11-14): GitHub secrets
+`CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET` of the website repo, sent only to our website (headers
+`CF-Access-Client-Id`, `CF-Access-Client-Secret`) and never in prod. Renew the token before it expires: create a new
+one, put it in both secrets and the Access application's "Test runs (service token)" policy, then delete the old one.
+
+The Access application "GoAwayGo dev and test websites" (Zero Trust Free, team `polished-tree-eaa7`) covers
+`dev.goawaygo.com`, `test.goawaygo.com`, `goawaygo-web-dev.pages.dev`, `goawaygo-web-test.pages.dev` and their
+preview addresses (`*.goawaygo-web-dev.pages.dev`, `*.goawaygo-web-test.pages.dev`). Policies: "Team only" (Allow,
+email = the team Gmail, one-time code) and "Test runs (service token)" (Service Auth). `goawaygo.com` stays public.
+The backend adds the second lock: only the team Gmail can sign in on dev and test (`TEAM_ONLY_EMAILS`). To give
+someone access later: add their email to the "Team only" policy and to the backend's `TEAM_ONLY_EMAILS`.
 
 ### Setting up an environment (once)
 
