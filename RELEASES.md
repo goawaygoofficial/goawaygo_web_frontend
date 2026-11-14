@@ -5,6 +5,18 @@ moves to **test** and **prod** only through the Controller, after it passed belo
 approval. Newest first. Each entry: the changes (pull requests) and where it ran. Update this file in the PR
 that records a release reaching prod (README → Releasing).
 
+## v1.12.0 — 2026-11-14
+
+Ran in: dev ✅ 2026-11-14 · test ✅ 2026-11-14 · prod ✅ 2026-11-14
+
+- feat: deploy and tests reach the team-only dev and test sites ([#84](https://github.com/goawaygoofficial/goawaygo_web_frontend/pull/84))
+
+## v1.11.8 — 2026-11-13
+
+Ran in: dev ✅ 2026-11-13
+
+- Docs: only README.md, LINKS.md and RELEASES.md ([#83](https://github.com/goawaygoofficial/goawaygo_web_frontend/pull/83))
+
 ## v1.11.7 — 2026-11-13
 
 Ran in: dev ✅ 2026-11-13
