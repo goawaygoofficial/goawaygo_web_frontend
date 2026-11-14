@@ -1,4 +1,4 @@
-/** Shapes of the backend's Wanderbook API (`/api/wanderbook/*`), decided for 4.2 (see ROADMAP.md). */
+/** Shapes of the backend's Wanderbook API (`/api/wanderbook/*`), decided for 4.2 (README.md, Roadmap). */
 
 export type Relationship = 'self' | 'following' | 'requested' | 'none';
 

@@ -35,7 +35,7 @@ function scrubBreadcrumb(breadcrumb: Breadcrumb): Breadcrumb {
   return breadcrumb;
 }
 
-/** Sentry, loaded on its own after the page starts (staging and production only), not in the first download. */
+/** Sentry, loaded on its own after the page starts (deployed sites only), not in the first download. */
 let sentry: Promise<typeof SentryModule> | null = null;
 
 /**
