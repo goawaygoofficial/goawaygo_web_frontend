@@ -70,10 +70,15 @@ jobs:
       - name: Smoke test
         env:
           WEB_URL: ${{ vars.WEB_URL }}
+          # dev and test are team-only (Cloudflare Access): the service token; prod is public.
+          ACCESS_ID: ${{ inputs.environment != 'prod' && secrets.CF_ACCESS_CLIENT_ID || '' }}
+          ACCESS_SECRET: ${{ inputs.environment != 'prod' && secrets.CF_ACCESS_CLIENT_SECRET || '' }}
         run: |
           [ -n "$WEB_URL" ] || { echo "No WEB_URL for this environment yet: skipped."; exit 0; }
+          access=()
+          [ -n "$ACCESS_ID" ] && access=(-H "CF-Access-Client-Id: $ACCESS_ID" -H "CF-Access-Client-Secret: $ACCESS_SECRET")
           for attempt in 1 2 3 4 5 6; do
-            status="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$WEB_URL/" || true)"
+            status="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "${access[@]}" "$WEB_URL/" || true)"
             [ "$status" = "200" ] && { echo "Website ${{ inputs.version }} is up in ${{ inputs.environment }} ($WEB_URL)"; exit 0; }
             echo "Attempt $attempt: HTTP $status, retrying"; sleep 10
           done

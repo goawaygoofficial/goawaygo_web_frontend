@@ -1,4 +1,4 @@
-/** Shapes of the backend's Discover API (`/api/discover/*`, `/api/me/saved-places`); see backend docs/destination-prompts.md. */
+/** Shapes of the backend's Discover API (`/api/discover/*`, `/api/me/saved-places`); see the backend README, "Discover: destination pages, photos and ideas". */
 
 export type PlaceType = 'country' | 'region' | 'city' | 'place';
 

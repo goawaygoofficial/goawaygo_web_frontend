@@ -24,8 +24,6 @@ const DEPLOYMENTS: Record<string, Deployment | undefined> = {
   'www.goawaygo.com': PRODUCTION,
   'test.goawaygo.com': { environment: 'test', apiBaseUrl: 'https://api-test.goawaygo.com' },
   'dev.goawaygo.com': { environment: 'dev', apiBaseUrl: 'https://api-dev.goawaygo.com' },
-  // Today's staging, until the three environments exist (5.3).
-  'staging.goawaygo.com': { environment: 'staging', apiBaseUrl: 'https://api.goawaygo.com' },
 };
 
 /** The deployment served at `hostname`, or null (local development, previews). */

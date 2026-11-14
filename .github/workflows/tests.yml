@@ -76,6 +76,9 @@ jobs:
           # Never sent to prod: prod has no fakes and no test accounts.
           TEST_FAKES_TOKEN: ${{ inputs.environment != 'prod' && secrets.TEST_FAKES_TOKEN || '' }}
           AT_ACCOUNT_PASSWORD: ${{ inputs.environment != 'prod' && secrets.AT_ACCOUNT_PASSWORD || '' }}
+          # dev and test websites are team-only (Cloudflare Access): the tests' service token, never for prod.
+          CF_ACCESS_CLIENT_ID: ${{ inputs.environment != 'prod' && secrets.CF_ACCESS_CLIENT_ID || '' }}
+          CF_ACCESS_CLIENT_SECRET: ${{ inputs.environment != 'prod' && secrets.CF_ACCESS_CLIENT_SECRET || '' }}
           # prod's website before the launch (goawaygo-web-prod.pages.dev): the GitHub environment's WEB_URL.
           WEB_URL: ${{ inputs.environment == 'prod' && vars.PROD_WEB_URL || '' }}
           SCOPE: ${{ inputs.scope }}
@@ -90,10 +93,12 @@ jobs:
         env:
           TOKEN: ${{ secrets.TEST_FAKES_TOKEN }}
           PASSWORD: ${{ secrets.AT_ACCOUNT_PASSWORD }}
+          ACCESS_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
           secrets=()
           [ -n "$TOKEN" ] && secrets+=(-e "$TOKEN")
           [ -n "$PASSWORD" ] && secrets+=(-e "$PASSWORD")
+          [ -n "$ACCESS_SECRET" ] && secrets+=(-e "$ACCESS_SECRET")
           [ "${#secrets[@]}" -gt 0 ] && [ -d reports ] || exit 0
           removed=0
           while IFS= read -r -d '' file; do
@@ -143,6 +148,8 @@ jobs:
         env:
           GOAWAYGO_ENV: ${{ inputs.environment }}
           TEST_FAKES_TOKEN: ${{ secrets.TEST_FAKES_TOKEN }}
+          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
           K6_WEB_DASHBOARD: 'true'
           K6_WEB_DASHBOARD_EXPORT: reports/pages.html
           K6_BROWSER_HEADLESS: 'true'
@@ -158,10 +165,12 @@ jobs:
         env:
           TOKEN: ${{ secrets.TEST_FAKES_TOKEN }}
           PASSWORD: ${{ secrets.AT_ACCOUNT_PASSWORD }}
+          ACCESS_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
           secrets=()
           [ -n "$TOKEN" ] && secrets+=(-e "$TOKEN")
           [ -n "$PASSWORD" ] && secrets+=(-e "$PASSWORD")
+          [ -n "$ACCESS_SECRET" ] && secrets+=(-e "$ACCESS_SECRET")
           [ "${#secrets[@]}" -gt 0 ] && [ -d reports ] || exit 0
           removed=0
           while IFS= read -r -d '' file; do

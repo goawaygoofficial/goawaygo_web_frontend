@@ -4,23 +4,23 @@ import type { ProxyOptions } from 'vite';
 import react from '@vitejs/plugin-react';
 
 /**
- * `npm run dev:staging-api`: the local website against the staging API, without running the backend. The API
- * accepts only the staging website's origin, so the dev server forwards `/api` itself, without the browser's
+ * `npm run dev:dev-api`: the local website against the dev API (api-dev.goawaygo.com), without running the backend.
+ * The API accepts only the dev website's origin, so the dev server forwards `/api` itself, without the browser's
  * Origin header. Signing in doesn't work this way (the sign-in cookie belongs to goawaygo.com); everything
  * signed out does.
  */
-const STAGING_API = 'https://api.goawaygo.com';
+const DEV_API = 'https://api-dev.goawaygo.com';
 
 export default defineConfig(({ mode }) => {
-  const stagingApi = mode === 'staging-api';
-  if (stagingApi) {
+  const devApi = mode === 'dev-api';
+  if (devApi) {
     // Same origin: requests go to this dev server, which forwards them (wins over .env).
     process.env.VITE_API_BASE_URL = '';
   }
-  const proxy: Record<string, ProxyOptions> | undefined = stagingApi
+  const proxy: Record<string, ProxyOptions> | undefined = devApi
     ? {
         '/api': {
-          target: STAGING_API,
+          target: DEV_API,
           changeOrigin: true,
           configure: (server) => {
             server.on('proxyReq', (request) => {

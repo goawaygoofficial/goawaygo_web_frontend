@@ -1,4 +1,4 @@
-# Response headers for Cloudflare Pages (docs/deployment.md). Copied into dist/ by the build.
+# Response headers for Cloudflare Pages (README.md, Deployment). Copied into dist/ by the build.
 
 /*
   # The site must not be framed by other sites (clickjacking).
@@ -23,8 +23,6 @@
 https://dev.goawaygo.com/*
   X-Robots-Tag: noindex
 https://test.goawaygo.com/*
-  X-Robots-Tag: noindex
-https://staging.goawaygo.com/*
   X-Robots-Tag: noindex
 https://:project.pages.dev/*
   X-Robots-Tag: noindex
